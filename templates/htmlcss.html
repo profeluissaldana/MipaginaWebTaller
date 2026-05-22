@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}HTML & CSS - Taller de Computación{% endblock %}
+
+{% block content %}
+<div class="bg-white p-4 rounded shadow-sm mb-4">
+    <h2 class="text-primary fw-bold">🌐 HTML5 y CSS3</h2>
+    <p class="lead text-muted">Los cimientos de la Web: Estructuración de contenidos y diseño visual.</p>
+    <hr>
+
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <div>
+            <strong>¡Aviso importante!</strong> Recuerden que la estructura semántica en HTML es fundamental para el posicionamiento web (SEO).
+        </div>
+    </div>
+
+    <h4 class="mt-4 fw-bold">Contenidos del Módulo</h4>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>HTML:</strong> Etiquetas esenciales, formularios, tablas y multimedia.</li>
+        <li class="list-group-item"><strong>CSS:</strong> Selectores, el Modelo de Caja (Box Model), colores y tipografías.</li>
+        <li class="list-group-item"><strong>Maquetación:</strong> Introducción a Flexbox para diseños modernos.</li>
+    </ul>
+</div>
+{% endblock %}

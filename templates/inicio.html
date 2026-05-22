@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Taller de Computación{% endblock %}
+
+{% block content %}
+<div class="row text-center mb-5">
+    <div class="col-12 py-4 bg-white rounded shadow-sm border-start border-primary border-4">
+        <h1 class="display-4 fw-bold text-primary">Bienvenidos al Taller de Computación</h1>
+        <p class="lead text-muted mb-2">Explora los diferentes módulos de la asignatura y accede al material de estudio.</p>
+        <div class="d-inline-block px-3 py-1 bg-light text-secondary rounded font-monospace small">
+            👨‍🏫 <strong>Profesor de la Cátedra:</strong> Luis Saldaña
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">📁 Ofimática</h5>
+                <p class="card-text text-muted">Procesadores de texto, planillas de cálculo y presentaciones eficaces para el ámbito académico.</p>
+                <a href="{{ url_for('ofimatica') }}" class="btn btn-outline-primary mt-auto">Ver contenido</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">🛠️ Visual Studio Code</h5>
+                <p class="card-text text-muted">Configuración del entorno de desarrollo, extensiones clave y trucos para escribir código velozmente.</p>
+                <a href="{{ url_for('visualStudioCode') }}" class="btn btn-outline-primary mt-auto">Ver contenido</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">🌐 HTML & CSS</h5>
+                <p class="card-text text-muted">Estructura maquetada y diseño visual de páginas web utilizando estándares modernos y Flexbox.</p>
+                <a href="{{ url_for('htmlCss') }}" class="btn btn-outline-primary mt-auto">Ver contenido</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">💛 JavaScript</h5>
+                <p class="card-text text-muted">Introducción a la programación del lado del cliente: interactividad, eventos y lógica en el navegador.</p>
+                <a href="{{ url_for('javaScript') }}" class="btn btn-outline-primary mt-auto">Ver contenido</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">🐙 Git & GitHub</h5>
+                <p class="card-text text-muted">Control de versiones, gestión de repositorios en la nube y preparación para subir código a producción.</p>
+                <a href="{{ url_for('gitGitHub') }}" class="btn btn-outline-primary mt-auto">Ver contenido</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">🌶️ Framework Flask</h5>
+                <p class="card-text text-muted">Desarrollo backend con Python. Creación de servidores, rutas y procesamiento de datos.</p>
+                <a href="{{ url_for('frameworkFlask') }}" class="btn btn-outline-primary mt-auto">Ver contenido</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">🤖 Arduino Uno</h5>
+                <p class="card-text text-muted">Programación orientada a componentes de hardware, sensores, robótica y electrónica educativa.</p>
+                <a href="{{ url_for('arduinoUno') }}" class="btn btn-outline-primary mt-auto">Ver contenido</a>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

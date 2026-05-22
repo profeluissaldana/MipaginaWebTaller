@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}JavaScript - Taller de Computación{% endblock %}
+
+{% block content %}
+<div class="bg-white p-4 rounded shadow-sm mb-4">
+    <h2 class="text-primary fw-bold">💛 JavaScript</h2>
+    <p class="lead text-muted">Añadiendo dinamismo, lógica e interactividad al navegador del usuario.</p>
+    <hr>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-8">
+            <h4 class="fw-bold text-dark">Primeros pasos en programación web</h4>
+            <p>Aprenderemos la sintaxis básica del lenguaje que corre de forma nativa en todos los navegadores web del mundo.</p>
+            
+            <div class="p-3 bg-dark text-warning rounded font-monospace small">
+                // Ejemplo que veremos en el taller<br>
+                let saludo = "¡Hola alumnos!";<br>
+                console.log(saludo);
+            </div>
+        </div>
+        
+        <div class="col-12 col-lg-4">
+            <div class="p-3 bg-light rounded border">
+                <h5 class="fw-bold">Temario Principal</h5>
+                <small class="text-muted d-block mb-2">• Variables y tipos de datos</small>
+                <small class="text-muted d-block mb-2">• Condicionales (if/else)</small>
+                <small class="text-muted d-block mb-2">• Bucles (for/while)</small>
+                <small class="text-muted d-block">• Manipulación del DOM</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

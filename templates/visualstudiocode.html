@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}VS Code - Taller de Computación{% endblock %}
+
+{% block content %}
+<div class="bg-white p-4 rounded shadow-sm mb-4">
+    <h2 class="text-primary fw-bold">🛠️ Visual Studio Code</h2>
+    <p class="lead text-muted">El entorno de desarrollo que utilizaremos para escribir nuestro código de forma eficiente.</p>
+    <hr>
+    
+    <div class="row g-4 mt-2">
+        <div class="col-12 col-md-6">
+            <div class="card h-100 border-light bg-light">
+                <div class="card-body">
+                    <h5 class="fw-bold text-secondary">Ajustes Iniciales</h5>
+                    <p>Instalación del programa y configuración de la interfaz en español.</p>
+                    <span class="badge bg-success">Clase 1</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card h-100 border-light bg-light">
+                <div class="card-body">
+                    <h5 class="fw-bold text-secondary">Extensiones Recomendadas</h5>
+                    <p>Instalaremos Live Server, Python de Microsoft y formateadores de código como Prettier.</p>
+                    <span class="badge bg-success">Clase 2</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
