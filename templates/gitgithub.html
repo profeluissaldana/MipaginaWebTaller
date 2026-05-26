@@ -40,6 +40,8 @@
         </div>
     </div>
 
+    <hr class="text-muted">
+
     <div class="row my-5">
         <div class="col-12">
             <h4 class="fw-bold text-dark">🔑 ¿Cómo identificarse en Git? (Local vs Global)</h4>
@@ -48,6 +50,12 @@
             <div class="p-3 bg-dark text-light rounded font-monospace small mb-3">
                 git config user.name "Tu Nombre"<br>
                 git config user.email "tu_email@gmail.com"
+            </div>
+
+            <div class="alert alert-secondary py-2 mb-4" role="alert">
+                🔍 <strong>¡Comprobación de alumnos!</strong> Si te sientas en una PC y quieres saber qué identidad está configurada en esa ventana de consola antes de empezar, ejecuta:
+                <code class="d-block mt-1 p-2 bg-dark text-info rounded font-monospace small">git config user.name</code>
+                <code class="d-block mt-1 p-2 bg-dark text-info rounded font-monospace small">git config user.email</code>
             </div>
 
             <p>Aquí viene la decisión más importante para nuestro taller en el aula, ya que compartimos computadoras:</p>
@@ -75,72 +83,81 @@
             </div>
 
             <div class="bg-light p-4 rounded border my-4">
-                <h5 class="fw-bold text-primary mb-3">❓ ¿Por qué este método es el ideal para nuestro taller?</h5>
+                <h5 class="fw-bold text-primary mb-3">❓ ¿Por qué este método local es el ideal para nuestro taller?</h5>
                 <ul class="list-unstyled">
                     <li class="mb-3">
                         🚀 <strong>Evita la fricción administrativa:</strong> Como profesor, no tendrás que ir banco por banco entrando al "Administrador de Credenciales de Windows" a borrar cuentas guardadas manualmente al final de cada jornada.
                     </li>
                     <li class="mb-3">
-                        🔑 <strong>El comando clave es <code>git config --local credential.helper ""</code>:</strong> Al dejar el ayudante de credenciales en blanco de forma local, la terminal está forzada a pedir usuario y contraseña (token) siempre para ese proyecto, pero no altera el comportamiento del resto del sistema operativo.
+                        🔑 <strong>El comando clave para HTTPS es <code>git config --local credential.helper ""</code>:</strong> Al dejar el ayudante de credenciales en blanco de forma local, la terminal está forzada a pedir credenciales siempre para ese proyecto sin alterar el resto del sistema.
                     </li>
                     <li class="mb-3">
-                        🔒 <strong>Fomenta la seguridad informática:</strong> Tus estudiantes aprenden el concepto de los PAT (Personal Access Tokens), que es exactamente la forma en la que se trabaja hoy en día en las empresas para conectar servidores y aplicaciones de manera segura.
+                        🔒 <strong>Fomenta las buenas prácticas:</strong> Tus estudiantes aprenden cómo gestionar la seguridad de sus cuentas cuando comparten infraestructura o equipos de desarrollo.
                     </li>
                 </ul>
-                <p class="text-muted small mb-0">¡Con este bloque implementado, la guía de Git queda completamente blindada contra cualquier confusión en el laboratorio!</p>
             </div>
 
             <div class="alert alert-danger mt-4" role="alert">
                 <h5 class="alert-heading fw-bold">🛑 El problema de las contraseñas guardadas por Windows</h5>
-                <p class="mb-0">Aunque cambies tu nombre local, Windows tiende a recordar el usuario de GitHub de la última persona que trabajó. Si no prestamos atención, ¡subirás tu tarea al perfil de tu compañero!. Para evitar tener que borrar las credenciales de Windows en cada clase, les enseñaré a autenticarse usando <strong>Tokens de Acceso Personal (PAT)</strong> o configurando la autenticación por consola para cada commit, asegurando que cada uno suba el código a su propia cuenta de GitHub sin conflictos.</p>
-                <hr>
-                <h6 class="fw-bold text-dark">🚀 La Solución: Autenticación por Token en cada clase</h6>
-                <p class="mb-0">Para evitar conflictos, utilizaremos un <strong>Token de Acceso Personal (PAT)</strong> de GitHub. Este token es una clave larga que reemplaza a tu contraseña tradicional y que solo tú debes conocer.</p>
+                <p class="mb-0">Aunque cambies tu nombre local, Windows tiende a recordar el usuario de GitHub de la última persona que trabajó a través del <strong>Administrador de Credenciales</strong>. Si no prestamos atención, ¡subirás tu tarea al perfil de tu compañero! Para solucionar esto en el aula de forma definitiva y profesional, aprenderemos dos métodos independientes.</p>
             </div>
 
             <div class="bg-light p-4 rounded border my-4">
-                <h4 class="fw-bold text-dark mb-3">🛠️ Paso a Paso: Cómo subir tu código sin dejar rastro en la PC</h4>
+                <h4 class="fw-bold text-dark mb-4">🛠️ Las Dos Soluciones para Subir Código sin Dejar Rastro</h4>
                 
-                <div class="mb-4">
-                    <h5><span class="badge bg-secondary me-2">Paso 1</span> Generar tu Token en GitHub (Se hace una sola vez)</h5>
-                    <p>Entra a tu cuenta de GitHub desde el navegador y sigue esta ruta:</p>
-                    <ol>
-                        <li>Ve a tu foto de perfil (arriba a la derecha) ➡️ <strong>Settings</strong> (Configuración).</li>
-                        <li>Baja en el menú izquierdo hasta el final y haz clic en <strong>Developer Settings</strong>.</li>
-                        <li>Selecciona <strong>Personal access tokens</strong> ➡️ <strong>Tokens (classic)</strong>.</li>
-                        <li>Haz clic en <strong>Generate new token</strong> (classic).</li>
-                        <li>Ponle un nombre (ej: "ClaseComputacion") y tilda la casilla principal que dice <strong class="text-primary">repo</strong> (esto te da permisos para subir código).</li>
-                        <li>Haz clic abajo de todo en <strong>Generate token</strong>.</li>
-                    </ol>
-                    <div class="alert alert-warning py-1 font-monospace small">
-                        ⚠️ <strong>¡IMPORTANTE!</strong> Copia ese código largo que aparece (empieza con ghp_...) y guárdalo en un bloc de notas o envíatelo por correo. GitHub NO te lo volverá a mostrar nunca más.
+                <div class="card border-primary mb-4">
+                    <div class="card-header bg-primary text-white fw-bold">Opción A: Autenticación por Token (HTTPS)</div>
+                    <div class="card-body">
+                        <h6><span class="badge bg-secondary me-2">Paso 1</span> Generar tu Token en GitHub (Se hace una sola vez)</h6>
+                        <p class="small text-muted mb-2">Entra a tu cuenta de GitHub desde el navegador y sigue esta ruta: Perfil ➡️ Settings ➡️ Developer Settings ➡️ Personal access tokens ➡️ Tokens (classic) ➡️ Generate new token. Tilda la casilla <strong>repo</strong>.</p>
+                        <div class="alert alert-warning py-1 font-monospace small mb-3">
+                            ⚠️ <strong>¡IMPORTANTE!</strong> Copia ese código largo (ghp_...) y guárdalo. GitHub no lo volverá a mostrar.
+                        </div>
+
+                        <h6><span class="badge bg-secondary me-2">Paso 2</span> Desactivar el guardado automático en Windows</h6>
+                        <p class="small mb-2">Abre la terminal en tu proyecto y ejecuta este comando para borrar el ayudante de Windows en esta carpeta:</p>
+                        <div class="p-2 bg-dark text-warning rounded font-monospace small mb-3">
+                            git config --local credential.helper ""
+                        </div>
+
+                        <h6><span class="badge bg-secondary me-2">Paso 3</span> Hacer el Push e ingresar las credenciales</h6>
+                        <p class="small mb-1">Cuando ejecutes <code>git push origin main</code>, la consola te pedirá:</p>
+                        <ul class="small">
+                            <li><strong>Username:</strong> Tu usuario de GitHub.</li>
+                            <li><strong>Password:</strong> Pega aquí el <strong>Token (ghp_...)</strong> (No tu contraseña web).</li>
+                        </ul>
                     </div>
                 </div>
 
-                <div class="mb-4">
-                    <h5><span class="badge bg-secondary me-2">Paso 2</span> Desactivar el guardado automático en Windows</h5>
-                    <p>Antes de hacer el <code>git push</code>, abre la terminal en tu proyecto y ejecuta este comando comando para decirle a Git: <em>"No guardes ninguna contraseña en esta computadora"</em>:</p>
-                    <div class="p-3 bg-dark text-warning rounded font-monospace small mb-2">
-                        git config --local credential.helper ""
+                <div class="card border-dark shadow-sm">
+                    <div class="card-header bg-dark text-white fw-bold">🛡️ Opción B: Autenticación por Llaves SSH (La más Profesional)</div>
+                    <div class="card-body">
+                        <p class="small">Con este método, en vez de escribir tokens, creamos un archivo de "llave digital" en tu carpeta. Git la usará para identificarte automáticamente y Windows jamás guardará tu contraseña.</p>
+                        
+                        <h6><span class="badge bg-secondary me-2">Paso 1</span> Crear las llaves en la consola</h6>
+                        <p class="small mb-2">Dentro de la terminal de tu proyecto, escribe lo siguiente (reemplazando tu correo):</p>
+                        <div class="p-2 bg-dark text-light rounded font-monospace small mb-3">
+                            ssh-keygen -t ed25519 -C "tu_email@gmail.com"
+                        </div>
+                        <p class="small text-muted">Presiona <strong>Enter</strong> a todas las preguntas que te haga la consola para aceptar las opciones predeterminadas.</p>
+
+                        <h6><span class="badge bg-secondary me-2">Paso 2</span> Vincular tu llave con tu cuenta de GitHub</h6>
+                        <p class="small mb-2">Copia el contenido de tu llave pública al portapapeles ejecutando este comando:</p>
+                        <div class="p-2 bg-dark text-light rounded font-monospace small mb-2">
+                            clip &lt; ~/.ssh/id_ed25519.pub
+                        </div>
+                        <p class="small">Ahora ve a tu **GitHub web ➡️ Settings ➡️ SSH and GPG keys ➡️ New SSH key**, ponle un título (ej: "PC Escuela") y pega el código.</p>
+
+                        <h6><span class="badge bg-secondary me-2">Paso 3</span> Configurar tu proyecto para usar SSH</h6>
+                        <p class="small mb-2">Por defecto las carpetas se vinculan con HTTPS. Cambia el enlace remoto a SSH usando este comando:</p>
+                        <div class="p-2 bg-dark text-info rounded font-monospace small mb-0">
+                            git remote set-url origin git@github.com:TU_USUARIO/TU_REPOSITORIO.git
+                        </div>
                     </div>
-                    <p class="small text-muted">Esto asegura que cuando termine la clase, nadie más pueda usar tus accesos.</p>
                 </div>
 
-                <div class="mb-4">
-                    <h5><span class="badge bg-secondary me-2">Paso 3</span> Hacer el Push e ingresar las credenciales</h5>
-                    <p>Cuando ejecutes el comando para subir tu código por primera vez en la clase:</p>
-                    <div class="p-3 bg-dark text-light rounded font-monospace small mb-2">
-                        git push origin main
-                    </div>
-                    <p>Git abrirá una ventana flotante o te pedirá en la consola dos datos:</p>
-                    <ul>
-                        <li><strong>Username:</strong> Escribe tu usuario de GitHub.</li>
-                        <li><strong>Password:</strong> <span class="text-danger fw-bold">NO pongas tu contraseña habitual</span>. Pega aquí el <strong>Token (ghp_...)</strong> que generaste en el Paso 1.</li>
-                    </ul>
-                </div>
-                
-                <div class="alert alert-success mb-0" role="alert">
-                    🎉 <strong>¡Listo!</strong> Tu código se subirá de forma segura a tu propia cuenta. En la siguiente clase, el próximo alumno que use la PC tendrá que poner sus propios datos porque gracias al Paso 2, la máquina no recordó los tuyos.
+                <div class="alert alert-success mt-4 mb-0" role="alert">
+                    🎉 <strong>¡Resultados blindados!</strong> Usando cualquiera de los dos métodos anteriores, los proyectos quedan aislados. El alumno que se siente en la próxima hora no tendrá acceso a las cuentas de los demás.
                 </div>
             </div>
         </div>
@@ -169,6 +186,10 @@
                     <td>Inicializa un repositorio local en la carpeta del proyecto. Se hace una sola vez por proyecto.</td>
                 </tr>
                 <tr>
+                    <td><code>git status</code></td>
+                    <td>Nos muestra en qué estado están nuestros archivos locales (si están modificados, listos o guardados).</td>
+                </tr>
+                <tr>
                     <td><code>git add .</code></td>
                     <td>Prepara todos los archivos modificados o nuevos (los sube al <em>Staging Area</em>).</td>
                 </tr>
@@ -185,16 +206,12 @@
                     <td>Sube los cambios locales guardados a la nube en tu cuenta de GitHub.</td>
                 </tr>
                 <tr>
-                    <td><code>git status</code></td>
-                    <td>Nos muestra en qué estado están nuestros archivos locales (si están modificados, listos o guardados).</td>
-                </tr>
-                <tr>
                     <td><code>git log</code></td>
-                    <td>Muestra un historial detallado de los commits realizados con su fecha, hora y el autor. De aquí copiamos el código hash (ID del commit) que necesitamos para restaurar archivos.</td>
+                    <td>Muestra un historial detallado de los commits realizados con su fecha, hora y el autor.</td>
                 </tr>
                 <tr>
                     <td><code>git restore --source=[codigo_hash] inicio.html</code></td>
-                    <td>Recupera el archivo seleccionado (en este caso <code>inicio.html</code>) al estado exacto que tenía en ese commit. Puedes usar un punto (<code>.</code>) en vez del nombre del archivo para restaurar todo el proyecto junto.</td>
+                    <td>Recupera el archivo seleccionado al estado exacto que tenía en ese commit.</td>
                 </tr>
             </tbody>
         </table>
