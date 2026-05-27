@@ -185,14 +185,35 @@
                     <td><code>git init</code></td>
                     <td>Inicializa un repositorio local en la carpeta del proyecto. Se hace una sola vez por proyecto. Crea una carpeta .git, el punto hace que esta carpeta esté oculta, pero si voy al administrador de archivo y activo mostrar elementos ocultos, .git aparecerá con un color amarillo claro, que significará que estuvo oculto, luego es recomendable activar nuevamente esta opción de elementos ocultos.</td>
                 </tr>
+
                 <tr>
-                    <td><code>git status</code></td>
-                    <td>Nos muestra en qué estado están nuestros archivos locales (si están modificados, listos o guardados). Al mostrarlos y si todavía no se realizó la copia, serán de color verde. Si luego de realizar el git add . agrego un nuevo archivo y ejecuto el git status, este archivo aparecerá en rojo, porque no se ha agregado a la zona de preparación. Una vez realizado el git commit estos archivos dejarán de estar en la zona de preparación, ya no se listarán más porque ya se realizó la copia o backup.</td>
+                    <td><code>git config user.name</code></td>
+                    <td>Asegurarse de qué usuario de Git está configurado en esa carpeta específica para firmar los commits (los cambios)</td>
                 </tr>
+
+                <tr>
+                    <td><code>git config user.email</code></td>
+                    <td>Asegurarse de qué email de Git está configurado en esa carpeta específica para firmar los commits (los cambios)</td>
+                </tr>
+
+                <tr>
+                    <td><code>git config user.name "Lucho" <br>git config user.email "lucho@gmail.com"</code></td>
+                    <td>Si ejecutan esos comandos sin especificar el nombre/email y les sale el nombre/correo de otro alumno, pueden cambiarlo solo para esa carpeta quitando la palabra --global</td>
+                </tr>
+
+                
+               
                 <tr>
                     <td><code>git add .</code></td>
                     <td>Prepara todos los archivos modificados o nuevos (los sube al <em>Staging Area</em>).</td>
                 </tr>
+
+                 <tr>
+                    <td><code>git status</code></td>
+                    <td>Nos muestra en qué estado están nuestros archivos locales (si están modificados, listos o guardados). Al mostrarlos y si todavía no se realizó la copia, serán de color verde. Si luego de realizar el git add . agrego un nuevo archivo y ejecuto el git status, este archivo aparecerá en rojo, porque no se ha agregado a la zona de preparación. Una vez realizado el git commit estos archivos dejarán de estar en la zona de preparación, ya no se listarán más porque ya se realizó la copia o backup.</td>
+                </tr>
+
+
                 <tr>
                     <td><code>git commit -m "mensaje"</code></td>
                     <td>Guarda un historial con un comentario explicativo de lo que se hizo (crea una versión fija). </td>
@@ -202,7 +223,7 @@
                     <td>Ver a qué repositorio de GitHub está conectada la carpeta de tu proyecto. El -v significa "verbose" (detallado).</td>
                 </tr>
                 <tr>
-                    <td><code>git pull origin main</code></td>
+                    <td><code>git pull origin main (Traer y fusionar cambios)</code></td>
                     <td><span class="badge bg-info text-dark">¡Clave!</span> Descarga y fusiona los cambios más nuevos desde GitHub a tu computadora local. Evita que el sistema se bloquee por falta de sincronización.</td>
                 </tr>
                 <tr>
