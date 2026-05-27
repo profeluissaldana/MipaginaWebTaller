@@ -1,0 +1,32 @@
+/* ===== NAVBAR ===== */
+
+.navbar-brand {
+    transition: 0.3s;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.03);
+}
+
+.nav-link {
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: #0dcaf0 !important;
+}
+
+.dropdown-menu {
+    border-radius: 12px;
+}
+
+.dropdown-item {
+    transition: 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #0dcaf0;
+    color: black;
+}

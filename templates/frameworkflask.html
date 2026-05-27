@@ -4,17 +4,426 @@
 
 {% block content %}
 <div class="bg-white p-4 rounded shadow-sm mb-4">
+
     <h2 class="text-primary fw-bold">🌶️ Framework Flask</h2>
-    <p class="lead text-muted">Introducción al desarrollo Backend con Python.</p>
+    
+    <p class="lead text-muted">
+        Introducción al desarrollo Backend con Python.
+    </p>
+
     <hr>
 
-    <p>Flask nos permite conectar el diseño web que hicimos con HTML y CSS a la lógica potente de Python. Con esto crearemos servidores funcionales que procesan datos del lado del servidor.</p>
+    <div class="row align-items-center my-5">
+        
+        <div class="col-12 col-lg-6">
 
-    <div class="card border-primary mb-3">
-        <div class="card-header bg-primary text-white fw-bold">Próxima meta del proyecto</div>
-        <div class="card-body text-primary">
-            <p class="card-text text-dark">Más adelante, utilizaremos este apartado para conectar una base de datos. Esto nos permitirá registrar la asistencia diaria y armar el sistema de evaluaciones interactivas para el aula.</p>
+            <h4 class="fw-bold text-dark">
+                1. ¿Qué es Flask?
+            </h4>
+
+            <p>
+                Flask es un <strong>Framework Backend</strong> desarrollado en Python.
+                Nos permite crear servidores web y conectar nuestras páginas HTML
+                con lógica de programación.
+            </p>
+
+            <div class="alert alert-info">
+                💡 Gracias a Flask podemos:
+                
+                <ul class="mb-0 mt-2">
+                    <li>Crear páginas dinámicas.</li>
+                    <li>Procesar formularios.</li>
+                    <li>Conectar bases de datos.</li>
+                    <li>Crear sistemas web reales.</li>
+                </ul>
+            </div>
+
+            <p>
+                Antes trabajábamos solamente con HTML, CSS y JavaScript
+                en el navegador del usuario (<strong>Frontend</strong>).
+                Ahora comenzaremos a trabajar también del lado del servidor
+                (<strong>Backend</strong>).
+            </p>
+
         </div>
+
+        <div class="col-12 col-lg-6 text-center mt-4 mt-lg-0">
+
+            <img src="{{ url_for('static', filename='img/flask_backend.jpg') }}"
+                 alt="Flask Backend"
+                 class="img-fluid w-75 rounded shadow-sm border">
+
+            <small class="text-muted d-block mt-2">
+                Flask conecta Python con nuestras páginas web.
+            </small>
+
+        </div>
+
     </div>
+
+    <hr class="text-muted">
+
+    <div class="row align-items-center my-5">
+
+        <div class="col-12 col-lg-6 order-lg-2">
+
+            <h4 class="fw-bold text-dark">
+                2. ¿Qué necesitamos para usar Flask?
+            </h4>
+
+            <p>
+                Antes de comenzar debemos instalar algunas herramientas fundamentales.
+            </p>
+
+            <div class="card border-primary shadow-sm">
+
+                <div class="card-header bg-primary text-white fw-bold">
+                    Herramientas necesarias
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="mb-0">
+                        <li>✅ Python instalado.</li>
+                        <li>✅ Visual Studio Code.</li>
+                        <li>✅ Terminal integrada.</li>
+                        <li>✅ Librería Flask.</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="alert alert-warning mt-3 mb-0">
+                ⚠️ Flask NO viene instalado por defecto en Python.
+                Debemos instalarlo manualmente usando la terminal.
+            </div>
+
+        </div>
+
+        <div class="col-12 col-lg-6 order-lg-1 text-center mt-4 mt-lg-0">
+
+            <img src="{{ url_for('static', filename='img/python_flask.jpg') }}"
+                 alt="Python y Flask"
+                 class="img-fluid w-75 rounded shadow-sm border">
+
+            <small class="text-muted d-block mt-2">
+                Python será el motor principal de nuestro servidor.
+            </small>
+
+        </div>
+
+    </div>
+
+    <hr class="text-muted">
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                3. Entorno Virtual de Python (venv)
+            </h4>
+
+            <p>
+                En programación profesional, cada proyecto debe trabajar
+                con sus propias librerías independientes.
+            </p>
+
+            <p>
+                Para lograr esto utilizamos un 
+                <strong>Entorno Virtual</strong>.
+            </p>
+
+            <div class="alert alert-info">
+                💡 Un entorno virtual crea una carpeta aislada donde
+                instalaremos únicamente las dependencias necesarias
+                para ese proyecto.
+            </div>
+
+            <div class="card border-primary shadow-sm mb-4">
+
+                <div class="card-header bg-primary text-white fw-bold">
+                    📦 ¿Por qué es importante usar venv?
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="mb-0">
+                        <li>✅ Evita conflictos entre proyectos.</li>
+                        <li>✅ Cada proyecto tiene sus propias librerías.</li>
+                        <li>✅ Permite trabajar con distintas versiones.</li>
+                        <li>✅ Facilita subir proyectos a servidores.</li>
+                        <li>✅ Es una práctica profesional real.</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="bg-light p-4 rounded border my-4">
+
+                <h5 class="fw-bold text-primary mb-3">
+                    🧠 Ejemplo sencillo para entender venv
+                </h5>
+
+                <p>
+                    Imagina que cada proyecto es un laboratorio distinto.
+                </p>
+
+                <ul>
+                    <li>🧪 Un laboratorio puede usar Flask 3.</li>
+                    <li>🧪 Otro puede usar Flask 2.</li>
+                    <li>🧪 Otro puede usar librerías completamente diferentes.</li>
+                </ul>
+
+                <p class="mb-0">
+                    Gracias al entorno virtual, los proyectos no se mezclan entre sí.
+                </p>
+
+            </div>
+
+            <h5 class="fw-bold">
+                🛠️ Crear el entorno virtual
+            </h5>
+
+            <p>
+                Abrimos la terminal dentro de la carpeta del proyecto y ejecutamos:
+            </p>
+
+            <div class="p-3 bg-dark text-success rounded font-monospace small mb-3">
+                python -m venv .venv
+            </div>
+
+            <div class="alert alert-secondary">
+                🔍 <strong>¿Qué significa?</strong><br>
+                Python crea una carpeta llamada <code>.venv</code>
+                que contendrá un entorno aislado para este proyecto.
+            </div>
+
+            <h5 class="fw-bold mt-4">
+                ▶️ Activar el entorno virtual
+            </h5>
+
+            <p>
+                En Windows debemos ejecutar:
+            </p>
+
+            <div class="p-3 bg-dark text-info rounded font-monospace small mb-3">
+                .venv\Scripts\activate
+            </div>
+
+            <div class="alert alert-warning">
+                ⚠️ Cuando el entorno virtual está activo,
+                veremos <code>(.venv)</code> al inicio de la terminal.
+            </div>
+
+            <h5 class="fw-bold mt-4">
+                ⛔ Desactivar el entorno virtual
+            </h5>
+
+            <p>
+                Cuando terminamos de trabajar podemos salir del entorno usando:
+            </p>
+
+            <div class="p-3 bg-dark text-danger rounded font-monospace small mb-3">
+                deactivate
+            </div>
+
+            <div class="alert alert-success mb-0">
+                🎉 A partir de ahora todas las librerías que instalemos
+                quedarán únicamente dentro de este proyecto.
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr class="text-muted">
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                4. Instalación de Flask
+            </h4>
+
+            <p>
+                Una vez activado el entorno virtual,
+                ya podemos instalar Flask.
+            </p>
+
+            <p>
+                Para instalar Flask abrimos la terminal de Visual Studio Code
+                y escribimos el siguiente comando:
+            </p>
+
+            <div class="p-3 bg-dark text-success rounded font-monospace small mb-3">
+                pip install flask
+            </div>
+
+            <div class="alert alert-secondary">
+                🔍 <strong>¿Qué hace pip?</strong><br>
+                Pip es el administrador de paquetes de Python.
+                Nos permite descargar librerías externas desde internet.
+            </div>
+
+            <h5 class="fw-bold mt-4">
+                📦 Verificar si Flask quedó instalado
+            </h5>
+
+            <p>
+                Podemos comprobarlo usando:
+            </p>
+
+            <div class="p-3 bg-dark text-info rounded font-monospace small mb-3">
+                pip show flask
+            </div>
+
+            <div class="alert alert-success mb-0">
+                🎉 Si aparece información de Flask en pantalla,
+                entonces la instalación fue correcta.
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr class="text-muted">
+
+    <div class="row align-items-center my-5">
+
+        <div class="col-12 col-lg-6">
+
+            <h4 class="fw-bold text-dark">
+                5. Nuestro primer servidor Flask
+            </h4>
+
+            <p>
+                El archivo principal de Flask normalmente se llama
+                <code>app.py</code>.
+            </p>
+
+            <p>
+                Allí escribiremos el código que controla el servidor.
+            </p>
+
+            <div class="p-3 bg-dark text-light rounded font-monospace small">
+
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def inicio():
+    return render_template('inicio.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-lg-6 text-center mt-4 mt-lg-0">
+
+            <img src="{{ url_for('static', filename='img/servidor_flask.png') }}"
+                 alt="Servidor Flask"
+                 class="img-fluid w-75 rounded shadow-sm border">
+
+            <small class="text-muted d-block mt-2">
+                Flask crea un servidor local para probar nuestros proyectos.
+            </small>
+
+        </div>
+
+    </div>
+
+    <hr class="text-muted">
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                6. Explicación del código principal
+            </h4>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped align-middle border">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th style="width: 40%;">Código</th>
+                            <th>¿Qué realiza?</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><code>from flask import Flask</code></td>
+                            <td>Importa la librería Flask al proyecto.</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>app = Flask(__name__)</code></td>
+                            <td>Crea nuestra aplicación web.</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>@app.route('/')</code></td>
+                            <td>Define la ruta principal del sitio.</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>render_template()</code></td>
+                            <td>Carga archivos HTML desde la carpeta templates.</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>app.run(debug=True)</code></td>
+                            <td>Inicia el servidor Flask en modo desarrollo.</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card border-success shadow-sm">
+
+        <div class="card-header bg-success text-white fw-bold">
+            🚀 Próxima etapa del proyecto
+        </div>
+
+        <div class="card-body">
+
+            <p class="mb-0">
+                Más adelante aprenderemos:
+            </p>
+
+            <ul class="mt-3 mb-0">
+                <li>📨 Formularios con Flask.</li>
+                <li>🗄️ Bases de datos SQLite.</li>
+                <li>👥 Registro de alumnos.</li>
+                <li>📝 Sistema de evaluaciones.</li>
+                <li>📄 Archivo requirements.txt.</li>
+                <li>🌐 Publicar el proyecto en Render.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
 </div>
 {% endblock %}

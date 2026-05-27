@@ -3,32 +3,674 @@
 {% block title %}JavaScript - Taller de Computación{% endblock %}
 
 {% block content %}
+
 <div class="bg-white p-4 rounded shadow-sm mb-4">
-    <h2 class="text-primary fw-bold">💛 JavaScript</h2>
-    <p class="lead text-muted">Añadiendo dinamismo, lógica e interactividad al navegador del usuario.</p>
+
+    <h2 class="text-primary fw-bold">
+        💛 JavaScript
+    </h2>
+
+    <p class="lead text-muted">
+        Añadiendo dinamismo, lógica e interactividad al navegador del usuario.
+    </p>
+
     <hr>
 
-    <div class="row g-4">
-        <div class="col-12 col-lg-8">
-            <h4 class="fw-bold text-dark">Primeros pasos en programación web</h4>
-            <p>Aprenderemos la sintaxis básica del lenguaje que corre de forma nativa en todos los navegadores web del mundo.</p>
-            
-            <div class="p-3 bg-dark text-warning rounded font-monospace small">
-                // Ejemplo que veremos en el taller<br>
-                let saludo = "¡Hola alumnos!";<br>
-                console.log(saludo);
+    <!-- INTRODUCCIÓN -->
+
+    <div class="row align-items-center my-5">
+
+        <div class="col-12 col-lg-7">
+
+            <h4 class="fw-bold text-dark">
+                1. ¿Qué es JavaScript?
+            </h4>
+
+            <p>
+                JavaScript es un lenguaje de programación
+                que permite agregar comportamiento e interactividad
+                a las páginas web.
+            </p>
+
+            <div class="alert alert-info">
+
+                💡 Gracias a JavaScript podemos:
+
+                <ul class="mt-2 mb-0">
+                    <li>Responder a eventos.</li>
+                    <li>Modificar contenido HTML.</li>
+                    <li>Crear validaciones.</li>
+                    <li>Realizar cálculos.</li>
+                    <li>Generar efectos dinámicos.</li>
+                </ul>
+
             </div>
+
+            <p>
+                JavaScript funciona directamente dentro del navegador.
+            </p>
+
         </div>
-        
-        <div class="col-12 col-lg-4">
-            <div class="p-3 bg-light rounded border">
-                <h5 class="fw-bold">Temario Principal</h5>
-                <small class="text-muted d-block mb-2">• Variables y tipos de datos</small>
-                <small class="text-muted d-block mb-2">• Condicionales (if/else)</small>
-                <small class="text-muted d-block mb-2">• Bucles (for/while)</small>
-                <small class="text-muted d-block">• Manipulación del DOM</small>
+
+        <div class="col-12 col-lg-5">
+
+            <div class="p-4 bg-light rounded border shadow-sm">
+
+                <h5 class="fw-bold">
+                    📚 Temario Principal
+                </h5>
+
+                <ul class="mt-3 mb-0">
+
+                    <li class="mb-2">
+                        Variables y tipos de datos
+                    </li>
+
+                    <li class="mb-2">
+                        Condicionales (if / else)
+                    </li>
+
+                    <li class="mb-2">
+                        Bucles (for / while)
+                    </li>
+
+                    <li>
+                        Manipulación del DOM
+                    </li>
+
+                </ul>
+
             </div>
+
         </div>
+
     </div>
+
+    <!-- ACTIVIDAD -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header bg-primary text-white fw-bold">
+            💻 Primer ejercicio
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Crear un archivo llamado:
+            </p>
+
+            <pre class="bg-dark text-light p-3 rounded overflow-auto"><code>script.js</code></pre>
+
+            <p>
+                Luego escribir:
+            </p>
+
+<pre class="bg-dark text-warning p-3 rounded overflow-auto"><code>let saludo = "Hola alumnos";
+
+console.log(saludo);</code></pre>
+
+            <div class="alert alert-success mb-0">
+
+                ✅ Abrir la consola del navegador con F12
+                para observar el resultado.
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MULTIPLE CHOICE -->
+
+    <div class="card border-success shadow-sm mb-5">
+
+        <div class="card-header bg-success text-white fw-bold">
+            🧠 Comprobamos lo aprendido
+        </div>
+
+        <div class="card-body">
+
+            <h5 class="fw-bold">
+                ¿Qué lenguaje agrega interactividad a una página web?
+            </h5>
+
+            <ul class="list-group mt-3">
+
+                <li class="list-group-item">
+                    ❌ HTML
+                </li>
+
+                <li class="list-group-item">
+                    ❌ CSS
+                </li>
+
+                <li class="list-group-item list-group-item-success">
+                    ✅ JavaScript
+                </li>
+
+                <li class="list-group-item">
+                    ❌ Bootstrap
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <hr class="text-muted">
+
+    <!-- VARIABLES -->
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                2. Variables y tipos de datos
+            </h4>
+
+            <p>
+                Las variables permiten almacenar información.
+            </p>
+
+            <div class="alert alert-warning">
+
+                ⚠️ Una variable funciona como una caja
+                donde guardamos datos.
+
+            </div>
+
+<pre class="bg-dark text-info p-4 rounded border overflow-auto"><code>let nombre = "Luis";
+
+let edad = 35;
+
+let profesor = true;</code></pre>
+
+            <div class="table-responsive mt-4">
+
+                <table class="table table-striped border align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>Tipo de dato</th>
+                            <th>Ejemplo</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>String (texto)</td>
+                            <td><code>"Hola"</code></td>
+                        </tr>
+
+                        <tr>
+                            <td>Number (número)</td>
+                            <td><code>25</code></td>
+                        </tr>
+
+                        <tr>
+                            <td>Boolean (verdadero/falso)</td>
+                            <td><code>true</code></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ACTIVIDAD -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header bg-primary text-white fw-bold">
+            ✍️ Actividad práctica
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Crear variables para:
+            </p>
+
+            <ul>
+
+                <li>Nombre del alumno.</li>
+
+                <li>Edad.</li>
+
+                <li>Curso.</li>
+
+                <li>Si le gusta programación (true/false).</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- MULTIPLE CHOICE -->
+
+    <div class="card border-success shadow-sm mb-5">
+
+        <div class="card-header bg-success text-white fw-bold">
+            🧠 Pongámonos a prueba
+        </div>
+
+        <div class="card-body">
+
+            <h5 class="fw-bold">
+                ¿Qué tipo de dato es "Hola Mundo"?
+            </h5>
+
+            <ul class="list-group mt-3">
+
+                <li class="list-group-item">
+                    ❌ Number
+                </li>
+
+                <li class="list-group-item list-group-item-success">
+                    ✅ String
+                </li>
+
+                <li class="list-group-item">
+                    ❌ Boolean
+                </li>
+
+                <li class="list-group-item">
+                    ❌ Variable
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <hr class="text-muted">
+
+    <!-- CONDICIONALES -->
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                3. Condicionales (if / else)
+            </h4>
+
+            <p>
+                Los condicionales permiten tomar decisiones
+                dentro del programa.
+            </p>
+
+<pre class="bg-dark text-success p-4 rounded border overflow-auto"><code>let edad = 18;
+
+if(edad >= 18){
+
+    console.log("Es mayor de edad");
+
+}else{
+
+    console.log("Es menor de edad");
+
+}</code></pre>
+
+            <div class="alert alert-info">
+
+                💡 El programa ejecutará diferentes acciones
+                según se cumpla o no una condición.
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ACTIVIDAD -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header bg-primary text-white fw-bold">
+            💻 Ejercicio práctico
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Crear un programa que:
+            </p>
+
+            <ul>
+
+                <li>Guarde una nota numérica.</li>
+
+                <li>Si la nota es mayor o igual a 6:
+                    mostrar "Aprobado".
+                </li>
+
+                <li>Si no:
+                    mostrar "Desaprobado".
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- MULTIPLE CHOICE -->
+
+    <div class="card border-success shadow-sm mb-5">
+
+        <div class="card-header bg-success text-white fw-bold">
+            🧠 Verificación rápida
+        </div>
+
+        <div class="card-body">
+
+            <h5 class="fw-bold">
+                ¿Qué palabra se utiliza para una condición?
+            </h5>
+
+            <ul class="list-group mt-3">
+
+                <li class="list-group-item list-group-item-success">
+                    ✅ if
+                </li>
+
+                <li class="list-group-item">
+                    ❌ for
+                </li>
+
+                <li class="list-group-item">
+                    ❌ let
+                </li>
+
+                <li class="list-group-item">
+                    ❌ html
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <hr class="text-muted">
+
+    <!-- BUCLES -->
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                4. Bucles (for / while)
+            </h4>
+
+            <p>
+                Los bucles permiten repetir acciones automáticamente.
+            </p>
+
+            <h5 class="fw-bold mt-4">
+                🔁 Ejemplo con for
+            </h5>
+
+<pre class="bg-dark text-warning p-4 rounded border overflow-auto"><code>for(let i = 1; i <= 5; i++){
+
+    console.log(i);
+
+}</code></pre>
+
+            <h5 class="fw-bold mt-4">
+                🔄 Ejemplo con while
+            </h5>
+
+<pre class="bg-dark text-info p-4 rounded border overflow-auto"><code>let contador = 1;
+
+while(contador <= 5){
+
+    console.log(contador);
+
+    contador++;
+
+}</code></pre>
+
+        </div>
+
+    </div>
+
+    <!-- ACTIVIDAD -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header bg-primary text-white fw-bold">
+            ✍️ Actividad práctica
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Crear un bucle que muestre:
+            </p>
+
+            <ul>
+
+                <li>Los números del 1 al 10.</li>
+
+                <li>Los números pares del 2 al 20.</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- MULTIPLE CHOICE -->
+
+    <div class="card border-success shadow-sm mb-5">
+
+        <div class="card-header bg-success text-white fw-bold">
+            🧠 Pregunta rápida
+        </div>
+
+        <div class="card-body">
+
+            <h5 class="fw-bold">
+                ¿Para qué sirven los bucles?
+            </h5>
+
+            <ul class="list-group mt-3">
+
+                <li class="list-group-item">
+                    ❌ Crear imágenes
+                </li>
+
+                <li class="list-group-item list-group-item-success">
+                    ✅ Repetir acciones
+                </li>
+
+                <li class="list-group-item">
+                    ❌ Diseñar páginas
+                </li>
+
+                <li class="list-group-item">
+                    ❌ Conectar internet
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <hr class="text-muted">
+
+    <!-- DOM -->
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                5. Manipulación del DOM
+            </h4>
+
+            <p>
+                El DOM representa la estructura HTML de la página.
+            </p>
+
+            <div class="alert alert-warning">
+
+                💡 Gracias al DOM, JavaScript puede modificar
+                elementos HTML en tiempo real.
+
+            </div>
+
+<pre class="bg-dark text-light p-4 rounded border overflow-auto"><code>document.getElementById("titulo")
+.innerText = "Hola Mundo";</code></pre>
+
+            <p class="mt-4">
+                Con esto podemos:
+            </p>
+
+            <ul>
+
+                <li>Cambiar textos.</li>
+
+                <li>Modificar colores.</li>
+
+                <li>Mostrar u ocultar elementos.</li>
+
+                <li>Responder a botones.</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- ACTIVIDAD -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header bg-primary text-white fw-bold">
+            💻 Práctica DOM
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Crear:
+            </p>
+
+            <ul>
+
+                <li>Un título con id="titulo".</li>
+
+                <li>Un botón.</li>
+
+                <li>Al hacer click:
+                    cambiar el texto del título.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- MULTIPLE CHOICE -->
+
+    <div class="card border-success shadow-sm mb-5">
+
+        <div class="card-header bg-success text-white fw-bold">
+            🧠 Repaso final
+        </div>
+
+        <div class="card-body">
+
+            <h5 class="fw-bold">
+                ¿Qué función permite seleccionar un elemento por ID?
+            </h5>
+
+            <ul class="list-group mt-3">
+
+                <li class="list-group-item">
+                    ❌ queryColor()
+                </li>
+
+                <li class="list-group-item">
+                    ❌ innerHTML()
+                </li>
+
+                <li class="list-group-item list-group-item-success">
+                    ✅ getElementById()
+                </li>
+
+                <li class="list-group-item">
+                    ❌ createButton()
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- MINI PROYECTO -->
+
+    <div class="card border-dark shadow-sm mt-5">
+
+        <div class="card-header bg-dark text-white fw-bold">
+            🚀 Mini proyecto integrador
+        </div>
+
+        <div class="card-body">
+
+            <h5 class="fw-bold">
+                Crear una calculadora simple
+            </h5>
+
+            <p>
+                El proyecto debe incluir:
+            </p>
+
+            <ul>
+
+                <li>Dos inputs numéricos.</li>
+
+                <li>Botón sumar.</li>
+
+                <li>Mostrar resultado en pantalla.</li>
+
+                <li>Aplicar estilos CSS.</li>
+
+                <li>Utilizar JavaScript para la lógica.</li>
+
+            </ul>
+
+            <div class="alert alert-info mb-0">
+
+                💡 Objetivo:
+                combinar HTML + CSS + JavaScript.
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
+
 {% endblock %}
