@@ -183,11 +183,11 @@
             <tbody>
                 <tr>
                     <td><code>git init</code></td>
-                    <td>Inicializa un repositorio local en la carpeta del proyecto. Se hace una sola vez por proyecto.</td>
+                    <td>Inicializa un repositorio local en la carpeta del proyecto. Se hace una sola vez por proyecto. Crea una carpeta .git, el punto hace que esta carpeta esté oculta, pero si voy al administrador de archivo y activo mostrar elementos ocultos, .git aparecerá con un color amarillo claro, que significará que estuvo oculto, luego es recomendable activar nuevamente esta opción de elementos ocultos.</td>
                 </tr>
                 <tr>
                     <td><code>git status</code></td>
-                    <td>Nos muestra en qué estado están nuestros archivos locales (si están modificados, listos o guardados).</td>
+                    <td>Nos muestra en qué estado están nuestros archivos locales (si están modificados, listos o guardados). Al mostrarlos y si todavía no se realizó la copia, serán de color verde. Si luego de realizar el git add . agrego un nuevo archivo y ejecuto el git status, este archivo aparecerá en rojo, porque no se ha agregado a la zona de preparación. Una vez realizado el git commit estos archivos dejarán de estar en la zona de preparación, ya no se listarán más porque ya se realizó la copia o backup.</td>
                 </tr>
                 <tr>
                     <td><code>git add .</code></td>
@@ -195,7 +195,11 @@
                 </tr>
                 <tr>
                     <td><code>git commit -m "mensaje"</code></td>
-                    <td>Guarda un historial con un comentario explicativo de lo que se hizo (crea una versión fija).</td>
+                    <td>Guarda un historial con un comentario explicativo de lo que se hizo (crea una versión fija). </td>
+                </tr>
+                <tr>
+                    <td><code>git remote -v</code></td>
+                    <td>Ver a qué repositorio de GitHub está conectada la carpeta de tu proyecto. El -v significa "verbose" (detallado).</td>
                 </tr>
                 <tr>
                     <td><code>git pull origin main</code></td>
@@ -211,7 +215,7 @@
                 </tr>
                 <tr>
                     <td><code>git restore --source=[codigo_hash] inicio.html</code></td>
-                    <td>Recupera el archivo seleccionado al estado exacto que tenía en ese commit.</td>
+                    <td>Recupera el archivo seleccionado al estado exacto que tenía en ese commit. El codigo_hash se debe colocar sin corchetes y sin comillas, el archivo debe colocarse con su path, preferentemente entre comillas para poder aceptar los espacios en blancos de los nombres de las carpetas en caso que los tuviera.</td>
                 </tr>
             </tbody>
         </table>
