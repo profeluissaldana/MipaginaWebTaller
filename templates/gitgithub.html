@@ -163,7 +163,220 @@
         </div>
     </div>
 
+   
+
+   <!--  ----------------Agregado------------------ -->
+         <hr class="text-muted">
+
+    <div class="row my-5">
+        <div class="col-12">
+            <h4 class="fw-bold text-dark">👥 Git en Equipo y Buenas Prácticas Profesionales</h4>
+            <p class="text-muted">
+                En proyectos reales no trabajamos solos. Git fue creado justamente para que varias personas puedan colaborar sobre el mismo proyecto sin perder cambios ni sobrescribir el trabajo de otros compañeros.
+            </p>
+
+            <div class="alert alert-primary border-start border-primary border-4">
+                🚀 <strong>Idea clave:</strong> Antes de empezar a programar en clase, siempre conviene sincronizar la carpeta local con GitHub usando:
+                <code class="d-block mt-2 p-2 bg-dark text-info rounded font-monospace small">
+                    git pull origin main
+                </code>
+            </div>
+
+            <div class="row g-4 mt-2">
+
+                <div class="col-12">
+                    <div class="card border-info shadow-sm">
+                        <div class="card-header bg-info text-dark fw-bold">
+                            1️⃣ Para trabajar en equipo (Crucial en proyectos grupales)
+                        </div>
+
+                        <div class="card-body">
+
+                            <h5 class="fw-bold text-dark">📥 git pull (Traer y fusionar cambios)</h5>
+
+                            <p>
+                                Descarga los últimos cambios desde GitHub y los fusiona automáticamente en la carpeta local del alumno.
+                            </p>
+
+                            <div class="alert alert-warning py-2">
+                                ⚠️ <strong>¿Por qué es importante?</strong><br>
+                                Si el "Alumno 1" sube cambios a GitHub y el "Alumno 2" sigue trabajando sin actualizarse, Git bloqueará el próximo
+                                <code>git push</code> porque la carpeta local estará desactualizada.
+                            </div>
+
+                            <div class="p-2 bg-dark text-light rounded font-monospace small mb-4">
+                                git pull origin main
+                            </div>
+
+                            <hr>
+
+                            <h5 class="fw-bold text-dark">📦 git clone (Clonar un proyecto)</h5>
+
+                            <p>
+                                Descarga una copia completa de un repositorio existente de GitHub hacia una carpeta nueva en la computadora.
+                            </p>
+
+                            <div class="alert alert-success py-2">
+                                ✅ <strong>¿Cuándo se usa?</strong><br>
+                                Si el proyecto ya existe en GitHub, NO se debe usar <code>git init</code>. 
+                                El alumno simplemente debe clonar el proyecto.
+                            </div>
+
+                            <div class="p-2 bg-dark text-light rounded font-monospace small">
+                                git clone git@github.com:usuario/proyecto.git
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card border-secondary shadow-sm">
+                        <div class="card-header bg-secondary text-white fw-bold">
+                            2️⃣ Para no romper la rama principal (Buenas prácticas)
+                        </div>
+
+                        <div class="card-body">
+
+                            <p>
+                                En proyectos profesionales normalmente no se trabaja directamente sobre la rama principal
+                                <code>main</code> o <code>master</code>.
+                            </p>
+
+                            <p>
+                                Para agregar nuevas funciones sin arriesgar el código que ya funciona, se utilizan
+                                <strong>ramas</strong> (<em>branches</em>).
+                            </p>
+
+                            <div class="alert alert-light border">
+                                💡 <strong>Ejemplo:</strong><br>
+                                Un alumno puede crear una rama para desarrollar el formulario de login mientras otro compañero trabaja en el diseño visual del sitio.
+                            </div>
+
+                            <h5 class="fw-bold text-dark mt-4">🌿 git branch y git checkout</h5>
+
+                            <p>Permiten crear y cambiar entre ramas de trabajo.</p>
+
+                            <div class="mb-3">
+                                <strong>Crear una nueva rama:</strong>
+
+                                <div class="p-2 bg-dark text-light rounded font-monospace small mt-2">
+                                    git branch nueva-funcion
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>Moverse a esa rama:</strong>
+
+                                <div class="p-2 bg-dark text-light rounded font-monospace small mt-2">
+                                    git checkout nueva-funcion
+                                </div>
+                            </div>
+
+                            <div class="mb-0">
+                                <strong>Forma moderna (crear y cambiar al mismo tiempo):</strong>
+
+                                <div class="p-2 bg-dark text-info rounded font-monospace small mt-2">
+                                    git checkout -b nueva-funcion
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card border-danger shadow-sm">
+                        <div class="card-header bg-danger text-white fw-bold">
+                            3️⃣ El salvavidas para corregir errores
+                        </div>
+
+                        <div class="card-body">
+
+                            <p>
+                                A todos les pasa: modifican archivos, algo deja de funcionar y no saben cómo volver atrás.
+                            </p>
+
+                            <h5 class="fw-bold text-dark">🛟 git restore</h5>
+
+                            <p>
+                                Si todavía NO se realizó un <code>git commit</code>, este comando permite descartar cambios recientes y recuperar el último estado seguro del archivo.
+                            </p>
+
+                            <div class="alert alert-warning py-2">
+                                ⚠️ <strong>Importante:</strong> Los cambios eliminados con <code>git restore</code> no se pueden recuperar después.
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>Recuperar un único archivo:</strong>
+
+                                <div class="p-2 bg-dark text-light rounded font-monospace small mt-2">
+                                    git restore nombre_del_archivo.py
+                                </div>
+                            </div>
+
+                            <div class="mb-0">
+                                <strong>Descartar todos los cambios no guardados de la carpeta:</strong>
+
+                                <div class="p-2 bg-dark text-light rounded font-monospace small mt-2">
+                                    git restore .
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card border-success shadow-sm">
+                        <div class="card-header bg-success text-white fw-bold">
+                            4️⃣ Vital para Flask, Render y despliegues
+                        </div>
+
+                        <div class="card-body">
+
+                            <p>
+                                Aunque no es un comando de Git puro, está totalmente relacionado con el control de versiones y el despliegue de aplicaciones web.
+                            </p>
+
+                            <h5 class="fw-bold text-dark">📄 pip freeze &gt; requirements.txt</h5>
+
+                            <p>
+                                Genera un archivo llamado <code>requirements.txt</code> con la lista completa de librerías instaladas en el entorno virtual.
+                            </p>
+
+                            <div class="p-2 bg-dark text-light rounded font-monospace small mb-3">
+                                pip freeze &gt; requirements.txt
+                            </div>
+
+                            <div class="alert alert-danger py-2">
+                                🚨 <strong>¿Por qué es obligatorio?</strong><br>
+                                Plataformas como Render necesitan este archivo para saber qué librerías instalar automáticamente en el servidor.
+                            </div>
+
+                            <div class="alert alert-success py-2 mb-0">
+                                ✅ <strong>Buenas prácticas:</strong><br>
+                                Luego de generar el archivo, también debe subirse a GitHub usando:
+                                <code>git add .</code>,
+                                <code>git commit</code> y
+                                <code>git push</code>.
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <hr class="text-muted">
+
+
+
+
+
+    <!-- ------------------------------------------ -->
 
     <h4 class="fw-bold text-dark mt-4">📋 Guía Rápida de Comandos Esenciales</h4>
     <p class="text-muted">Los comandos que usaremos en cada clase práctica para subir los desafíos del taller:</p>
@@ -213,11 +426,39 @@
                     <td>Nos muestra en qué estado están nuestros archivos locales (si están modificados, listos o guardados). Al mostrarlos y si todavía no se realizó la copia, serán de color verde. Si luego de realizar el git add . agrego un nuevo archivo y ejecuto el git status, este archivo aparecerá en rojo, porque no se ha agregado a la zona de preparación. Una vez realizado el git commit estos archivos dejarán de estar en la zona de preparación, ya no se listarán más porque ya se realizó la copia o backup.</td>
                 </tr>
 
+                <tr>
+                    <td><code>git reset (Quitar archivos del escenario)</code></td>
+                    <td>Si un alumno añade un archivo por error con git add, este comando lo saca de la lista de espera para el commit, sin borrar el trabajo del archivo. <br>
+                    <ul>
+                        <li><strong>Uso típico:</strong> git reset nombre_del_archivo.py</li>
+                        <li><strong>Por qué importa:</strong> Evita que suban basura al repositorio de GitHub.</li>
+                    </ul></td>
+                </tr>
+
+                <tr>
+                    <td><code>git diff (Ver cambios línea por línea)</code></td>
+                    <td>Para ver diferencias antes de hacer un Commit. <br>
+                    Muchas veces los alumnos olvidan qué cambiaron exactamente en el código desde el último commit. <br>
+                Muestra en la consola exactamente qué líneas se borraron (en rojo) y qué líneas se agregaron (en verde) en los archivos modificados. <br>
+            <ul><li><strong>Por qué importa:</strong> Les ayuda a revisar su propio código y hacer commits más limpios y descriptivos, en lugar del clásico mensaje "cambios" o "arreglo".</li></ul> </td>
+                </tr>
+
 
                 <tr>
                     <td><code>git commit -m "mensaje"</code></td>
                     <td>Guarda un historial con un comentario explicativo de lo que se hizo (crea una versión fija). </td>
                 </tr>
+
+                <tr><td><code>git stash (Guardar en un cajón temporal)</code></td>
+                    <td>Corta los cambios actuales que no se han guardado en un commit y los guarda en una "pila" temporal, dejando el proyecto completamente limpio. <br>
+                    <ul>
+                        <li><strong>Para guardar:</strong> git stash (El proyecto vuelve a estar como al principio).</li>
+                        <li><strong>Para recuperar los cambios después:</strong> git stash pop (Saca los cambios del cajón y los vuelve a poner en los archivos).</li>
+                        <li><strong>Por qué importa:</strong> El Alumno 1 puede "esconder" su trabajo a medias, dejar que otro grupo use la máquina, y la próxima semana recuperar su progreso idéntico a como lo dejó.</li>
+                    </ul></td>
+                </tr>
+
+
                 <tr>
                     <td><code>git remote -v</code></td>
                     <td>Ver a qué repositorio de GitHub está conectada la carpeta de tu proyecto. El -v significa "verbose" (detallado).</td>
@@ -238,6 +479,17 @@
                     <td><code>git restore --source=[codigo_hash] inicio.html</code></td>
                     <td>Recupera el archivo seleccionado al estado exacto que tenía en ese commit. El codigo_hash se debe colocar sin corchetes y sin comillas, el archivo debe colocarse con su path, preferentemente entre comillas para poder aceptar los espacios en blancos de los nombres de las carpetas en caso que los tuviera.</td>
                 </tr>
+
+                <tr>
+                    <td><code>git clone (Clonar un proyecto)</code></td>
+                    <td>Descarga una copia completa de un repositorio existente en GitHub a una carpeta nueva en la computadora. <br>
+                    <ul>
+                        <li> <strong>Por qué es importante:</strong> Si un alumno tiene que empezar a trabajar en la computadora del laboratorio y el proyecto ya está en GitHub, no debe hacer git init. Solo debe clonarlo.</li>
+                        <li><strong>Uso típico:</strong>  git clone git@github.com:usuario/proyecto.git</li>
+                    </ul></td>
+                </tr>
+
+                
             </tbody>
         </table>
     </div>

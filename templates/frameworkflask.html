@@ -290,6 +290,114 @@
 
     </div>
 
+        <hr class="text-muted">
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                ⚠️ ¿Qué ocurre si renombramos la carpeta del proyecto?
+            </h4>
+
+            <p>
+                Cuando trabajamos con Flask y Python,
+                el entorno virtual <code>.venv</code>
+                queda vinculado internamente a la ruta original
+                donde fue creado el proyecto.
+            </p>
+
+            <div class="alert alert-warning">
+                ⚠️ Si cambiamos el nombre de la carpeta del proyecto,
+                muchas veces el entorno virtual deja de funcionar correctamente.
+            </div>
+
+            <p>
+                Esto ocurre porque dentro de <code>.venv</code>
+                quedan guardadas referencias internas con la ubicación anterior.
+            </p>
+
+            <div class="card border-danger shadow-sm my-4">
+
+                <div class="card-header bg-danger text-white fw-bold">
+                    🚨 Problemas típicos al renombrar la carpeta
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="mb-0">
+                        <li>❌ Flask deja de ejecutarse.</li>
+                        <li>❌ La terminal no activa correctamente el entorno virtual.</li>
+                        <li>❌ VS Code puede perder la referencia de Python.</li>
+                        <li>❌ Aparecen errores indicando que no existe la ruta.</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <h5 class="fw-bold text-dark">
+                🛠️ Solución profesional recomendada
+            </h5>
+
+            <p>
+                La forma más segura de solucionar este problema
+                es eliminar completamente la carpeta
+                <code>.venv</code>
+                y crear nuevamente el entorno virtual.
+            </p>
+
+            <div class="alert alert-info">
+                💡 Importante:
+                <strong>NO se elimina el proyecto</strong>,
+                solamente se borra el entorno virtual para reconstruirlo.
+            </div>
+
+            <h5 class="fw-bold mt-4">
+                🗑️ Eliminar la carpeta .venv desde la terminal
+            </h5>
+
+            <p>
+                En Windows podemos ejecutar:
+            </p>
+
+            <div class="p-3 bg-dark text-danger rounded font-monospace small mb-3">
+                rmdir /s /q .venv
+            </div>
+
+            <div class="alert alert-secondary">
+                🔍 <strong>¿Qué significa este comando?</strong><br>
+
+                <ul class="mb-0 mt-2">
+                    <li><code>rmdir</code> → elimina carpetas.</li>
+                    <li><code>/s</code> → borra todo el contenido interno.</li>
+                    <li><code>/q</code> → evita preguntas de confirmación.</li>
+                </ul>
+            </div>
+
+            <h5 class="fw-bold mt-4">
+                🔄 Luego de eliminar .venv
+            </h5>
+
+            <p>
+                Después simplemente debemos:
+            </p>
+
+            <ol>
+                <li>Crear nuevamente el entorno virtual.</li>
+                <li>Activarlo.</li>
+                <li>Instalar Flask otra vez.</li>
+            </ol>
+
+            <div class="alert alert-success mb-0">
+                🎉 Con eso el proyecto volverá a funcionar normalmente
+                utilizando la nueva ruta de la carpeta renombrada.
+            </div>
+
+        </div>
+
+    </div>
+
     <hr class="text-muted">
 
     <div class="row align-items-center my-5">

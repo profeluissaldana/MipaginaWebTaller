@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Servidor Render - Taller de Computación{% endblock %}
+
+{% block content %}
+
+<div class="bg-white p-4 rounded shadow-sm mb-4">
+    <h2 class="text-primary fw-bold">🛠️ Servidor Render</h2>
+    <p class="lead text-muted">Es un servicio en la nube (PaaS) que permite alojar aplicaciones web, sitios estáticos y bases de datos de forma automática.</p>
+    <hr>
+    
+    <div class="row g-4 mt-2">
+        <div class="col-12 col-md-6">
+            <div class="card h-100 border-light bg-light">
+                <div class="card-body">
+                    <h5 class="fw-bold text-secondary">Render.com (Plataforma de alojamiento en la nube)</h5>
+                    <ul><li><strong>Para qué sirve:</strong>  Funciona como un puente entre tu código (en GitHub o GitLab) y un sitio web en vivo. Compila, despliega y actualiza tus aplicaciones automáticamente cada vez que realizas cambios.</li>
+                    <li><strong>Ventajas:</strong>  Es ideal para proyectos de Node.js, Python, React o Docker, y ofrece un nivel gratuito muy popular para aprender o hacer prototipos.</li></ul>
+                    <p>Instalación del programa y configuración de la interfaz en español.</p>
+                    <span class="badge bg-success">Clase 1</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card h-100 border-light bg-light">
+                <div class="card-body">
+                    <h5 class="fw-bold text-secondary"> Server Side Rendering (SSR - Renderizado en el lado del servidor)</h5>
+                    <p>Es una técnica de desarrollo web donde el servidor genera la página HTML completa y lista para visualizar antes de enviarla al navegador del usuario.</p>
+                    <ul><li> <strong>Para qué sirve:</strong> A diferencia de las aplicaciones donde el navegador carga una página en blanco y construye todo con JavaScript, el SSR envía el contenido ya procesado.</li>
+                    <li><strong>Ventajas:</strong> Mejora notablemente el tiempo de carga inicial y facilita el rastreo e indexación para los motores de búsqueda (mejorando el SEO).</li></ul>
+                    <span class="badge bg-success">Clase 2</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

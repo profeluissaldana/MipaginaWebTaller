@@ -39,6 +39,12 @@ def frameworkFlask():
 def arduinoUno():
     return render_template('arduino_uno.html')
 
+@app.route('/servidorrender')
+def servidorRender():
+    return render_template('servidorrender.html')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
