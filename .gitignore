@@ -1,0 +1,16 @@
+# Entorno virtual (Pesado y no se debe subir)
+venv/
+env/
+ENV/
+
+# Archivos ocultos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Caché de Python
+__pycache__/
+*.pyc
+
+# Archivos con contraseñas o llaves secretas
+.env
+instance/
