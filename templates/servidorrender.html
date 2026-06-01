@@ -55,22 +55,28 @@
                         <span class="badge bg-primary">Clase 3</span>
                     </div>
                     
-                    <h6 class="fw-bold text-secondary">Paso 1: Preparar nuestro repositorio en GitHub</h6>
+                    <h6 class="fw-bold text-secondary">Paso 1: Configurar archivos esenciales (.gitignore y dependencias)</h6>
                     <ol class="mb-4">
-                        <li>
-                            Asegúrate de crear el archivo <code>requirements.txt</code> en tu carpeta del proyecto (con tu entorno virtual activo) ejecutando:
-                            <pre class="bg-dark text-light p-2 rounded mt-1">pip freeze > requirements.txt</pre>
-                            <small class="text-muted">⚠️ ¡Muy importante! Verifica que la librería <strong>gunicorn</strong> aparezca en esa lista.</small>
+                        <li class="mb-3">
+                            <strong>Crear el archivo <code>.gitignore</code>:</strong> Evita subir archivos innecesarios o carpetas gigantescas (como el entorno virtual). Créalo en la raíz de tu proyecto ejecutando en tu terminal:
+                            <pre class="bg-dark text-light p-2 rounded mt-1 mb-1">echo venv/ > .gitignore</pre>
+                            <span class="text-muted small">O créalo manualmente en VS Code nombrándolo exactamente <code>.gitignore</code> y añadiendo este contenido básico:</span>
+                            <pre class="bg-secondary text-light p-2 rounded mt-1 mb-1" style="font-size: 0.85rem;">venv/&#10;__pycache__/&#10;*.pyc&#10;.env</pre>
                         </li>
-                        <li class="mt-2">Sube todos tus cambios a GitHub (<code>git commit</code> y <code>git push</code>).</li>
+                        <li class="mb-3">
+                            <strong>Crear el archivo de dependencias:</strong> Con tu entorno virtual activo, genera el listado de librerías para que Render sepa qué instalar:
+                            <pre class="bg-dark text-light p-2 rounded mt-1">pip freeze > requirements.txt</pre>
+                            <small class="text-muted">⚠️ ¡Muy importante! Abre el archivo creado y verifica que la librería <strong>gunicorn</strong> aparezca en esa lista.</small>
+                        </li>
+                        <li>Guarda y sube todos estos cambios preparados a GitHub (<code>git add .</code>, <code>git commit</code> y <code>git push</code>).</li>
                     </ol>
 
                     <h6 class="fw-bold text-secondary">Paso 2: Configuración en el panel de Render</h6>
                     <ol>
                         <li>Inicia sesión en <strong>Render.com</strong> usando tu cuenta de GitHub.</li>
                         <li>Haz clic en <strong>New +</strong> y selecciona <strong>Web Service</strong>.</li>
-                        <li>Conecta el repositorio de tu proyecto Flask.</li>
-                        <li>Completa el formulario con los siguientes datos técnicos:</li>
+                        <li>Busca tu repositorio en la lista (puedes usar la lupa de búsqueda si tienes muchos) y presiona el botón azul <strong>Connect</strong> que aparece al pasar el cursor sobre él.</li>
+                        <li>Completa el formulario de Render con los siguientes datos técnicos:</li>
                     </ol>
 
                     <div class="table-responsive ms-3 me-3">
@@ -115,8 +121,7 @@
                     </div>
                     
                     <ul>
-                        <li class="mb-2"><strong>Variables Secretas:</strong> Si tu app usa contraseñas o una <code>SECRET_KEY</code>, no las dejes a la vista en GitHub. Agrégalas de forma segura en la sección <strong>Advanced -> Environment Variables</strong> de Render.</li>
-                        <li class="mb-3"><strong>El archivo .gitignore:</strong> Recuerda enseñar a tus alumnos a ignorar carpetas pesadas como la del entorno virtual (<code>venv/</code>) antes de subir el código a internet.</li>
+                        <li class="mb-3"><strong>Variables Secretas:</strong> Si tu app usa contraseñas o una <code>SECRET_KEY</code>, no las dejes a la vista en GitHub. Agrégalas de forma segura en la sección <strong>Advanced -> Environment Variables</strong> de Render.</li>
                     </ul>
 
                     <div class="bg-white p-3 rounded border mb-3">
