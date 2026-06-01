@@ -5,33 +5,130 @@
 {% block content %}
 
 <div class="bg-white p-4 rounded shadow-sm mb-4">
-    <h2 class="text-primary fw-bold">🛠️ Servidor Render</h2>
-    <p class="lead text-muted">Es un servicio en la nube (PaaS) que permite alojar aplicaciones web, sitios estáticos y bases de datos de forma automática.</p>
+    <h2 class="text-primary fw-bold mb-3">🛠️ Servidor Render y Despliegue Web</h2>
+    <p class="lead text-muted">Aprenderemos a subir nuestros proyectos de Flask a internet utilizando Render y entenderemos cómo funcionan los servidores modernos.</p>
     <hr>
     
     <div class="row g-4 mt-2">
         <div class="col-12 col-md-6">
-            <div class="card h-100 border-light bg-light">
-                <div class="card-body">
-                    <h5 class="fw-bold text-secondary">Render.com (Plataforma de alojamiento en la nube)</h5>
-                    <ul><li><strong>Para qué sirve:</strong>  Funciona como un puente entre tu código (en GitHub o GitLab) y un sitio web en vivo. Compila, despliega y actualiza tus aplicaciones automáticamente cada vez que realizas cambios.</li>
-                    <li><strong>Ventajas:</strong>  Es ideal para proyectos de Node.js, Python, React o Docker, y ofrece un nivel gratuito muy popular para aprender o hacer prototipos.</li></ul>
-                    <p>Instalación del programa y configuración de la interfaz en español.</p>
-                    <span class="badge bg-success">Clase 1</span>
+            <div class="card h-100 border-light bg-light shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="fw-bold text-secondary m-0">Render.com (Alojamiento en la nube)</h5>
+                            <span class="badge bg-success">Clase 1</span>
+                        </div>
+                        <p class="text-muted small">Instalación, configuración e interfaz.</p>
+                        <ul>
+                            <li><strong>¿Para qué sirve?:</strong> Es el puente entre tu código en GitHub y un sitio web en vivo. Compila y actualiza tu aplicación automáticamente cada vez que guardas tus cambios (Push).</li>
+                            <li><strong>Ventajas:</strong> Es ideal para proyectos escolares en Python (Flask), Node.js o sitios estáticos, y cuenta con un plan gratuito excelente para aprender.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="col-12 col-md-6">
-            <div class="card h-100 border-light bg-light">
-                <div class="card-body">
-                    <h5 class="fw-bold text-secondary"> Server Side Rendering (SSR - Renderizado en el lado del servidor)</h5>
-                    <p>Es una técnica de desarrollo web donde el servidor genera la página HTML completa y lista para visualizar antes de enviarla al navegador del usuario.</p>
-                    <ul><li> <strong>Para qué sirve:</strong> A diferencia de las aplicaciones donde el navegador carga una página en blanco y construye todo con JavaScript, el SSR envía el contenido ya procesado.</li>
-                    <li><strong>Ventajas:</strong> Mejora notablemente el tiempo de carga inicial y facilita el rastreo e indexación para los motores de búsqueda (mejorando el SEO).</li></ul>
-                    <span class="badge bg-success">Clase 2</span>
+            <div class="card h-100 border-light bg-light shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="fw-bold text-secondary m-0">Server Side Rendering (Concepto SSR)</h5>
+                            <span class="badge bg-success">Clase 2</span>
+                        </div>
+                        <p class="text-muted small">Teoría del renderizado en el servidor.</p>
+                        <p>Es una técnica donde el servidor procesa el código Python/Flask, dibuja la página HTML completa y se la envía lista al navegador del usuario.</p>
+                        <ul>
+                            <li><strong>Diferencia:</strong> No envía una pantalla en blanco que se arma con JavaScript, envía el contenido ya masticado y cocinado.</li>
+                            <li><strong>Ventajas:</strong> Carga más rápido al inicio y ayuda a que Google encuentre tu página más fácilmente (SEO).</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-12 text-dark">
+            <div class="card border-light bg-light shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-primary m-0">🚀 Guía Práctica: Subiendo Flask a Render</h5>
+                        <span class="badge bg-primary">Clase 3</span>
+                    </div>
+                    
+                    <h6 class="fw-bold text-secondary">Paso 1: Preparar nuestro repositorio en GitHub</h6>
+                    <ol class="mb-4">
+                        <li>
+                            Asegúrate de crear el archivo <code>requirements.txt</code> en tu carpeta del proyecto (con tu entorno virtual activo) ejecutando:
+                            <pre class="bg-dark text-light p-2 rounded mt-1">pip freeze > requirements.txt</pre>
+                            <small class="text-muted">⚠️ ¡Muy importante! Verifica que la librería <strong>gunicorn</strong> aparezca en esa lista.</small>
+                        </li>
+                        <li class="mt-2">Sube todos tus cambios a GitHub (<code>git commit</code> y <code>git push</code>).</li>
+                    </ol>
+
+                    <h6 class="fw-bold text-secondary">Paso 2: Configuración en el panel de Render</h6>
+                    <ol>
+                        <li>Inicia sesión en <strong>Render.com</strong> usando tu cuenta de GitHub.</li>
+                        <li>Haz clic en <strong>New +</strong> y selecciona <strong>Web Service</strong>.</li>
+                        <li>Conecta el repositorio de tu proyecto Flask.</li>
+                        <li>Completa el formulario con los siguientes datos técnicos:</li>
+                    </ol>
+
+                    <div class="table-responsive ms-3 me-3">
+                        <table class="table table-bordered bg-white">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Campo en Render</th>
+                                    <th>¿Qué debemos poner / seleccionar?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Language</strong></td>
+                                    <td><code>Python</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Build Command</strong></td>
+                                    <td><code>pip install -r requirements.txt</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Start Command</strong></td>
+                                    <td><code>gunicorn app:app</code> <br><small class="text-muted">(Si tu archivo principal se llama main.py, usa <code>gunicorn main:app</code>)</small></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Instance Type</strong></td>
+                                    <td>Seleccionar la opción <strong>Free</strong> (Gratis).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-2 ms-3">¡Listo! Haz clic en <strong>Create Web Service</strong> y espera a que la consola diga <span class="badge bg-success">Your service is live</span>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card border-light bg-light shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-secondary m-0">💡 Consejos Técnicos y Seguridad</h5>
+                        <span class="badge bg-warning text-dark">Clase 4</span>
+                    </div>
+                    
+                    <ul>
+                        <li class="mb-2"><strong>Variables Secretas:</strong> Si tu app usa contraseñas o una <code>SECRET_KEY</code>, no las dejes a la vista en GitHub. Agrégalas de forma segura en la sección <strong>Advanced -> Environment Variables</strong> de Render.</li>
+                        <li class="mb-2"><strong>El archivo .gitignore:</strong> Recuerda enseñar a tus alumnos a ignorar carpetas pesadas como la del entorno virtual (<code>venv/</code>) antes de subir el código a internet.</li>
+                    </ul>
+
+                    <div class="alert alert-warning d-flex align-items-center m-0 mt-3" role="alert">
+                        <div class="me-2" style="font-size: 1.5rem;">😴</div>
+                        <div>
+                            <strong>¿Tu app tarda en cargar la primera vez?</strong> En el plan gratuito, si nadie visita tu página en 15 minutos, el servidor se "duerme". Cuando alguien vuelve a entrar, puede tardar unos 30-50 segundos en despertar. ¡Es completamente normal y no significa que tu código esté mal!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
