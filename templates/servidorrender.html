@@ -116,10 +116,31 @@
                     
                     <ul>
                         <li class="mb-2"><strong>Variables Secretas:</strong> Si tu app usa contraseñas o una <code>SECRET_KEY</code>, no las dejes a la vista en GitHub. Agrégalas de forma segura en la sección <strong>Advanced -> Environment Variables</strong> de Render.</li>
-                        <li class="mb-2"><strong>El archivo .gitignore:</strong> Recuerda enseñar a tus alumnos a ignorar carpetas pesadas como la del entorno virtual (<code>venv/</code>) antes de subir el código a internet.</li>
+                        <li class="mb-3"><strong>El archivo .gitignore:</strong> Recuerda enseñar a tus alumnos a ignorar carpetas pesadas como la del entorno virtual (<code>venv/</code>) antes de subir el código a internet.</li>
                     </ul>
 
-                    <div class="alert alert-warning d-flex align-items-center m-0 mt-3" role="alert">
+                    <div class="bg-white p-3 rounded border mb-3">
+                        <h6 class="fw-bold text-danger">🚨 Solución: ¿Hiciste "git push" ANTES de crear el .gitignore?</h6>
+                        <p class="small text-muted mb-2">Si subiste la carpeta <code>venv/</code> por accidente, GitHub ya la está rastreando. Para borrarla de la nube sin romper tu computadora, sigue estos pasos en la terminal:</p>
+                        
+                        <ol class="small mb-0">
+                            <li class="mb-2">
+                                <strong>Quitar archivos del seguimiento de Git:</strong> Esto le dice a Git que deje de vigilar los archivos del proyecto, respetando el nuevo <code>.gitignore</code>, pero sin borrarlos de tu PC.
+                                <pre class="bg-dark text-light p-2 rounded mt-1 mb-1">git rm -r --cached .</pre>
+                            </li>
+                            <li class="mb-2">
+                                <strong>Guardar el cambio (Commit):</strong> Registramos el estado limpio en nuestro historial local.
+                                <pre class="bg-dark text-light p-2 rounded mt-1 mb-1">git add .&#10;git commit -m "Actualizado .gitignore y limpiado archivos rastreados"</pre>
+                            </li>
+                            <li>
+                                <strong>Subir la corrección (Push):</strong> Enviamos los cambios a GitHub.
+                                <pre class="bg-dark text-light p-2 rounded mt-1 mb-0">git push</pre>
+                            </li>
+                        </ol>
+                        <div class="text-success small mt-2 fw-bold">✓ ¡Listo! La carpeta venv desaparecerá de GitHub pero seguirá intacta en tu computadora.</div>
+                    </div>
+
+                    <div class="alert alert-warning d-flex align-items-center m-0" role="alert">
                         <div class="me-2" style="font-size: 1.5rem;">😴</div>
                         <div>
                             <strong>¿Tu app tarda en cargar la primera vez?</strong> En el plan gratuito, si nadie visita tu página en 15 minutos, el servidor se "duerme". Cuando alguien vuelve a entrar, puede tardar unos 30-50 segundos en despertar. ¡Es completamente normal y no significa que tu código esté mal!
