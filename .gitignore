@@ -2,7 +2,7 @@
 venv/
 env/
 ENV/
-
+.venv/
 # Archivos ocultos del sistema operativo
 .DS_Store
 Thumbs.db
