@@ -629,13 +629,16 @@ def rendimiento_alumno(id):
 
 
 # =========================================================================
-# EJECUCIÓN DEL SERVIDOR WEB
+# CREACIÓN FORZADA DE TABLAS (PARA PRODUCCIÓN Y LOCAL)
+# =========================================================================
+with app.app_context():
+    db.create_all()
+
+
+# =========================================================================
+# EJECUCIÓN DEL SERVIDOR WEB LOCAL
 # =========================================================================
 if __name__ == '__main__':
-    # Creación automática de tablas al iniciar tanto en local como en PostgreSQL Render
-    with app.app_context():
-        db.create_all()
-        
     # En producción (Render), la variable 'DATABASE_URL' existirá, apagamos debug por seguridad
     es_produccion = os.environ.get('DATABASE_URL') is not None
     app.run(debug=not es_produccion)
