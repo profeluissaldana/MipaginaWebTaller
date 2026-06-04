@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Rendimiento - {{ alumno.nombre }} {{ alumno.apellido }}{% endblock %}
+
+{% block content %}
+<div class="container bg-white p-4 rounded shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2>Seguimiento de Asistencia: <span class="text-primary">{{ alumno.apellido }}, {{ alumno.nombre }}</span></h2>
+            <p class="text-muted mb-0"><strong>Grupo:</strong> {{ alumno.turno_assigned.nombre_grupo }} | <strong>DNI:</strong> {{ alumno.dni }}</p>
+        </div>
+        <span class="badge bg-secondary p-2 fs-6">{{ alumno.taller }}</span>
+    </div>
+    <hr>
+
+    <h4 class="mb-3">Métricas Generales del Año</h4>
+    <div class="card bg-dark text-white mb-4 shadow-sm">
+        <div class="card-body row text-center py-4">
+            <div class="col-md-4">
+                <h3 class="fw-bold">{{ reporte.anual.totales }}</h3>
+                <small class="text-uppercase text-muted text-wrap">Clases Dictadas</small>
+            </div>
+            <div class="col-md-4 border-start border-secondary">
+                <h3 class="text-success fw-bold">{{ reporte.anual.porc_asist }}%</h3>
+                <small class="text-uppercase text-muted">Asistencia Total ({{ reporte.anual.asistencias }} días)</small>
+            </div>
+            <div class="col-md-4 border-start border-secondary">
+                <h3 class="text-danger fw-bold">{{ reporte.anual.porc_inasist }}%</h3>
+                <small class="text-uppercase text-muted">Inasistencias ({{ reporte.anual.inasistencias }} faltas)</small>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mt-4 mb-3">Resumen por Trimestre (Cursado Trimestral)</h4>
+    <div class="row">
+        {% for num_trim, datos in reporte.trimestres.items() %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm border-start border-primary border-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-secondary">{{ num_trim }}° Trimestre</h5>
+                    <hr class="my-2">
+                    <p class="mb-1"><strong>Clases en periodo:</strong> {{ datos.totales }}</p>
+                    <p class="mb-1 text-success"><strong>Asistencias:</strong> {{ datos.asistencias }} días ({{ datos.porc_asist }}%)</p>
+                    <p class="mb-0 text-danger"><strong>Inasistencias:</strong> {{ datos.inasistencias }} faltas ({{ datos.porc_inasist }}%)</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h4 class="mt-4 mb-3">Evolución Detallada por Mes</h4>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle border shadow-sm rounded">
+            <thead class="table-light">
+                <tr>
+                    <th>Mes del Ciclo Lectivo</th>
+                    <th class="text-center">Clases del Mes</th>
+                    <th class="text-center">Asistencias reales</th>
+                    <th class="text-center">Faltas Computadas (T=0.5)</th>
+                    <th class="text-center" style="width: 30%;">Porcentaje de Asistencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if reporte.mensual %}
+                    {% for num_mes, datos in reporte.mensual.items() %}
+                    <tr>
+                        <td class="fw-bold text-dark">{{ meses[num_mes] }}</td>
+                        <td class="text-center">{{ datos.totales }}</td>
+                        <td class="text-center text-success fw-semibold">{{ datos.asistencias }}</td>
+                        <td class="text-center text-danger fw-semibold">{{ datos.inasistencias }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="progress flex-grow-1 me-2" style="height: 18px;">
+                                    {% if datos.porc_asist >= 80 %}
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ datos.porc_asist }}%;"></div>
+                                    {% elif datos.porc_asist >= 65 %}
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{ datos.porc_asist }}%;"></div>
+                                    {% else %}
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: {{ datos.porc_asist }}%;"></div>
+                                    {% endif %}
+                                </div>
+                                <span class="fw-bold small">{{ datos.porc_asist }}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            <i class="fs-4 d-block mb-2">📅</i> No se registran asistencias tomadas para este alumno en el año actual.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

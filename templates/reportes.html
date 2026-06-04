@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Centro de Reportes{% endblock %}
+{% block content %}
+<div class="container bg-white p-4 rounded shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>📊 Centro de Exportación e Informes</h2>
+        <a href="{{ url_for('tomar_asistencia') }}" class="btn btn-outline-secondary btn-sm">📋 Panel de Asistencia</a>
+    </div>
+    <p class="text-muted">Filtrá las asistencias acumuladas en la base de datos y descargá los cierres de actas trimestrales en formato oficial.</p>
+    <hr>
+
+    <form method="GET" action="{{ url_for('exportar_excel') }}" id="formFiltros" class="row g-3 bg-light p-4 rounded border mb-4">
+        <div class="col-md-5">
+            <label for="turno_id" class="form-label fw-semibold">Filtrar por Comisión / Grupo</label>
+            <select name="turno_id" id="turno_id" class="form-select">
+                <option value="">-- Todas las comisiones --</option>
+                {% for t in turnos %}
+                    <option value="{{ t.id }}" {% if t.id == turno_sel_id %}selected{% endif %}>{{ t.nombre_grupo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="trimestre" class="form-label fw-semibold">Filtrar por Periodo</label>
+            <select name="trimestre" id="trimestre" class="form-select">
+                <option value="">-- Todo el Ciclo Lectivo --</option>
+                <option value="1">1° Trimestre</option>
+                <option value="2">2° Trimestre</option>
+                <option value="3">3° Trimestre</option>
+            </select>
+        </div>
+        
+        <div class="col-md-3 d-flex flex-column justify-content-end">
+            <label class="form-label d-none d-md-block">&nbsp;</label>
+            <small class="text-muted mb-1">Elegí el formato de salida:</small>
+            <div class="btn-group w-100" role="group">
+                <button type="button" onclick="descargar('excel')" class="btn btn-success fw-bold">🟢 Excel</button>
+                <button type="button" onclick="descargar('pdf')" class="btn btn-danger fw-bold">🔴 PDF</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="alert alert-info py-3 small mb-0 shadow-sm">
+        💡 <strong>Consejo del Taller:</strong> Si seleccionás un grupo y un trimestre específico, los documentos exportados se reducirán de forma automática a esa nómina de alumnos, ideal para adjuntar al Registro de Calificaciones y Asistencias de Preceptoría.
+    </div>
+</div>
+
+<script>
+    // Pequeña función JS para cambiar el destino de descarga de forma dinámica según el botón apretado
+    function descargar(tipo) {
+        const form = document.getElementById('formFiltros');
+        const turno = document.getElementById('turno_id').value;
+        const trimestre = document.getElementById('trimestre').value;
+        
+        // Armamos la URL con los parámetros dinámicos
+        let url = `/docente/exportar/${tipo}?turno_id=${turno}&trimestre=${trimestre}`;
+        window.location.href = url;
+    }
+</script>
+{% endblock %}

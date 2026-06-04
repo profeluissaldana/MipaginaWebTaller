@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión - Taller{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-5">
+        <div class="card shadow border-0 rounded-3">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <span class="fs-1">💻</span>
+                    <h3 class="fw-bold mt-2">Plataforma del Taller</h3>
+                    <p class="text-muted">Ingresá tus credenciales de alumno</p>
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show small py-2" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="all" aria-label="Close" style="padding: 0.75rem;"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="{{ url_for('login') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label fw-semibold text-secondary">Usuario</label>
+                        <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ej: jgomez" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="contrasena" class="form-label fw-semibold text-secondary">Contraseña</label>
+                        <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">Ingresar al Sistema</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

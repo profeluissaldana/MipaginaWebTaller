@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Cargar Alumno{% endblock %}
+{% block content %}
+<div class="container bg-white p-4 rounded shadow-sm" style="max-width: 850px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>👤 Panel Docente: Alta de Alumnos</h2>
+        <a href="{{ url_for('tomar_asistencia') }}" class="btn btn-outline-secondary btn-sm">📋 Ir a Asistencia</a>
+    </div>
+    <p class="text-muted">Registra estudiantes de forma individual o masiva mediante un Excel (CSV).</p>
+    <hr>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show small" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card border-primary mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white fw-bold">📥 Importación Masiva desde Excel (Formato CSV)</div>
+        <div class="card-body bg-light">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+                <p class="small text-muted mb-0">
+                    Para no cometer errores en la estructura, bajate nuestra plantilla modelo, completala con tus datos en Excel y luego subila acá.
+                </p>
+                <a href="{{ url_for('descargar_plantilla_csv') }}" class="btn btn-outline-primary btn-sm fw-bold whitespace-nowrap">
+                    📥 Descargar Plantilla .CSV Modelo
+                </a>
+            </div>
+            
+            <form method="POST" action="{{ url_for('cargar_alumno') }}" enctype="multipart/form-data" class="row g-3 align-items-center">
+                <div class="col-md-8">
+                    <input class="form-control" type="file" id="archivo_csv" name="archivo_csv" accept=".csv" required>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success w-100 fw-bold">Procesar Archivo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center my-4"><span class="text-muted">— O carga individual manual —</span></div>
+
+    <form method="POST" action="{{ url_for('cargar_alumno') }}">
+        <h5 class="text-primary mb-3">1. Información Personal</h5>
+        <div class="row g-3 mb-4 p-3 bg-light rounded border">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Apellido</label>
+                <input type="text" name="apellido" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Nombre</label>
+                <input type="text" name="nombre" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">DNI (Sin puntos)</label>
+                <input type="text" name="dni" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Correo Electrónico</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+        </div>
+
+        <h5 class="text-primary mb-3">2. Credenciales y Cursada</h5>
+        <div class="row g-3 mb-4 p-3 bg-light rounded border">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Usuario</label>
+                <input type="text" name="usuario" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Contraseña</label>
+                <input type="text" name="contrasena" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Grupo Asignado</label>
+                <select name="turno_id" class="form-select" required>
+                    <option value="">-- Seleccionar Turno --</option>
+                    {% for t in turnos %}
+                        <option value="{{ t.id }}">{{ t.nombre_grupo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Nombre del Taller</label>
+                <input type="text" name="taller" class="form-control" value="Taller de Computación">
+            </div>
+        </div>
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary btn-lg fw-bold px-5 shadow-sm">Registrar Alumno</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
