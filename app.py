@@ -652,7 +652,7 @@ def rendimiento_alumno(id):
 def inicializar_turnos_oficiales():
     """Chequea, limpia esquemas viejos y monta los 6 turnos de la E.E.T.P. N° 614"""
     # Forzamos la creación inicial de tablas mapeadas en el ORM
-    db.drop_all() # <-- AGREGÁ ESTA LÍNEA TEMPORALMENTE
+    # <-- db.drop_all() AGREGÁ ESTA LÍNEA TEMPORALMENTE
     db.create_all()
     
     # Mapeo exacto solicitado para la segmentación del taller
