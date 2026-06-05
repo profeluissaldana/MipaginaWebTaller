@@ -647,14 +647,63 @@ def rendimiento_alumno(id):
 
 
 # =========================================================================
-# CREACIÓN FORZADA DE TABLAS (PARA PRODUCCIÓN Y LOCAL)
+# CONFIGURACIÓN E INICIALIZACIÓN DE DATASET (INTEGRACIÓN 6 TURNOS)
 # =========================================================================
-with app.app_context():
+def inicializar_turnos_oficiales():
+    """Chequea, limpia esquemas viejos y monta los 6 turnos de la E.E.T.P. N° 614"""
+    # Forzamos la creación inicial de tablas mapeadas en el ORM
     db.create_all()
+    
+    # Mapeo exacto solicitado para la segmentación del taller
+    turnos_objetivo = [
+        {"id": 1, "nombre": "Mañana - Grupo A (Lun/Mie)", "horario": "7:30 - 11:45", "dias": "Lunes y Miércoles"},
+        {"id": 2, "nombre": "Mañana - Grupo B (Mar/Vie)", "horario": "7:30 - 11:45", "dias": "Martes y Viernes"},
+        {"id": 3, "nombre": "Tarde - Martes", "horario": "13:30 - 17:45", "dias": "Martes"},
+        {"id": 4, "nombre": "Tarde - Miércoles", "horario": "13:30 - 17:45", "dias": "Miércoles"},
+        {"id": 5, "nombre": "Tarde - Viernes", "horario": "13:30 - 17:45", "dias": "Viernes"},
+        {"id": 6, "nombre": "Tarde - Jueves Rotativo", "horario": "13:30 - 17:45", "dias": "Jueves"}
+    ]
+    
+    # Evaluamos el estado del primer registro
+    primer_turno = Turno.query.get(1)
+    
+    # Si la base está vacía o detecta el nombre viejo ("Mañana - Grupo A (Lun/Mie)" no coincide con tu lista previa)
+    if not primer_turno or "Grupo A (Lun/Mie)" not in primer_turno.nombre_grupo:
+        print("⏳ Sincronizando Base de Datos con el nuevo esquema de 6 Turnos...")
+        
+        # Eliminamos inconsistencias previas de forma segura
+        try:
+            db.session.query(Turno).delete()
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            
+        # Inyectamos los 6 grupos correspondientes
+        for datos in turnos_objetivo:
+            nuevo_t = Turno(
+                id=datos["id"],
+                nombre_grupo=datos["nombre"],
+                turno_horario=datos["horario"],
+                dias_cursada=datos["dias"]
+            )
+            db.session.add(nuevo_t)
+            
+        try:
+            db.session.commit()
+            print("✅ ¡Esquema de turnos escolares sincronizado con éxito!")
+        except Exception as e:
+            db.session.rollback()
+            print(f"❌ Error al inicializar turnos: {str(e)}")
+    else:
+        print("✅ La base de datos ya cuenta con la estructura de 6 turnos activa.")
+
+
+with app.app_context():
+    inicializar_turnos_oficiales()
 
 
 # =========================================================================
-# EJECUCIÓN DEL SERVIDOR WEB LOCAL
+# EJECUCIÓN DEL SERVIDOR WEB
 # =========================================================================
 if __name__ == '__main__':
     # En producción (Render), la variable 'DATABASE_URL' existirá, apagamos debug por seguridad
