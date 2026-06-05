@@ -247,7 +247,7 @@ def logout():
 
 
 # =========================================================================
-# PANEL DOCENTE: DESCARGAR PLANTILLA CSV MODELO
+# PANEL DOCENTE: DESCARGAR PLANTILLA CSV MODELO (INTEGRACIÓN 6 TURNOS)
 # =========================================================================
 @app.route('/docente/descargar_plantilla_csv')
 def descargar_plantilla_csv():
@@ -261,8 +261,10 @@ def descargar_plantilla_csv():
     escritor = csv.writer(output, delimiter=';')
     escritor.writerow(columnas)
     
-    escritor.writerow(['amartinez', 'alumno2026', 'ana.martinez@tecnica.edu.ar', '46123456', 'Martínez', 'Ana', 'Taller de Computación', '1', 'Alumna abanderada'])
-    escritor.writerow(['frossi', 'clave5to', 'facu.rossi@tecnica.edu.ar', '47987654', 'Rossi', 'Facundo', 'Taller de Computación', '2', 'Trae notebook propia'])
+    # Filas de ejemplo actualizadas para reflejar la distribución detallada (ej. Turno 1, 3 y 5)
+    escritor.writerow(['amartinez', 'alumno2026', 'ana.martinez@tecnica.edu.ar', '46123456', 'Martínez', 'Ana', 'Taller de Computación', '1', '5to A - Mañana Lun/Mie'])
+    escritor.writerow(['frossi', 'clave5to', 'facu.rossi@tecnica.edu.ar', '47987654', 'Rossi', 'Facundo', 'Taller de Computación', '3', '5to C - Tarde Martes'])
+    escritor.writerow(['llopez', 'clave789', 'laura.l@tecnica.edu.ar', '48222333', 'López', 'Laura', 'Taller de Computación', '5', '5to C - Tarde Viernes'])
     
     output.seek(0)
     
@@ -274,7 +276,7 @@ def descargar_plantilla_csv():
 
 
 # =========================================================================
-# PANEL DOCENTE: ALTA DE ALUMNOS (FORMULARIO MANUAL + EXCEL CSV)
+# PANEL DOCENTE: ALTA DE ALUMNOS (FORMULARIO MANUAL + EXCEL CSV VALIDADO)
 # =========================================================================
 @app.route('/docente/cargar_alumno', methods=['GET', 'POST'])
 def cargar_alumno():
@@ -305,6 +307,16 @@ def cargar_alumno():
                     dni_input = fila['dni'].strip()
                     email_input = fila['email'].strip()
                     
+                    # Validación y limpieza estricta del nuevo rango de turnos (1 al 6)
+                    try:
+                        csv_turno_id = int(fila['turno_id'].strip())
+                        if csv_turno_id < 1 or csv_turno_id > 6:
+                            errores += 1
+                            continue  # Omite si el ID de turno está fuera del rango válido escolar
+                    except ValueError:
+                        errores += 1
+                        continue # Omite si no es un número válido
+                    
                     if Alumno.query.filter_by(usuario=user_input).first() or Alumno.query.filter_by(dni=dni_input).first():
                         errores += 1
                         continue
@@ -313,14 +325,14 @@ def cargar_alumno():
                         usuario=user_input, contrasena=fila['contrasena'].strip(), email=email_input,
                         dni=dni_input, apellido=fila['apellido'].strip(), nombre=fila['nombre'].strip(),
                         taller=fila.get('taller', 'Taller de Computación').strip() or "Taller de Computación",
-                        turno_id=int(fila['turno_id'].strip()),
+                        turno_id=csv_turno_id,
                         observaciones_generales=fila.get('observaciones_generales', '').strip() or None
                     )
                     db.session.add(nuevo)
                     creados += 1
                 
                 db.session.commit()
-                flash(f'📥 Importación exitosa. Creados: {creados}. Duplicados/Omitidos: {errores}.', 'success')
+                flash(f'📥 Importación exitosa. Creados: {creados}. Duplicados/Errores de Turno: {errores}.', 'success')
                 return redirect(url_for('cargar_alumno'))
             except Exception as e:
                 db.session.rollback()
@@ -331,6 +343,12 @@ def cargar_alumno():
         else:
             user_input = request.form.get('usuario').strip().lower()
             dni_input = request.form.get('dni').strip()
+            form_turno_id = request.form.get('turno_id', type=int)
+            
+            # Validación de rango de turno para resguardar la consistencia manual
+            if form_turno_id < 1 or form_turno_id > 6:
+                flash('Error: El turno seleccionado no pertenece a un esquema válido (1-6).', 'danger')
+                return redirect(url_for('cargar_alumno'))
             
             if Alumno.query.filter_by(usuario=user_input).first() or Alumno.query.filter_by(dni=dni_input).first():
                 flash('Error: El usuario o DNI ya existen.', 'danger')
@@ -340,7 +358,7 @@ def cargar_alumno():
                     email=request.form.get('email').strip(), dni=dni_input,
                     apellido=request.form.get('apellido').strip(), nombre=request.form.get('nombre').strip(),
                     taller=request.form.get('taller') or "Taller de Computación",
-                    turno_id=request.form.get('turno_id', type=int),
+                    turno_id=form_turno_id,
                     observaciones_generales=request.form.get('observaciones_generales') or None
                 )
                 db.session.add(nuevo)
