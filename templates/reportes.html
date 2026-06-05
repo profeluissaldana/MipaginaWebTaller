@@ -6,7 +6,7 @@
         <h2>📊 Centro de Exportación e Informes</h2>
         <a href="{{ url_for('tomar_asistencia') }}" class="btn btn-outline-secondary btn-sm">📋 Panel de Asistencia</a>
     </div>
-    <p class="text-muted">Filtrá las asistencias acumuladas en la base de datos y descargá los cierres de actas trimestrales en formato oficial.</p>
+    <p class="text-muted">Filtrá las asistencias acumuladas en la base de datos y descargá los closures de actas trimestrales en formato oficial.</p>
     <hr>
 
     <form method="GET" action="{{ url_for('exportar_excel') }}" id="formFiltros" class="row g-3 bg-light p-4 rounded border mb-4">
@@ -15,7 +15,7 @@
             <select name="turno_id" id="turno_id" class="form-select">
                 <option value="">-- Todas las comisiones --</option>
                 {% for t in turnos %}
-                    <option value="{{ t.id }}" {% if t.id == turno_sel_id %}selected{% endif %}>{{ t.nombre_grupo }}</option>
+                    <option value="{{ t.id }}" {% if t.id == request.args.get('turno_id', type=int) %}selected{% endif %}>{{ t.nombre_grupo }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -23,9 +23,9 @@
             <label for="trimestre" class="form-label fw-semibold">Filtrar por Periodo</label>
             <select name="trimestre" id="trimestre" class="form-select">
                 <option value="">-- Todo el Ciclo Lectivo --</option>
-                <option value="1">1° Trimestre</option>
-                <option value="2">2° Trimestre</option>
-                <option value="3">3° Trimestre</option>
+                <option value="1" {% if request.args.get('trimestre') == '1' %}selected{% endif %}>1° Trimestre</option>
+                <option value="2" {% if request.args.get('trimestre') == '2' %}selected{% endif %}>2° Trimestre</option>
+                <option value="3" {% if request.args.get('trimestre') == '3' %}selected{% endif %}>3° Trimestre</option>
             </select>
         </div>
         
@@ -45,13 +45,12 @@
 </div>
 
 <script>
-    // Pequeña función JS para cambiar el destino de descarga de forma dinámica según el botón apretado
+    // Función JS para cambiar el destino de descarga de forma dinámica según el botón presionado
     function descargar(tipo) {
-        const form = document.getElementById('formFiltros');
         const turno = document.getElementById('turno_id').value;
         const trimestre = document.getElementById('trimestre').value;
         
-        // Armamos la URL con los parámetros dinámicos
+        // Armamos la URL con los parámetros dinámicos hacia el endpoint correspondiente
         let url = `/docente/exportar/${tipo}?turno_id=${turno}&trimestre=${trimestre}`;
         window.location.href = url;
     }

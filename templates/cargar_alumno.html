@@ -31,6 +31,28 @@
                     📥 Descargar Plantilla .CSV Modelo
                 </a>
             </div>
+
+            <div class="bg-white p-3 rounded border mb-3 small">
+                <h6 class="fw-bold text-secondary mb-2">💡 Guía Obligatoria para la columna <code>turno_id</code>:</h6>
+                <div class="row g-2">
+                    <div class="col-12 col-md-6">
+                        <span class="fw-bold text-primary">5°A (Mañana):</span>
+                        <ul class="mb-0 ps-3">
+                            <li>Usa el número <strong>1</strong> si cursa: Lunes y Miércoles</li>
+                            <li>Usa el número <strong>2</strong> si cursa: Martes y Viernes</li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <span class="fw-bold text-primary">5°C (Tarde):</span>
+                        <ul class="mb-0 ps-3">
+                            <li>Usa el número <strong>3</strong> si asiste los Martes</li>
+                            <li>Usa el número <strong>4</strong> si asiste los Miércoles</li>
+                            <li>Usa el número <strong>5</strong> si asiste los Viernes</li>
+                            <li>Usa el número <strong>6</strong> si rota los Jueves</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             
             <form method="POST" action="{{ url_for('cargar_alumno') }}" enctype="multipart/form-data" class="row g-3 align-items-center">
                 <div class="col-md-8">
