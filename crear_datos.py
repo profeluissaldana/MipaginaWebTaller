@@ -5,10 +5,22 @@ def inicializar_base_de_datos():
     print("⏳ Iniciando la creación y carga de la base de datos...")
     
     with app.app_context():
-        # Borramos la base de datos anterior para empezar limpios (opcional)
-        """ db.drop_all() Lo comentamos para evitar bloqueos en el serivdor de producción """
-        db.create_all()
-        print("✅ Tablas e infraestructura de la base de datos preparadas con éxito.")
+    db.drop_all()  # Descomentado temporalmente para reiniciar la base de datos con la nueva estructura
+    db.create_all()
+
+    turnos_taller = [
+        # MAÑANA (5°A)
+        Turno(nombre_grupo="5°A - Mañana - Grupo A (Lun/Mie)", turno_horario="Mañana", dias_cursada="Lunes y Miércoles"), # Generará el ID: 1
+        Turno(nombre_grupo="5°A - Mañana - Grupo B (Mar/Vie)", turno_horario="Mañana", dias_cursada="Martes y Viernes"), # Generará el ID: 2
+
+        # TARDE (5°C)
+        Turno(nombre_grupo="5°C - Tarde - Grupo Martes", turno_horario="Tarde", dias_cursada="Martes"),               # Generará el ID: 3
+        Turno(nombre_grupo="5°C - Tarde - Grupo Miércoles", turno_horario="Tarde", dias_cursada="Miércoles"),         # Generará el ID: 4
+        Turno(nombre_grupo="5°C - Tarde - Grupo Viernes", turno_horario="Tarde", dias_cursada="Viernes"),             # Generará el ID: 5
+        Turno(nombre_grupo="5°C - Tarde - Rotativo Jueves", turno_horario="Tarde", dias_cursada="Jueves Rotativo")     # Generará el ID: 6
+    ]
+    db.session.add_all(turnos_taller)
+    db.session.commit()
 
         # =========================================================================
         # 1. CARGA DE TURNOS (Configuración de tus horarios escolares)
