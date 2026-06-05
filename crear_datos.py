@@ -6,9 +6,9 @@ def inicializar_base_de_datos():
     
     with app.app_context():
         # Borramos la base de datos anterior para empezar limpios (opcional)
-        db.drop_all()
+        """ db.drop_all() Lo comentamos para evitar bloqueos en el serivdor de producción """
         db.create_all()
-        print("✅ Tablas creadas con éxito en 'taller_computacion.db'.")
+        print("✅ Tablas e infraestructura de la base de datos preparadas con éxito.")
 
         # =========================================================================
         # 1. CARGA DE TURNOS (Configuración de tus horarios escolares)
