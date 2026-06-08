@@ -744,13 +744,14 @@ def inicializar_turnos_oficiales():
     db.create_all()
     
     # Mapeo exacto solicitado para la segmentación del taller
+   # Mapeo exacto solicitado para la segmentación del taller (Horarios actualizados)
     turnos_objetivo = [
-        {"id": 1, "nombre": "Mañana - Grupo A (Lun/Mie)", "horario": "7:30 - 11:45", "dias": "Lunes y Miércoles"},
-        {"id": 2, "nombre": "Mañana - Grupo B (Mar/Vie)", "horario": "7:30 - 11:45", "dias": "Martes y Viernes"},
-        {"id": 3, "nombre": "Tarde - Martes", "horario": "13:30 - 17:45", "dias": "Martes"},
-        {"id": 4, "nombre": "Tarde - Miércoles", "horario": "13:30 - 17:45", "dias": "Miércoles"},
-        {"id": 5, "nombre": "Tarde - Viernes", "horario": "13:30 - 17:45", "dias": "Viernes"},
-        {"id": 6, "nombre": "Tarde - Jueves Rotativo", "horario": "13:30 - 17:45", "dias": "Jueves"}
+        {"id": 1, "nombre": "Mañana - Grupo A (Lun/Mie)", "horario": "7:30 - 11:10", "dias": "Lunes y Miércoles"},
+        {"id": 2, "nombre": "Mañana - Grupo B (Mar/Vie)", "horario": "7:30 - 11:10", "dias": "Martes y Viernes"},
+        {"id": 3, "nombre": "Tarde - Martes", "horario": "13:10 - 16:50", "dias": "Martes"},
+        {"id": 4, "nombre": "Tarde - Miércoles", "horario": "13:10 - 16:50", "dias": "Miércoles"},
+        {"id": 5, "nombre": "Tarde - Viernes", "horario": "13:10 - 16:50", "dias": "Viernes"},
+        {"id": 6, "nombre": "Tarde - Jueves Rotativo", "horario": "13:10 - 16:50", "dias": "Jueves"}
     ]
     
     print("⏳ Sincronizando Base de Datos con el nuevo esquema de 6 Turnos...")
