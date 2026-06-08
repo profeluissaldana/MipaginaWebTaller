@@ -664,7 +664,98 @@ def usuario_autenticado():
     """Devuelve True si el usuario inició sesión, de lo contrario redirige al login"""
     return 'usuario_id' in session
 
+# =========================================================================
+# PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS POR GRUPO
+# =========================================================================
+@app.route('/docente/historial_asistencias')
+def historial_asistencias():
+    if not session.get('is_admin'):
+        flash('Acceso denegado.', 'danger')
+        return redirect(url_for('login'))
+    
+    turnos = Turno.query.all()
+    turno_id = request.args.get('turno_id', type=int)
+    fecha_filtro = request.args.get('fecha', type=str) # Formato YYYY-MM-DD
+    
+    query = db.session.query(Asistencia).join(Alumno)
+    
+    if turno_id:
+        query = query.filter(Alumno.turno_id == turno_id)
+    if fecha_filtro:
+        try:
+            fecha_dt = datetime.strptime(fecha_filtro, '%Y-%m-%d').date()
+            query = query.filter(Asistencia.fecha == fecha_dt)
+        except ValueError:
+            pass
 
+    # Traemos las asistencias ordenadas por fecha reciente y apellido
+    asistencias = query.order_by(Asistencia.fecha.desc(), Alumno.apellido.asc()).all()
+    
+    return render_template('historial_asistencias.html', 
+                           turnos=turnos, 
+                           asistencias=asistencias, 
+                           turno_sel_id=turno_id, 
+                           fecha_sel=fecha_filtro)
+
+
+# =========================================================================
+# PANEL DOCENTE: MODIFICAR DATOS DE UN ALUMNO
+# =========================================================================
+@app.route('/docente/editar_alumno/<int:id>', methods=['GET', 'POST'])
+def editar_alumno(id):
+    if not session.get('is_admin'):
+        flash('Acceso denegado.', 'danger')
+        return redirect(url_for('login'))
+        
+    alumno = Alumno.query.get_or_404(id)
+    turnos = Turno.query.all()
+    
+    if request.method == 'POST':
+        alumno.nombre = request.form.get('nombre').strip()
+        alumno.apellido = request.form.get('apellido').strip()
+        alumno.dni = request.form.get('dni').strip()
+        alumno.email = request.form.get('email').strip()
+        alumno.turno_id = request.form.get('turno_id', type=int)
+        alumno.observaciones_generales = request.form.get('observaciones_generales').strip() or None
+        
+        try:
+            db.session.commit()
+            flash(f'Datos de {alumno.apellido} actualizados con éxito.', 'success')
+            return redirect(url_for('ver_grupos', turno_id=alumno.turno_id))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error al actualizar el alumno: El DNI o usuario ya existen.', 'danger')
+            
+    return render_template('editar_alumno.html', alumno=alumno, turnos=turnos)
+
+
+# =========================================================================
+# PANEL DOCENTE: ELIMINAR UN ALUMNO (Y SU HISTORIAL POR CASCADA)
+# =========================================================================
+@app.route('/docente/eliminar_alumno/<int:id>', methods=['POST'])
+def eliminar_alumno(id):
+    if not session.get('is_admin'):
+        flash('Acceso denegado.', 'danger')
+        return redirect(url_for('login'))
+        
+    alumno = Alumno.query.get_or_404(id)
+    turno_previo = alumno.turno_id
+    
+    try:
+        # 1. Eliminamos registros asociados en cascada para evitar errores de clave foránea
+        Asistencia.query.filter_by(alumno_id=alumno.id).delete()
+        Auditoria.query.filter_by(alumno_id=alumno.id).delete()
+        
+        # 2. Eliminamos al alumno de la base de datos
+        db.session.delete(alumno)
+        db.session.commit()
+        
+        flash(f'El alumno {alumno.apellido}, {alumno.nombre} fue removido del sistema correctamente.', 'warning')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'No se pudo eliminar al alumno: {str(e)}', 'danger')
+        
+    return redirect(url_for('ver_grupos', turno_id=turno_previo))
 # =========================================================================
 # RUTAS DE CONTENIDOS ESTÁTICOS INFORMATIVOS (AHORA PROTEGIDAS)
 # =========================================================================

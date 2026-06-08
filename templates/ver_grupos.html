@@ -11,62 +11,87 @@
             <h4 class="text-primary mb-3">Resumen de Comisiones</h4>
             <div class="list-group shadow-sm">
                 {% for t in turnos %}
-                    <a href="?turno_id={{ t.id }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if turno_sel and turno_sel.id == t.id %}active{% endif %}">
-                        <div>
-                            <strong class="d-block">{{ t.nombre_grupo }}</strong>
-                            <small class="{% if turno_sel and turno_sel.id == t.id %}text-white-50{% else %}text-muted{% endif %}">📅 {{ t.dias_cursada }} | ⏰ {{ t.turno_horario }}</small>
-                        </div>
-                        <span class="badge {% if turno_sel and turno_sel.id == t.id %}bg-light text-primary{% else %}bg-primary{% endif %} rounded-pill fs-6">
-                            {{ t.alumnos|length }}
-                        </span>
-                    </a>
+                <a href="?turno_id={{ t.id }}"
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if turno_sel and turno_sel.id == t.id %}active{% endif %}">
+                    <div>
+                        <strong class="d-block">{{ t.nombre_grupo }}</strong>
+                        <small
+                            class="{% if turno_sel and turno_sel.id == t.id %}text-white-50{% else %}text-muted{% endif %}">📅
+                            {{ t.dias_cursada }} | ⏰ {{ t.turno_horario }}</small>
+                    </div>
+                    <span
+                        class="badge {% if turno_sel and turno_sel.id == t.id %}bg-light text-primary{% else %}bg-primary{% endif %} rounded-pill fs-6">
+                        {{ t.alumnos|length }}
+                    </span>
+                </a>
                 {% endfor %}
             </div>
         </div>
 
         <div class="col-md-7">
             {% if turno_sel %}
-                <h4 class="text-primary mb-3">Alumnos de: {{ turno_sel.nombre_grupo }}</h4>
-                {% if alumnos %}
-                    <div class="table-responsive bg-light p-3 rounded border shadow-sm">
-                        <table class="table table-hover align-middle bg-white">
-                            <thead class="table-secondary">
-                                <tr>
-                                    <th>Apellido y Nombre</th>
-                                    <th>DNI</th>
-                                    <th>Email</th>
-                                    <th>Observaciones / Rotación</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for alu in alumnos %}
-                                <tr>
-                                    <td class="fw-bold">{{ alu.apellido }}, {{ alu.nombre }}</td>
-                                    <td>{{ alu.dni }}</td>
-                                    <td><small class="text-muted">{{ alu.email }}</small></td>
-                                    <td>
-                                        {% if alu.observaciones_generales %}
-                                            <span class="badge bg-info text-dark">{{ alu.observaciones_generales }}</span>
-                                        {% else %}
-                                            <span class="text-muted italic small">-</span>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% else %}
-                    <div class="alert alert-warning text-center shadow-sm" role="alert">
-                        ⚠️ Esta comisión aún no tiene alumnos cargados en el sistema.
-                    </div>
-                {% endif %}
+            <h4 class="text-primary mb-3">Alumnos de: {{ turno_sel.nombre_grupo }}</h4>
+            {% if alumnos %}
+            <div class="table-responsive bg-light p-3 rounded border shadow-sm">
+                <table class="table table-hover align-middle bg-white">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Apellido y Nombre</th>
+                            <th>DNI</th>
+                            <th>Email</th>
+                            <th>Observaciones / Rotación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for alu in alumnos %}
+                        <tr>
+                            <td class="fw-bold">{{ alu.apellido }}, {{ alu.nombre }}</td>
+                            <td>{{ alu.dni }}</td>
+                            <td><small class="text-muted">{{ alu.email }}</small></td>
+                            <td>
+                                {% if alu.observaciones_generales %}
+                                <span class="badge bg-info text-dark">{{ alu.observaciones_generales }}</span>
+                                {% else %}
+                                <span class="text-muted italic small">-</span>
+                                {% endif %}
+                            </td>
+                            <!-- ------------------------Agregado -->
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a href="{{ url_for('editar_alumno', id=alu.id) }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        ✏️ Editar
+                                    </a>
+
+                                    <form action="{{ url_for('eliminar_alumno', id=alu.id) }}" method="POST"
+                                        onsubmit="return confirm('¿Seguro que deseas eliminar permanentemente a este alumno y todo su historial de asistencia? Esta acción no se puede deshacer.');"
+                                        style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            🗑️ Dar de Baja
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+
+                            <!-- ---------------------------------- -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% else %}
-                <div class="h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded border border-dashed p-5 text-muted">
-                    <i class="bi bi-arrow-left-circle fs-1 text-secondary mb-2"></i>
-                    <p class="fs-5 fw-semibold">Seleccioná una comisión de la izquierda</p>
-                    <p class="small text-center">Hacé clic sobre cualquier turno para desglosar la nómina oficial de alumnos inscriptos.</p>
-                </div>
+            <div class="alert alert-warning text-center shadow-sm" role="alert">
+                ⚠️ Esta comisión aún no tiene alumnos cargados en el sistema.
+            </div>
+            {% endif %}
+            {% else %}
+            <div
+                class="h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded border border-dashed p-5 text-muted">
+                <i class="bi bi-arrow-left-circle fs-1 text-secondary mb-2"></i>
+                <p class="fs-5 fw-semibold">Seleccioná una comisión de la izquierda</p>
+                <p class="small text-center">Hacé clic sobre cualquier turno para desglosar la nómina oficial de alumnos
+                    inscriptos.</p>
+            </div>
             {% endif %}
         </div>
     </div>

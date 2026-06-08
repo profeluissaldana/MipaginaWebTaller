@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Historial de Asistencias - Taller{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0 p-4 mb-4 bg-white">
+    <h3 class="text-primary fw-bold mb-3">🔍 Consulta Histórica de Asistencias</h3>
+    
+    <form method="GET" action="{{ url_for('historial_asistencias') }}" class="row g-3 bg-light p-3 rounded border">
+        <div class="col-12 col-md-5">
+            <label class="form-label fw-bold small text-secondary">Filtrar por Grupo / Turno</label>
+            <select name="turno_id" class="form-select">
+                <option value="">-- Todos los Grupos --</option>
+                {% for t in turnos %}
+                <option value="{{ t.id }}" {% if turno_sel_id == t.id %}selected{% endif %}>{{ t.nombre_grupo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12 col-md-4">
+            <label class="form-label fw-bold small text-secondary">Filtrar por Fecha Específica</label>
+            <input type="date" name="fecha" class="form-control" value="{{ fecha_sel }}">
+        </div>
+        <div class="col-12 col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100 fw-bold">Filtrar Registros</button>
+        </div>
+    </form>
+</div>
+
+<div class="card shadow-sm border-0 p-4 bg-white">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Grupo / Turno</th>
+                    <th>Alumno</th>
+                    <th>DNI</th>
+                    <th class="text-center">Estado</th>
+                    <th>Observación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asis in asistencias %}
+                <tr>
+                    <td class="font-monospace text-secondary">{{ asis.fecha.strftime('%d/%m/%Y') }}</td>
+                    <td><span class="badge bg-secondary">{{ asis.alumno.turno_assigned.nombre_grupo }}</span></td>
+                    <td class="fw-bold">{{ asis.alumno.apellido }}, {{ asis.alumno.nombre }}</td>
+                    <td class="small">{{ asis.alumno.dni }}</td>
+                    <td class="text-center">
+                        {% if asis.estado == 'P' %}<span class="badge bg-success px-2 py-1">Presente</span>
+                        {% elif asis.estado == 'A' %}<span class="badge bg-danger px-2 py-1">Ausente</span>
+                        {% elif asis.estado == 'T' %}<span class="badge bg-warning text-dark px-2 py-1">Tarde</span>
+                        {% elif asis.estado == 'J' %}<span class="badge bg-info px-2 py-1">Justificado</span>{% endif %}
+                    </td>
+                    <td class="text-muted small"><em>{{ asis.comentario_diario or '-' }}</em></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No se encontraron registros de asistencia con los filtros seleccionados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
