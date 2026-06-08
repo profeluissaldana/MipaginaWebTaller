@@ -381,37 +381,71 @@ def tomar_asistencia():
 
     turnos = Turno.query.all()
     turno_seleccionado_id = request.args.get('turno_id', type=int)
+    
+    # CAPTURAMOS EL SUBGRUPO DESDE EL DESPLEGABLE GENERAL (Ej: "Grupo 3")
+    subgrupo_rotacion = request.args.get('subgrupo_rotacion', type=str)
+    
     alumnos_grupo = []
+    
     if turno_seleccionado_id:
-        alumnos_grupo = Alumno.query.filter_by(turno_id=turno_seleccionado_id).all()
+        # SI ES EL TURNO 6 Y SELECCIONASTE UN GRUPO ROTATIVO
+        if turno_seleccionado_id == 6 and subgrupo_rotacion:
+            alumnos_grupo = Alumno.query.filter(
+                Alumno.turno_id == 6,
+                Alumno.observaciones_generales.like(f"%{subgrupo_rotacion}%")
+            ).all()
+        else:
+            # Para los turnos normales (1 al 5) trae a todos directo
+            alumnos_grupo = Alumno.query.filter_by(turno_id=turno_seleccionado_id).all()
 
     if request.method == 'POST':
-        turno_id = request.form.get('turno_id')
+        turno_id = request.form.get('turno_id', type=int)
+        subgrupo_post = request.form.get('subgrupo_rotacion_post', '')
+        
+        # En el Libro de Temas dejamos asentado automáticamente qué grupo rotó hoy
+        tema_original = request.form.get('tema_dado')
+        if turno_id == 6 and subgrupo_post:
+            tema_final = f"[{subgrupo_post}] - {tema_original}"
+        else:
+            tema_final = tema_original
+
         nueva_clase = Clase(
-            tema_dado=request.form.get('tema_dado'),
+            tema_dado=tema_final,
             detalle_clase=request.form.get('detalle_clase'),
-            turno_id=turno_id
+            turno_id=turno_id  # Guarda automáticamente Turno 6 para el jueves
         )
         db.session.add(nueva_clase)
         
-        alumnos_a_procesar = Alumno.query.filter_by(turno_id=turno_id).all()
-        for alu in alumnos_a_procesar:
+        # Procesamos la asistencia SOLO de los alumnos del subgrupo que trajimos a pantalla
+        for alu in alumnos_grupo:
             estado_alu = request.form.get(f'asistencia_{alu.id}', 'P')
-            comentario_alu = request.form.get(f'comentario_{alu.id}', '')
+            comentario_alu = request.form.get(f'comentario_{alu.id}', '').strip()
             
+            # Si es jueves, le dejamos una marca automática en su asistencia individual
+            if turno_id == 6 and subgrupo_post:
+                comentario_final = f"[{subgrupo_post}] {comentario_alu}".strip()
+            else:
+                comentario_final = comentario_alu if comentario_alu else None
+
             asistencia_jornada = Asistencia(
                 trimestre=request.form.get('trimestre', type=int),
                 estado=estado_alu,
-                comentario_diario=comentario_alu if estado_alu == 'J' or comentario_alu else None,
+                comentario_diario=comentario_final,
                 alumno_id=alu.id
             )
             db.session.add(asistencia_jornada)
             
         db.session.commit()
-        flash('¡Asistencia y Libro de Temas guardados con éxito!', 'success')
+        flash('¡Asistencia de la rotación guardada con éxito!', 'success')
         return redirect(url_for('inicio'))
 
-    return render_template('tomar_asistencia.html', turnos=turnos, alumnos=alumnos_grupo, turno_sel_id=turno_seleccionado_id)
+    return render_template(
+        'tomar_asistencia.html', 
+        turnos=turnos, 
+        alumnos=alumnos_grupo, 
+        turno_sel_id=turno_seleccionado_id,
+        subgrupo_sel=subgrupo_rotacion
+    )
 
 
 # =========================================================================

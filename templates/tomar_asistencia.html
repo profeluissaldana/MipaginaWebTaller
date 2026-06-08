@@ -5,21 +5,39 @@
     <h2>🔧 Panel Docente: Asistencia y Libro de Temas</h2>
     <hr>
 
-    <form method="GET" action="{{ url_for('tomar_asistencia') }}" class="row g-3 align-items-center mb-4 bg-light p-3 rounded border">
-        <div class="col-md-8">
-            <label class="form-label fw-bold">Grupo / Comisión:</label>
-            <select name="turno_id" class="form-select" onchange="this.form.submit()">
-                <option value="">-- Seleccionar un grupo --</option>
-                {% for t in turnos %}
-                    <option value="{{ t.id }}" {% if t.id == turno_sel_id %}selected{% endif %}>{{ t.nombre_grupo }}</option>
-                {% endfor %}
-            </select>
+    <form method="GET" action="{{ url_for('tomar_asistencia') }}" class="bg-light p-3 rounded border mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-8">
+                <label class="form-label fw-bold">Grupo / Comisión:</label>
+                <select name="turno_id" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- Seleccionar un grupo --</option>
+                    {% for t in turnos %}
+                        <option value="{{ t.id }}" {% if t.id == turno_sel_id %}selected{% endif %}>{{ t.nombre_grupo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            {% if turno_sel_id == 6 %}
+            <div class="col-md-12 mt-3 p-3 rounded" style="background-color: #e9ecef; border-left: 5px solid #0d6efd;">
+                <label class="form-label fw-bold text-primary">¿Qué Grupo Rota Hoy Jueves?</label>
+                <select id="subgrupo_rotacion" class="form-select" onchange="location.href='?turno_id=6&subgrupo_rotacion=' + this.value;">
+                    <option value="">-- Seleccionar Grupo Cursante --</option>
+                    <option value="Grupo 3" {% if subgrupo_sel == 'Grupo 3' %}selected{% endif %}>Grupo 3 (Vienen de los Martes)</option>
+                    <option value="Grupo 4" {% if subgrupo_sel == 'Grupo 4' %}selected{% endif %}>Grupo 4 (Vienen de los Miércoles)</option>
+                    <option value="Grupo 5" {% if subgrupo_sel == 'Grupo 5' %}selected{% endif %}>Grupo 5 (Vienen de los Viernes)</option>
+                </select>
+            </div>
+            {% endif %}
         </div>
     </form>
 
     {% if turno_sel_id and alumnos %}
     <form method="POST" action="{{ url_for('tomar_asistencia') }}">
         <input type="hidden" name="turno_id" value="{{ turno_sel_id }}">
+        
+        {% if turno_sel_id == 6 %}
+            <input type="hidden" name="subgrupo_rotacion_post" value="{{ subgrupo_sel }}">
+        {% endif %}
 
         <h4 class="text-primary mb-3">1. Libro de Temas</h4>
         <div class="row g-3 bg-light p-3 rounded border mb-4">
@@ -41,7 +59,13 @@
             </div>
         </div>
 
-        <h4 class="text-primary mb-3">2. Planilla de Asistencia</h4>
+        <h4 class="text-primary mb-3">
+            2. Planilla de Asistencia 
+            {% if turno_sel_id == 6 and subgrupo_sel %}
+                <span class="badge bg-primary fs-6">{{ subgrupo_sel }}</span>
+            {% endif %}
+        </h4>
+        
         <div class="table-responsive">
             <table class="table table-striped align-middle border">
                 <thead class="table-dark">
@@ -69,7 +93,7 @@
                                 <label class="btn btn-outline-info px-3" for="j_{{ alu.id }}">J</label>
                             </div>
                         </td>
-                        <td><input type="text" name="comentario_{{ alu.id }}" class="form-control form-control-sm" placeholder="Nota diaría o justificación"></td>
+                        <td><input type="text" name="comentario_{{ alu.id }}" class="form-control form-control-sm" placeholder="Nota diaria o justificación"></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -79,6 +103,11 @@
             <button type="submit" class="btn btn-success btn-lg fw-bold px-5 shadow">Guardar Jornada</button>
         </div>
     </form>
+    
+    {% elif turno_sel_id == 6 and not subgrupo_sel %}
+        <div class="alert alert-info text-center mt-4 shadow-sm" role="alert">
+            💡 <strong>Por favor, seleccioná qué grupo asiste hoy jueves</strong> en el casillero de arriba para cargar la lista de alumnos correspondiente.
+        </div>
     {% endif %}
 </div>
 {% endblock %}
