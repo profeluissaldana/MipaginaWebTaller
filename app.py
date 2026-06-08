@@ -651,8 +651,10 @@ def rendimiento_alumno(id):
 # =========================================================================
 def inicializar_turnos_oficiales():
     """Chequea, limpia esquemas viejos y monta los 6 turnos de la E.E.T.P. N° 614"""
-    # Forzamos la creación inicial de tablas mapeadas en el ORM
-    # <-- db.drop_all() AGREGÁ ESTA LÍNEA TEMPORALMENTE
+    
+    # 1. FORZAMOS EL BORRADO EN RENDER (Agregamos estas líneas al principio de la función)
+    print("🧹 Vaciando tablas antiguas en la base de datos...")
+    db.drop_all()
     db.create_all()
     
     # Mapeo exacto solicitado para la segmentación del taller
@@ -665,38 +667,44 @@ def inicializar_turnos_oficiales():
         {"id": 6, "nombre": "Tarde - Jueves Rotativo", "horario": "13:30 - 17:45", "dias": "Jueves"}
     ]
     
-    # Evaluamos el estado del primer registro
-    primer_turno = Turno.query.get(1)
+    print("⏳ Sincronizando Base de Datos con el nuevo esquema de 6 Turnos...")
     
-    # Si la base está vacía o detecta el nombre viejo ("Mañana - Grupo A (Lun/Mie)" no coincide con tu lista previa)
-    if not primer_turno or "Grupo A (Lun/Mie)" not in primer_turno.nombre_grupo:
-        print("⏳ Sincronizando Base de Datos con el nuevo esquema de 6 Turnos...")
+    # Inyectamos los 6 grupos correspondientes
+    for datos in turnos_objetivo:
+        nuevo_t = Turno(
+            id=datos["id"],
+            nombre_grupo=datos["nombre"],
+            turno_horario=datos["horario"],
+            dias_cursada=datos["dias"]
+        )
+        db.session.add(nuevo_t)
         
-        # Eliminamos inconsistencias previas de forma segura
-        try:
-            db.session.query(Turno).delete()
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
-            
-        # Inyectamos los 6 grupos correspondientes
-        for datos in turnos_objetivo:
-            nuevo_t = Turno(
-                id=datos["id"],
-                nombre_grupo=datos["nombre"],
-                turno_horario=datos["horario"],
-                dias_cursada=datos["dias"]
-            )
-            db.session.add(nuevo_t)
-            
-        try:
-            db.session.commit()
-            print("✅ ¡Esquema de turnos escolares sincronizado con éxito!")
-        except Exception as e:
-            db.session.rollback()
-            print(f"❌ Error al inicializar turnos: {str(e)}")
-    else:
-        print("✅ La base de datos ya cuenta con la estructura de 6 turnos activa.")
+    try:
+        db.session.commit()
+        print("✅ ¡Esquema de turnos escolares sincronizado con éxito!")
+    except Exception as e:
+        db.session.rollback()
+        print(f"❌ Error al inicializar turnos: {str(e)}")
+
+    # 2. CREAMOS AL USUARIO LUIS EN LA BASE DE DATOS
+    print("👤 Insertando usuario administrador 'luis'...")
+    luis_admin = Alumno(
+        usuario='luis',
+        contrasena='1234',  
+        email='luis@tecnica.edu.ar',
+        dni='12345678',     
+        apellido='Saldaña',
+        nombre='Luis',
+        taller='Taller de Computación',
+        turno_id=1          
+    )
+    db.session.add(luis_admin)
+    try:
+        db.session.commit()
+        print("✅ Usuario 'luis' creado con éxito.")
+    except Exception as e:
+        db.session.rollback()
+        print(f"❌ Error al crear usuario: {str(e)}")
 
 
 with app.app_context():
