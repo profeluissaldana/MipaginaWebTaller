@@ -274,7 +274,29 @@ def descargar_plantilla_csv():
         headers={"Content-disposition": "attachment; filename=plantilla_alumnos.csv"}
     )
 
+# =========================================================================
+# PANEL DOCENTE: VISUALIZAR GRUPOS Y ALUMNOS CARGADOS
+# =========================================================================
+@app.route('/docente/ver_grupos')
+def ver_grupos():
+    if not session.get('is_admin'):
+        flash('Acceso denegado. Solo el docente puede ver el desglose de grupos.', 'danger')
+        return redirect(url_for('login'))
+        
+    # Traemos todos los turnos de la base de datos
+    turnos = Turno.query.all()
+    
+    # Capturamos si el docente hizo clic para ver los alumnos de un turno específico
+    turno_ver_id = request.args.get('turno_id', type=int)
+    alumnos_del_turno = []
+    turno_seleccionado = None
+    
+    if turno_ver_id:
+        turno_seleccionado = Turno.query.get(turno_ver_id)
+        if turno_seleccionado:
+            alumnos_del_turno = Alumno.query.filter_by(turno_id=turno_ver_id).order_by(Alumno.apellido.asc()).all()
 
+    return render_template('ver_grupos.html', turnos=turnos, alumnos=alumnos_del_turno, turno_sel=turno_seleccionado)
 # =========================================================================
 # PANEL DOCENTE: ALTA DE ALUMNOS (FORMULARIO MANUAL + EXCEL CSV VALIDADO)
 # =========================================================================
