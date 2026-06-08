@@ -600,38 +600,68 @@ def exportar_pdf():
 
 
 # =========================================================================
-# RUTAS DE CONTENIDOS ESTÁTICOS INFORMATIVOS
+# FUNCIÓN DE CONTROL DE ACCESO (PROTECCIÓN DE VISTAS)
+# =========================================================================
+def usuario_autenticado():
+    """Devuelve True si el usuario inició sesión, de lo contrario redirige al login"""
+    return 'usuario_id' in session
+
+
+# =========================================================================
+# RUTAS DE CONTENIDOS ESTÁTICOS INFORMATIVOS (AHORA PROTEGIDAS)
 # =========================================================================
 
 @app.route('/')
-def inicio(): return render_template('inicio.html')
+def inicio():
+    # Si no inició sesión, va directo al login. Se acabó la portada pública.
+    if not usuario_autenticado():
+        return redirect(url_for('login'))
+    return render_template('inicio.html')
 
 @app.route('/Ofimatica')
-def ofimatica(): return render_template('ofimatica.html')
+def ofimatica(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('ofimatica.html')
 
 @app.route('/VisualStudioCode')
-def visualStudioCode(): return render_template('visualstudiocode.html')
+def visualStudioCode(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('visualstudiocode.html')
 
 @app.route('/HTML_CSS')
-def htmlCss(): return render_template('htmlcss.html')
+def htmlCss(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('htmlcss.html')
 
 @app.route('/Javascript')
-def javaScript(): return render_template('javascript.html')
+def javaScript(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('javascript.html')
 
 @app.route('/Git_Github')
-def gitGitHub(): return render_template('gitgithub.html')
+def gitGitHub(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('gitgithub.html')
 
 @app.route('/arquitectura_flask')
-def arquitecturaFlask(): return render_template('arquitecturaflask.html')
+def arquitecturaFlask(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('arquitecturaflask.html')
 
 @app.route('/frameworkflask')
-def frameworkFlask(): return render_template('frameworkflask.html')
+def frameworkFlask(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('frameworkflask.html')
 
 @app.route('/arduino_uno')
-def arduinoUno(): return render_template('arduino_uno.html')
+def arduinoUno(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('arduino_uno.html')
 
 @app.route('/servidorrender')
-def servidorRender(): return render_template('servidorrender.html')
+def servidorRender(): 
+    if not usuario_autenticado(): return redirect(url_for('login'))
+    return render_template('servidorrender.html')
 
 
 # =========================================================================
