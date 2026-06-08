@@ -69,7 +69,7 @@ class Alumno(db.Model):
     turno_id = db.Column(db.Integer, db.ForeignKey('turnos.id'), nullable=False)
 
     asistencias = db.relationship('Asistencia', backref='alumno', lazy=True)
-    acciones_auditoria = db.relationship('Auditoria', backref='alumno', lazy=True)
+    actions_auditoria = db.relationship('Auditoria', backref='alumno', lazy=True)
 
     def __repr__(self):
         return f'<Alumno {self.apellido}, {self.nombre}>'
@@ -297,6 +297,7 @@ def ver_grupos():
             alumnos_del_turno = Alumno.query.filter_by(turno_id=turno_ver_id).order_by(Alumno.apellido.asc()).all()
 
     return render_template('ver_grupos.html', turnos=turnos, alumnos=alumnos_del_turno, turno_sel=turno_seleccionado)
+
 # =========================================================================
 # PANEL DOCENTE: ALTA DE ALUMNOS (FORMULARIO MANUAL + EXCEL CSV VALIDADO)
 # =========================================================================
@@ -315,7 +316,8 @@ def cargar_alumno():
                 return redirect(url_for('cargar_alumno'))
             
             try:
-                stream = io.StringIO(file.stream.read().decode("utf-8"), newline=None)
+                # CAMBIO OPERATIVO: Usamos latin-1 para que Excel procese los acentos sin arrojar error 0xed
+                stream = io.StringIO(file.stream.read().decode("latin-1"), newline=None)
                 lector_csv = csv.DictReader(stream, delimiter=';')
                 
                 columnas_requeridas = ['usuario', 'contrasena', 'email', 'dni', 'apellido', 'nombre', 'turno_id']
@@ -669,7 +671,6 @@ def usuario_autenticado():
 
 @app.route('/')
 def inicio():
-    # Si no inició sesión, va directo al login. Se acabó la portada pública.
     if not usuario_autenticado():
         return redirect(url_for('login'))
     return render_template('inicio.html')
@@ -738,13 +739,7 @@ def rendimiento_alumno(id):
 def inicializar_turnos_oficiales():
     """Chequea, limpia esquemas viejos y monta los 6 turnos de la E.E.T.P. N° 614"""
     
-    # 1. FORZAMOS EL BORRADO EN RENDER (Agregamos estas líneas al principio de la función)
-    print("🧹 Vaciando tablas antiguas en la base de datos...")
-    db.drop_all()
-    db.create_all()
-    
-    # Mapeo exacto solicitado para la segmentación del taller
-   # Mapeo exacto solicitado para la segmentación del taller (Horarios actualizados)
+    # Mapeo exacto solicitado para la segmentación del taller (Horarios actualizados)
     turnos_objetivo = [
         {"id": 1, "nombre": "Mañana - Grupo A (Lun/Mie)", "horario": "7:30 - 11:10", "dias": "Lunes y Miércoles"},
         {"id": 2, "nombre": "Mañana - Grupo B (Mar/Vie)", "horario": "7:30 - 11:10", "dias": "Martes y Viernes"},
@@ -754,54 +749,28 @@ def inicializar_turnos_oficiales():
         {"id": 6, "nombre": "Tarde - Jueves Rotativo", "horario": "13:10 - 16:50", "dias": "Jueves"}
     ]
     
-    print("⏳ Sincronizando Base de Datos con el nuevo esquema de 6 Turnos...")
-    
-    # Inyectamos los 6 grupos correspondientes
-    for datos in turnos_objetivo:
-        nuevo_t = Turno(
-            id=datos["id"],
-            nombre_grupo=datos["nombre"],
-            turno_horario=datos["horario"],
-            dias_cursada=datos["dias"]
-        )
-        db.session.add(nuevo_t)
-        
-    try:
-        db.session.commit()
-        print("✅ ¡Esquema de turnos escolares sincronizado con éxito!")
-    except Exception as e:
-        db.session.rollback()
-        print(f"❌ Error al inicializar turnos: {str(e)}")
+    for t_obj in turnos_objetivo:
+        turno_existente = Turno.query.get(t_obj["id"])
+        if not turno_existente:
+            nuevo_turno = Turno(
+                id=t_obj["id"],
+                nombre_grupo=t_obj["nombre"],
+                turno_horario=t_obj["horario"],
+                dias_cursada=t_obj["dias"]
+            )
+            db.session.add(nuevo_turno)
+        else:
+            # Si ya existe el ID, actualizamos sus parámetros para asegurar consistencia horaria
+            turno_existente.nombre_grupo = t_obj["nombre"]
+            turno_existente.turno_horario = t_obj["horario"]
+            turno_existente.dias_cursada = t_obj["dias"]
+            
+    db.session.commit()
 
-    # 2. CREAMOS AL USUARIO LUIS EN LA BASE DE DATOS
-    print("👤 Insertando usuario administrador 'luis'...")
-    luis_admin = Alumno(
-        usuario='luis',
-        contrasena='1234',  
-        email='luis@tecnica.edu.ar',
-        dni='12345678',     
-        apellido='Saldaña',
-        nombre='Luis',
-        taller='Taller de Computación',
-        turno_id=1          
-    )
-    db.session.add(luis_admin)
-    try:
-        db.session.commit()
-        print("✅ Usuario 'luis' creado con éxito.")
-    except Exception as e:
-        db.session.rollback()
-        print(f"❌ Error al crear usuario: {str(e)}")
-
-
+# Crear tablas y sembrar datos de configuración inicial dentro del contexto de la app
 with app.app_context():
+    db.create_all()
     inicializar_turnos_oficiales()
 
-
-# =========================================================================
-# EJECUCIÓN DEL SERVIDOR WEB
-# =========================================================================
 if __name__ == '__main__':
-    # En producción (Render), la variable 'DATABASE_URL' existirá, apagamos debug por seguridad
-    es_produccion = os.environ.get('DATABASE_URL') is not None
-    app.run(debug=not es_produccion)
+    app.run(debug=True)
