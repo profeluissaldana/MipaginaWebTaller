@@ -670,6 +670,9 @@ def usuario_autenticado():
 # =========================================================================
 # PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS CON FECHA POR DEFECTO
 # =========================================================================
+# =========================================================================
+# PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS (CORREGIDO)
+# =========================================================================
 @app.route('/docente/historial_asistencias')
 def historial_asistencias():
     if not session.get('is_admin'):
@@ -678,24 +681,28 @@ def historial_asistencias():
     
     turnos = Turno.query.all()
     turno_id = request.args.get('turno_id', type=int)
-    fecha_filtro = request.args.get('fecha', type=str) # Formato YYYY-MM-DD
+    fecha_filtro = request.args.get('fecha', type=str)
     
-    # SI EL DOCENTE NO ELIGIÓ FECHA, SE ESTABLECE LA FECHA ACTUAL POR DEFECTO
+    # Si no hay filtro, tomamos la fecha de hoy en formato string YYYY-MM-DD
     if not fecha_filtro:
         fecha_filtro = date.today().strftime('%Y-%m-%d')
     
+    # Iniciamos la consulta base uniendo la asistencia con el alumno
     query = db.session.query(Asistencia).join(Alumno)
     
     if turno_id:
         query = query.filter(Alumno.turno_id == turno_id)
+        
     if fecha_filtro:
         try:
+            # Convertimos el string del input HTML a un objeto date real de Python
             fecha_dt = datetime.strptime(fecha_filtro, '%Y-%m-%d').date()
+            # Filtramos exactamente por ese objeto date
             query = query.filter(Asistencia.fecha == fecha_dt)
         except ValueError:
             pass
 
-    # Traemos las asistencias ordenadas por apellido de forma alfabética
+    # Traemos los resultados ordenados alfabéticamente
     asistencias = query.order_by(Alumno.apellido.asc()).all()
     
     return render_template('historial_asistencias.html', 
