@@ -671,7 +671,7 @@ def usuario_autenticado():
 # PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS CON FECHA POR DEFECTO
 # =========================================================================
 # =========================================================================
-# PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS (CORREGIDO)
+# PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS (CORREGIDO Y OPTIMIZADO)
 # =========================================================================
 @app.route('/docente/historial_asistencias')
 def historial_asistencias():
@@ -680,16 +680,27 @@ def historial_asistencias():
         return redirect(url_for('login'))
     
     turnos = Turno.query.all()
-    turno_id = request.args.get('turno_id', type=int)
+    
+    # Capturamos los filtros limpiando espacios o valores vacíos del formulario
+    turno_id_raw = request.args.get('turno_id', '')
     fecha_filtro = request.args.get('fecha', type=str)
     
-    # Si no hay filtro, tomamos la fecha de hoy en formato string YYYY-MM-DD
-    if not fecha_filtro:
+    # Procesamos el turno de forma segura (si es vacío o 'None', no se filtra)
+    turno_id = None
+    if turno_id_raw and turno_id_raw != 'None' and str(turno_id_raw).strip() != '':
+        try:
+            turno_id = int(turno_id_raw)
+        except ValueError:
+            turno_id = None
+    
+    # Si el calendario vino vacío, tomamos la fecha de hoy por defecto (YYYY-MM-DD)
+    if not fecha_filtro or fecha_filtro.strip() == '':
         fecha_filtro = date.today().strftime('%Y-%m-%d')
     
     # Iniciamos la consulta base uniendo la asistencia con el alumno
     query = db.session.query(Asistencia).join(Alumno)
     
+    # Aplicamos el filtro de turno SOLO si se seleccionó una comisión válida
     if turno_id:
         query = query.filter(Alumno.turno_id == turno_id)
         
@@ -700,9 +711,10 @@ def historial_asistencias():
             # Filtramos exactamente por ese objeto date
             query = query.filter(Asistencia.fecha == fecha_dt)
         except ValueError:
+            # Si el formato fallara por alguna razón, no rompemos la app
             pass
 
-    # Traemos los resultados ordenados alfabéticamente
+    # Traemos los resultados ordenados alfabéticamente por apellido
     asistencias = query.order_by(Alumno.apellido.asc()).all()
     
     return render_template('historial_asistencias.html', 
@@ -740,6 +752,7 @@ def corregir_asistencia(id):
         db.session.rollback()
         flash(f'Error al corregir la asistencia: {str(e)}', 'danger')
         
+    # Aseguramos que retorne mandando explícitamente los filtros limpios
     return redirect(url_for('historial_asistencias', turno_id=turno_retorno, fecha=fecha_retorno))
 
 
