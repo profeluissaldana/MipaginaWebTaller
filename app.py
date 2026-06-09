@@ -667,6 +667,9 @@ def usuario_autenticado():
 # =========================================================================
 # PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS POR GRUPO
 # =========================================================================
+# =========================================================================
+# PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS CON FECHA POR DEFECTO
+# =========================================================================
 @app.route('/docente/historial_asistencias')
 def historial_asistencias():
     if not session.get('is_admin'):
@@ -676,6 +679,10 @@ def historial_asistencias():
     turnos = Turno.query.all()
     turno_id = request.args.get('turno_id', type=int)
     fecha_filtro = request.args.get('fecha', type=str) # Formato YYYY-MM-DD
+    
+    # SI EL DOCENTE NO ELIGIÓ FECHA, SE ESTABLECE LA FECHA ACTUAL POR DEFECTO
+    if not fecha_filtro:
+        fecha_filtro = date.today().strftime('%Y-%m-%d')
     
     query = db.session.query(Asistencia).join(Alumno)
     
@@ -688,14 +695,45 @@ def historial_asistencias():
         except ValueError:
             pass
 
-    # Traemos las asistencias ordenadas por fecha reciente y apellido
-    asistencias = query.order_by(Asistencia.fecha.desc(), Alumno.apellido.asc()).all()
+    # Traemos las asistencias ordenadas por apellido de forma alfabética
+    asistencias = query.order_by(Alumno.apellido.asc()).all()
     
     return render_template('historial_asistencias.html', 
                            turnos=turnos, 
                            asistencias=asistencias, 
                            turno_sel_id=turno_id, 
                            fecha_sel=fecha_filtro)
+
+
+# =========================================================================
+# PANEL DOCENTE: CORREGIR/EDITAR EL ESTADO DE UNA ASISTENCIA YA GRABADA
+# =========================================================================
+@app.route('/docente/corregir_asistencia/<int:id>', methods=['POST'])
+def corregir_asistencia(id):
+    if not session.get('is_admin'):
+        flash('Acceso denegado.', 'danger')
+        return redirect(url_for('login'))
+        
+    asistencia = Asistencia.query.get_or_404(id)
+    
+    # Capturamos las modificaciones del formulario modal
+    nuevo_estado = request.form.get('nuevo_estado')
+    nuevo_comentario = request.form.get('nuevo_comentario', '').strip()
+    
+    # Parámetros de retorno para mantener la misma vista filtrada al recargar
+    turno_retorno = request.form.get('turno_retorno', '')
+    fecha_retorno = request.form.get('fecha_retorno', '')
+    
+    try:
+        asistencia.estado = nuevo_estado
+        asistencia.comentario_diario = nuevo_comentario if nuevo_comentario else None
+        db.session.commit()
+        flash(f'Asistencia de {asistencia.alumno.apellido} corregida con éxito.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error al corregir la asistencia: {str(e)}', 'danger')
+        
+    return redirect(url_for('historial_asistencias', turno_id=turno_retorno, fecha=fecha_retorno))
 
 
 # =========================================================================

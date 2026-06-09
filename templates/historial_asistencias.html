@@ -1,65 +1,145 @@
 {% extends 'base.html' %}
-{% block title %}Historial de Asistencias - Taller{% endblock %}
+
+{% block title %}Historial de Asistencias - Taller de Computación{% endblock %}
 
 {% block content %}
-<div class="card shadow-sm border-0 p-4 mb-4 bg-white">
-    <h3 class="text-primary fw-bold mb-3">🔍 Consulta Histórica de Asistencias</h3>
-    
-    <form method="GET" action="{{ url_for('historial_asistencias') }}" class="row g-3 bg-light p-3 rounded border">
-        <div class="col-12 col-md-5">
-            <label class="form-label fw-bold small text-secondary">Filtrar por Grupo / Turno</label>
-            <select name="turno_id" class="form-select">
-                <option value="">-- Todos los Grupos --</option>
-                {% for t in turnos %}
-                <option value="{{ t.id }}" {% if turno_sel_id == t.id %}selected{% endif %}>{{ t.nombre_grupo }}</option>
-                {% endfor %}
-            </select>
+<div class="container">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="text-primary fw-bold mb-0">🔍 Historial y Corrección de Asistencias</h2>
+            <p class="text-muted">Consulta las cargas por día y realiza las rectificaciones de estados necesarias.</p>
         </div>
-        <div class="col-12 col-md-4">
-            <label class="form-label fw-bold small text-secondary">Filtrar por Fecha Específica</label>
-            <input type="date" name="fecha" class="form-control" value="{{ fecha_sel }}">
+        <div class="col-md-4 text-md-end">
+            <a href="{{ url_for('inicio') }}" class="btn btn-outline-secondary fw-semibold">Volver al Inicio</a>
         </div>
-        <div class="col-12 col-md-3 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary w-100 fw-bold">Filtrar Registros</button>
-        </div>
-    </form>
-</div>
+    </div>
 
-<div class="card shadow-sm border-0 p-4 bg-white">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Grupo / Turno</th>
-                    <th>Alumno</th>
-                    <th>DNI</th>
-                    <th class="text-center">Estado</th>
-                    <th>Observación</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for asis in asistencias %}
-                <tr>
-                    <td class="font-monospace text-secondary">{{ asis.fecha.strftime('%d/%m/%Y') }}</td>
-                    <td><span class="badge bg-secondary">{{ asis.alumno.turno_assigned.nombre_grupo }}</span></td>
-                    <td class="fw-bold">{{ asis.alumno.apellido }}, {{ asis.alumno.nombre }}</td>
-                    <td class="small">{{ asis.alumno.dni }}</td>
-                    <td class="text-center">
-                        {% if asis.estado == 'P' %}<span class="badge bg-success px-2 py-1">Presente</span>
-                        {% elif asis.estado == 'A' %}<span class="badge bg-danger px-2 py-1">Ausente</span>
-                        {% elif asis.estado == 'T' %}<span class="badge bg-warning text-dark px-2 py-1">Tarde</span>
-                        {% elif asis.estado == 'J' %}<span class="badge bg-info px-2 py-1">Justificado</span>{% endif %}
-                    </td>
-                    <td class="text-muted small"><em>{{ asis.comentario_diario or '-' }}</em></td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="6" class="text-center text-muted py-4">No se encontraron registros de asistencia con los filtros seleccionados.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="card shadow-sm border-0 mb-4 bg-white">
+        <div class="card-body p-4">
+            <form method="GET" action="{{ url_for('historial_asistencias') }}" class="row g-3 align-items-end">
+                <div class="col-12 col-md-4">
+                    <label for="turno_id" class="form-label fw-bold small text-secondary">Filtrar por Comisión/Turno</label>
+                    <select class="form-select" id="turno_id" name="turno_id">
+                        <option value="">-- Todos los Turnos --</option>
+                        {% for t in turnos %}
+                            <option value="{{ t.id }}" {% if turno_sel_id == t.id %}selected{% endif %}>{{ t.nombre_grupo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="fecha" class="form-label fw-bold small text-secondary">Seleccionar Fecha</label>
+                    <input type="date" class="form-control" id="fecha" name="fecha" value="{{ fecha_sel }}">
+                </div>
+                <div class="col-12 col-md-4">
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">
+                        ⚡ Buscar Registros
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between align-items-center">
+            <span>📋 Registros de Asistencia</span>
+            <span class="badge bg-light text-dark px-3 py-2 small fw-bold">
+                Fecha en pantalla: {{ fecha_sel.split('-')[2] }}/{{ fecha_sel.split('-')[1] }}/{{ fecha_sel.split('-')[0] }}
+            </span>
+        </div>
+        <div class="card-body p-0">
+            {% if asistencias %}
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-light text-secondary small text-uppercase">
+                        <tr>
+                            <th class="ps-4">Alumno</th>
+                            <th class="text-center">DNI</th>
+                            <th>Turno / Comisión</th>
+                            <th class="text-center">Estado</th>
+                            <th>Observaciones Diarias</th>
+                            <th class="text-center pe-4">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for asis in asistencias %}
+                        <tr>
+                            <td class="ps-4 fw-bold text-secondary">
+                                {{ asis.alumno.apellido }}, {{ asis.alumno.nombre }}
+                            </td>
+                            <td class="text-center font-monospace small">{{ asis.alumno.dni }}</td>
+                            <td class="small">{{ asis.alumno.turno_assigned.nombre_grupo }}</td>
+                            <td class="text-center">
+                                {% if asis.estado == 'P' %}
+                                    <span class="badge bg-success px-3 py-2">Presente</span>
+                                {% elif asis.estado == 'A' %}
+                                    <span class="badge bg-danger px-3 py-2">Ausente</span>
+                                {% elif asis.estado == 'T' %}
+                                    <span class="badge bg-warning text-dark px-3 py-2">Tarde</span>
+                                {% elif asis.estado == 'J' %}
+                                    <span class="badge bg-info text-dark px-3 py-2">Justificado</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted small">
+                                {{ asis.comentario_diario or '-' }}
+                            </td>
+                            <td class="text-center pe-4">
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-primary fw-bold px-3" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#editModalAsis{{ asis.id }}">
+                                    ✏️ Corregir Estado
+                                </button>
+                            </td>
+                        </tr>
+
+                        <div class="modal fade" id="editModalAsis{{ asis.id }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary text-white">
+                                        <h5 class="modal-title fw-bold">Rectificar Estado de Asistencia</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-shadow="none" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="POST" action="{{ url_for('corregir_asistencia', id=asis.id) }}">
+                                        <div class="modal-body text-start text-dark">
+                                            <p class="mb-3">Corrigiendo registro de: <strong class="text-primary">{{ asis.alumno.apellido }}, {{ asis.alumno.nombre }}</strong></p>
+                                            
+                                            <input type="hidden" name="turno_retorno" value="{{ turno_sel_id or '' }}">
+                                            <input type="hidden" name="fecha_retorno" value="{{ fecha_sel }}">
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold small text-muted">Seleccione el Nuevo Estado</label>
+                                                <select class="form-select" name="nuevo_estado" required>
+                                                    <option value="P" {% if asis.estado == 'P' %}selected{% endif %}>P - Presente</option>
+                                                    <option value="A" {% if asis.estado == 'A' %}selected{% endif %}>A - Ausente</option>
+                                                    <option value="T" {% if asis.estado == 'T' %}selected{% endif %}>T - Tarde (Afecta 0.5 falta)</option>
+                                                    <option value="J" {% if asis.estado == 'J' %}selected{% endif %}>J - Justificado</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold small text-muted">Comentario u Observación Diaria</label>
+                                                <input type="text" class="form-control" name="nuevo_comentario" value="{{ asis.comentario_diario or '' }}" placeholder="Ej: Presentó certificado / Justifica llegada tarde">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer bg-light">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-success btn-sm fw-bold px-3">Guardar Corrección</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <p class="fs-4 text-muted mb-0">📭 No se encontraron cargas de asistencia en el sistema para los filtros seleccionados.</p>
+                <small class="text-secondary">Prueba seleccionando otra fecha del calendario o cambia la comisión de búsqueda.</small>
+            </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
