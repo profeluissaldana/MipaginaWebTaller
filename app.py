@@ -106,7 +106,7 @@ class Asistencia(db.Model):
             diferencia = self.hora_salida - self.hora_entrada
             minutos_totales = int(diferencia.total_seconds() / 60)
             horas = minutos_totales // 60
-            minutos = minutos_totales % 60
+            minutos = minutes_totales = minutos_totales % 60
             return f"{horas}h {minutos}m"
         return "En el taller"
 
@@ -604,19 +604,19 @@ def exportar_pdf():
     style_titulo = ParagraphStyle(name='TituloDoc', parent=styles['Heading1'], fontSize=16, leading=20, textColor=colors.HexColor("#1F4E78"), alignment=1, spaceAfter=15)
     style_sub = ParagraphStyle(name='SubDoc', parent=styles['Normal'], fontSize=10, leading=14, textColor=colors.HexColor("#555555"), alignment=1, spaceAfter=20)
     style_celda = ParagraphStyle(name='CeldaTabla', parent=styles['Normal'], fontSize=9, leading=11)
-    style_cab_tabla = ParagraphStyle(name='CabTabla', parent=styles['Normal'], fontSize=9, leading=11, fontName="Helvetica-Bold", textColor=colors.white)
+    style_cb_tabla = ParagraphStyle(name='CabTabla', parent=styles['Normal'], fontSize=9, leading=11, fontName="Helvetica-Bold", textColor=colors.white)
 
     story.append(Paragraph("<b>REGISTRO OFICIAL DE ASISTENCIAS</b>", style_titulo))
     story.append(Paragraph(f"Reporte emitido el: {datetime.now().strftime('%d/%m/%Y %H:%M')} | Taller de Computación", style_sub))
     story.append(Spacer(1, 10))
 
     tabla_datos = [[
-        Paragraph("Fecha", style_cab_tabla),
-        Paragraph("Trim.", style_cab_tabla),
-        Paragraph("Alumno", style_cab_tabla),
-        Paragraph("DNI", style_cab_tabla),
-        Paragraph("Est.", style_cab_tabla),
-        Paragraph("Observaciones", style_cab_tabla)
+        Paragraph("Fecha", style_cb_tabla),
+        Paragraph("Trim.", style_cb_tabla),
+        Paragraph("Alumno", style_cb_tabla),
+        Paragraph("DNI", style_cb_tabla),
+        Paragraph("Est.", style_cb_tabla),
+        Paragraph("Observaciones", style_cb_tabla)
     ]]
 
     mapa_estados = {'P': 'Presente', 'A': 'Ausente', 'T': 'Tarde', 'J': 'Justificado'}
@@ -756,15 +756,24 @@ def eliminar_alumno(id):
         flash(f'No se pudo eliminar al alumno: {str(e)}', 'danger')
         
     return redirect(url_for('ver_grupos', turno_id=turno_previo))
-# =========================================================================
-# RUTAS DE CONTENIDOS ESTÁTICOS INFORMATIVOS (AHORA PROTEGIDAS)
-# =========================================================================
 
+
+# =========================================================================
+# RUTA RAÍZ PRINCIPAL / INICIO (AGREGADA PARA EVITAR EL ERROR 404)
+# =========================================================================
 @app.route('/')
 def inicio():
     if not usuario_autenticado():
         return redirect(url_for('login'))
-    return render_template('inicio.html')
+        
+    # Agregamos esto para que la pantalla de inicio pueda dibujar las comisiones
+    turnos = Turno.query.all()
+    return render_template('inicio.html', turnos=turnos)
+
+
+# =========================================================================
+# RUTAS DE CONTENIDOS ESTÁTICOS INFORMATIVOS (PROTEGIDAS)
+# =========================================================================
 
 @app.route('/Ofimatica')
 def ofimatica(): 
@@ -813,6 +822,75 @@ def servidorRender():
 
 
 # =========================================================================
+# PANEL DOCENTE: REINICIO DE CICLO LECTIVO (BORRADO SEGURO DESDE EL PANEL)
+# =========================================================================
+@app.route('/docente/reiniciar_ciclo', methods=['GET', 'POST'])
+def reiniciar_ciclo():
+    if not session.get('is_admin'):
+        flash('Acceso denegado. Solo el administrador puede realizar esta acción.', 'danger')
+        return redirect(url_for('login'))
+        
+    if request.method == 'POST':
+        confirmacion = request.form.get('confirmacion', '').strip().lower()
+        
+        if confirmacion == 'reiniciar2026':
+            try:
+                docente_actual = Alumno.query.filter_by(usuario='luis').first()
+                
+                # Resguardo seguro de tus credenciales
+                if docente_actual:
+                    datos_luis = {
+                        'usuario': docente_actual.usuario,
+                        'contrasena': docente_actual.contrasena,
+                        'email': docente_actual.email,
+                        'dni': docente_actual.dni,
+                        'apellido': docente_actual.apellido,
+                        'nombre': docente_actual.nombre
+                    }
+                else:
+                    datos_luis = {
+                        'usuario': 'luis',
+                        'contrasena': 'admin2026', # Tu clave por defecto si no existe registro previo
+                        'email': 'luis.saldana@tecnica.edu.ar',
+                        'dni': '12345678',
+                        'apellido': 'Saldaña',
+                        'nombre': 'Luis'
+                    }
+
+                # Vaciado completo de tablas
+                db.drop_all()
+                db.create_all()
+                
+                # Recreación automatizada de los 6 turnos oficiales de la institución
+                inicializar_turnos_oficiales()
+
+                # Reestablecemos tu usuario de forma inmediata
+                admin_luis = Alumno(
+                    usuario=datos_luis['usuario'],
+                    contrasena=datos_luis['contrasena'],
+                    email=datos_luis['email'],
+                    dni=datos_luis['dni'],
+                    apellido=datos_luis['apellido'],
+                    nombre=datos_luis['nombre'],
+                    taller='Taller de Computación',
+                    turno_id=1
+                )
+                db.session.add(admin_luis)
+                db.session.commit()
+                
+                flash('¡El sistema se ha reiniciado con éxito! Estructura limpia y cuenta de docente preservada.', 'success')
+                return redirect(url_for('inicio'))
+                
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Ocurrió un error al reiniciar el sistema: {str(e)}', 'danger')
+        else:
+            flash('La palabra de confirmación es incorrecta. No se realizaron cambios.', 'danger')
+            
+    return render_template('reiniciar_ciclo.html')
+
+
+# =========================================================================
 # VISTA DEL RENDIMIENTO DEL ALUMNO (PANEL INDIVIDUAL)
 # =========================================================================
 @app.route('/alumno/<int:id>/rendimiento')
@@ -828,9 +906,7 @@ def rendimiento_alumno(id):
 # CONFIGURACIÓN E INICIALIZACIÓN DE DATASET (INTEGRACIÓN 6 TURNOS)
 # =========================================================================
 def inicializar_turnos_oficiales():
-    """Chequea, limpia esquemas viejos y monta los 6 turnos de la E.E.T.P. N° 614"""
-    
-    # Mapeo exacto solicitado para la segmentación del taller (Horarios actualizados)
+    """Chequea y monta los 6 turnos oficiales de la E.E.T.P. N° 614"""
     turnos_objetivo = [
         {"id": 1, "nombre": "Mañana - Grupo A (Lun/Mie)", "horario": "7:30 - 11:10", "dias": "Lunes y Miércoles"},
         {"id": 2, "nombre": "Mañana - Grupo B (Mar/Vie)", "horario": "7:30 - 11:10", "dias": "Martes y Viernes"},
@@ -851,7 +927,6 @@ def inicializar_turnos_oficiales():
             )
             db.session.add(nuevo_turno)
         else:
-            # Si ya existe el ID, actualizamos sus parámetros para asegurar consistencia horaria
             turno_existente.nombre_grupo = t_obj["nombre"]
             turno_existente.turno_horario = t_obj["horario"]
             turno_existente.dias_cursada = t_obj["dias"]
