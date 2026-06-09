@@ -671,8 +671,10 @@ def usuario_autenticado():
 # PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS CON FECHA POR DEFECTO
 # =========================================================================
 # =========================================================================
-# PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS (CORREGIDO Y OPTIMIZADO)
+# PANEL DOCENTE: CONSULTA HISTÓRICA DE ASISTENCIAS (SOLUCIÓN DEFINITIVA DE FILTRO)
 # =========================================================================
+from sqlalchemy import cast, String # <-- Aseguramos que estas herramientas estén listas
+
 @app.route('/docente/historial_asistencias')
 def historial_asistencias():
     if not session.get('is_admin'):
@@ -681,38 +683,32 @@ def historial_asistencias():
     
     turnos = Turno.query.all()
     
-    # Capturamos los filtros limpiando espacios o valores vacíos del formulario
+    # Capturamos parámetros limpios
     turno_id_raw = request.args.get('turno_id', '')
     fecha_filtro = request.args.get('fecha', type=str)
     
-    # Procesamos el turno de forma segura (si es vacío o 'None', no se filtra)
+    # Procesamos de forma segura el turno_id
     turno_id = None
     if turno_id_raw and turno_id_raw != 'None' and str(turno_id_raw).strip() != '':
         try:
             turno_id = int(turno_id_raw)
         except ValueError:
             turno_id = None
-    
-    # Si el calendario vino vacío, tomamos la fecha de hoy por defecto (YYYY-MM-DD)
+            
+    # Si viene vacío el calendario, forzamos la fecha de hoy en formato texto estándar
     if not fecha_filtro or fecha_filtro.strip() == '':
         fecha_filtro = date.today().strftime('%Y-%m-%d')
-    
+        
     # Iniciamos la consulta base uniendo la asistencia con el alumno
     query = db.session.query(Asistencia).join(Alumno)
     
-    # Aplicamos el filtro de turno SOLO si se seleccionó una comisión válida
+    # Filtro por comisión/turno si fue seleccionado
     if turno_id:
         query = query.filter(Alumno.turno_id == turno_id)
         
+    # FILTRO SEGURO POR TEXTO: Convierte la fecha de la BD a texto antes de comparar
     if fecha_filtro:
-        try:
-            # Convertimos el string del input HTML a un objeto date real de Python
-            fecha_dt = datetime.strptime(fecha_filtro, '%Y-%m-%d').date()
-            # Filtramos exactamente por ese objeto date
-            query = query.filter(Asistencia.fecha == fecha_dt)
-        except ValueError:
-            # Si el formato fallara por alguna razón, no rompemos la app
-            pass
+        query = query.filter(cast(Asistencia.fecha, String).like(f"{fecha_filtro}%"))
 
     # Traemos los resultados ordenados alfabéticamente por apellido
     asistencias = query.order_by(Alumno.apellido.asc()).all()
@@ -735,11 +731,9 @@ def corregir_asistencia(id):
         
     asistencia = Asistencia.query.get_or_404(id)
     
-    # Capturamos las modificaciones del formulario modal
     nuevo_estado = request.form.get('nuevo_estado')
     nuevo_comentario = request.form.get('nuevo_comentario', '').strip()
     
-    # Parámetros de retorno para mantener la misma vista filtrada al recargar
     turno_retorno = request.form.get('turno_retorno', '')
     fecha_retorno = request.form.get('fecha_retorno', '')
     
@@ -752,7 +746,6 @@ def corregir_asistencia(id):
         db.session.rollback()
         flash(f'Error al corregir la asistencia: {str(e)}', 'danger')
         
-    # Aseguramos que retorne mandando explícitamente los filtros limpios
     return redirect(url_for('historial_asistencias', turno_id=turno_retorno, fecha=fecha_retorno))
 
 
