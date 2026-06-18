@@ -538,6 +538,76 @@ while(contador <= 5){
 
     </div>
 
+    <div class="card border-info shadow-sm mb-5">
+        <div class="card-header bg-info text-white fw-bold">
+            ✨ 5.1 Estilos Dinámicos: Uso Profesional de classList.add() y remove()
+        </div>
+        <div class="card-body">
+            <p>
+                Una de las utilidades más grandes de JavaScript en el mundo real es modificar la apariencia de un elemento HTML aplicando clases enteras de CSS en un solo paso (por ejemplo, para crear un <strong>Modo Nocturno / Dark Mode</strong>).
+            </p>
+            <p>
+                En lugar de cambiar las propiedades visuales una por una mediante código, definimos un estilo en nuestra hoja CSS y usamos JavaScript para "encender" o "apagar" dicha clase utilizando la propiedad <code>classList</code>.
+            </p>
+
+            <div class="bg-light p-4 rounded border shadow-sm my-3">
+                <h6 class="fw-bold text-dark">📋 Caso Práctico: Conmutador de Formatos Visuales</h6>
+<pre class="bg-dark text-light p-3 rounded overflow-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Cambio Estilos Dinámicos&lt;/title&gt;
+    &lt;style&gt;
+        /* Estilo base normal */
+        #titulo1 {
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        /* 🎨 Clase CSS especial que inyectaremos con JavaScript */
+        .titulo {
+            background-color: #1e1e2f;
+            color: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h1 id="titulo1"&gt;Texto de Prueba del Taller&lt;/h1&gt;
+
+    &lt;button type="button" id="botonformato"&gt;Aplicar Formato&lt;/button&gt;
+    &lt;button type="button" id="botonquitarformato"&gt;Quitar Formato&lt;/button&gt;
+
+    &lt;script&gt;
+        const titulo1 = document.getElementById("titulo1");
+        const botonformato = document.getElementById("botonformato");
+        const botonquitarformato = document.getElementById("botonquitarformato");
+
+        // Al hacer click, agrega la clase '.titulo' al elemento H1
+        botonformato.addEventListener("click", function(){
+            titulo1.classList.add("titulo");
+        });
+
+        // Al hacer click, remueve la clase '.titulo' del elemento H1
+        botonquitarformato.addEventListener("click", function(){
+            titulo1.classList.remove("titulo");
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+                <h6 class="fw-bold text-info mt-3">💡 ¿Qué realiza exactamente este bloque?</h6>
+                <ul>
+                    <li class="mb-2"><strong><code>classList.add("titulo")</code>:</strong> Busca la lista de clases asociadas al elemento seleccionado y le añade la clase especificada entre comillas. El navegador detecta el cambio de inmediato y renderiza los nuevos estilos de CSS.</li>
+                    <li><strong><code>classList.remove("titulo")</code>:</strong> Quita de forma segura la clase del elemento si existiese, restableciendo la visualización a su estado por defecto.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="card border-primary shadow-sm mb-5">
 
         <div class="card-header bg-primary text-white fw-bold">
@@ -800,8 +870,7 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
             
             <ol>
                 <li class="mb-3">
-                    Añade un nuevo botón en la interfaz HTML para la operación de <strong>Multiplicar</strong>. Modifica la lógica interna de tu función <code>operar</code> agregando la multiplicación. ¡Tú decides si prefieres expandir el bloque de <code>if / else if</code> o migrar tu código al modelo estructurado de <code>switch / case</code>!
-                </li>
+                    Añade un nuevo botón en la interfaz HTML para la operación de <strong>Multiplicar</strong>. Modifica la lógica interna de tu función <code>operar</code> agregando la multiplicación. ¡Tú decides si prefieres expandir el...</li_3>
                 <li>
                     <strong>Gran Reto Algorítmico:</strong> Añade la operación de <strong>Dividir</strong>. Debes implementar una validación condicional que inspeccione si el segundo número ingresado es un cero. De ser así, se le debe prohibir la operación al usuario enviándole un mensaje claro mediante un cuadro de texto emergente (usando <code>alert()</code>) y definiendo el casillero del resultado como <em>"Error"</em>.
                 </li>
