@@ -43,7 +43,7 @@
     <hr class="text-muted">
 
     <div class="row align-items-center my-5">
-        <div class="col-12">
+        <div class="col-12 col-lg-6">
             <h4 class="fw-bold text-dark">🌐 3. GitHub Pages: ¡Tu Web en Internet Gratis!</h4>
             <p>Una vez que el código de tus alumnos está a salvo en GitHub, pueden transformarlo en una página web real y accesible de forma remota desde cualquier dispositivo usando <strong>GitHub Pages</strong>.</p>
             
@@ -117,7 +117,7 @@
                         🚀 <strong>Evita la fricción administrativa:</strong> Como profesor, no tendrás que ir banco por banco entrando al "Administrador de Credenciales de Windows" a borrar cuentas guardadas manualmente al final de cada jornada.
                     </li>
                     <li class="mb-3">
-                        🔑 <strong>El comando clave para HTTPS es <code>git config --local credential.helper ""</code>:</strong> Al dejar el ayudante de credenciales en blanco de forma local, la terminal está forzada a pedir credenciales siempre para ese proyecto sin alterar el resto del sistema.
+                        🔑 <strong>El comando clave para HTTPS is <code>git config --local credential.helper ""</code>:</strong> Al dejar el ayudante de credenciales en blanco de forma local, la terminal está forzada a pedir credenciales siempre para ese proyecto sin alterar el resto del sistema.
                     </li>
                     <li class="mb-3">
                         🔒 <strong>Fomenta las buenas prácticas:</strong> Tus estudiantes aprenden cómo gestionar la seguridad de sus cuentas cuando comparten infraestructura o equipos de desarrollo.
@@ -127,11 +127,11 @@
 
             <div class="alert alert-danger mt-4" role="alert">
                 <h5 class="alert-heading fw-bold">🛑 El problema de las contraseñas guardadas por Windows</h5>
-                <p class="mb-0">Aunque cambies tu nombre local, Windows tiende a recordar el usuario de GitHub de la última persona que trabajó a través del <strong>Administrador de Credenciales</strong>. Si no prestamos atención, ¡subirás tu tarea al perfil de tu compañero! Para solucionar esto en el aula de forma definitiva y profesional, aprenderemos dos métodos independientes.</p>
+                <p class="mb-0">Aunque cambies tu nombre local, Windows tiende a recordar el usuario de GitHub de la última persona que trabajó a través del <strong>Administrador de Credenciales</strong>. Si no prestamos atención, ¡subirás tu tarea al perfil de tu compañero! Para solucionar esto en el aula de forma definitiva y profesional, aprenderemos métodos independientes.</p>
             </div>
 
             <div class="bg-light p-4 rounded border my-4">
-                <h4 class="fw-bold text-dark mb-4">🛠️ Las Dos Soluciones para Subir Código sin Dejar Rastro</h4>
+                <h4 class="fw-bold text-dark mb-4">🛠️ Soluciones avanzadas para el Aula y Control de Errores</h4>
                 
                 <div class="card border-primary mb-4">
                     <div class="card-header bg-primary text-white fw-bold">Opción A: Autenticación por Token (HTTPS)</div>
@@ -157,7 +157,7 @@
                     </div>
                 </div>
 
-                <div class="card border-dark shadow-sm">
+                <div class="card border-dark shadow-sm mb-4">
                     <div class="card-header bg-dark text-white fw-bold">🛡️ Opción B: Autenticación por Llaves SSH (La más Profesional)</div>
                     <div class="card-body">
                         <p class="small">Con este método, en vez de escribir tokens, creamos un archivo de "llave digital" en tu carpeta. Git la usará para identificarte automáticamente y Windows jamás guardará tu contraseña.</p>
@@ -184,7 +184,7 @@
                     </div>
                 </div>
 
-                <div class="alert alert-success mt-4 mb-0" role="alert">
+                <div class="alert alert-success mt-4 mb-4" role="alert">
                     🎉 <strong>¡Resultados blindados!</strong> Usando cualquiera de los dos métodos anteriores, los proyectos quedan aislados. El alumno que se siente en la próxima hora no tendrá acceso a las cuentas de los demás.
                 </div>
             </div>
@@ -302,7 +302,52 @@
                 <div class="col-12">
                     <div class="card border-danger shadow-sm">
                         <div class="card-header bg-danger text-white fw-bold">
-                            3️⃣ El salvavidas para corregir errores: ¿Qué pasa si me equivoco en el mensaje del Commit?
+                            3️⃣ SOS Error en el Taller: "You are not currently on a branch" (Detached HEAD)
+                        </div>
+                        <div class="card-body">
+                            <h5 class="fw-bold text-dark">❓ ¿Cuándo y por qué ocurre este error?</h5>
+                            <p>
+                                Sucede cuando un alumno accidentalmente se "desengancha" de las ramas de trabajo de Git (por ejemplo, al explorar el historial viejo o hacer un checkout incorrecto). Al hacer un commit, este se procesa bien, pero al intentar realizar el <code>git push</code>, Git frena el proceso lanzando el siguiente error letal:
+                            </p>
+                            <pre class="bg-dark text-warning p-3 rounded font-monospace text-wrap small mb-3">
+fatal: You are not currently on a branch.
+To push the history leading to the current (detached HEAD) state now, use
+    git push origin HEAD:&lt;name-of-remote-branch&gt;</pre>
+                            <p class="text-muted small">
+                                📢 <strong>Explicación simple para los alumnos:</strong> El código no se borró, pero está "volando" en el aire en un estado llamado <em>HEAD descolgado</em>. Como no está dentro de ninguna rama (como <code>main</code>), Git no sabe a dónde enviarlo de forma segura.
+                            </p>
+
+                            <hr>
+
+                            <h5 class="fw-bold text-success">🛠️ La solución recomendada para el aula (Crear rama temporal)</h5>
+                            <p>Para arreglarlo sin arriesgar nada y unir el commit a la rama principal de manera limpia, enséñales a ejecutar estos comandos en orden:</p>
+                            
+                            <ol class="small">
+                                <li class="mb-2"><strong>Guardar el commit flotante en una rama de rescate temporal:</strong>
+                                    <code class="d-block p-2 bg-dark text-light rounded font-monospace my-1">git checkout -b rama-temporal</code>
+                                </li>
+                                <li class="mb-2"><strong>Regresar a la rama principal sana de la computadora:</strong>
+                                    <code class="d-block p-2 bg-dark text-light rounded font-monospace my-1">git checkout main</code>
+                                    <small class="text-muted">*(O <code>master</code> dependiendo de la configuración del proyecto)*</small>
+                                </li>
+                                <li class="mb-2"><strong>Fusionar (traer) el trabajo de la rama de rescate a la principal:</strong>
+                                    <code class="d-block p-2 bg-dark text-light rounded font-monospace my-1">git merge rama-temporal</code>
+                                </li>
+                                <li class="mb-2"><strong>Subir los cambios recuperados a GitHub sin fallos:</strong>
+                                    <code class="d-block p-2 bg-dark text-info rounded font-monospace my-1">git push origin main</code>
+                                </li>
+                                <li class="mb-0"><strong>Eliminar la rama temporal que creamos como salvavidas:</strong>
+                                    <code class="d-block p-2 bg-dark text-muted rounded font-monospace my-1">git branch -d rama-temporal</code>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card border-danger shadow-sm">
+                        <div class="card-header bg-danger text-white fw-bold">
+                            4️⃣ El salvavidas para corregir errores: ¿Qué pasa si me equivoco en el mensaje del Commit?
                         </div>
 
                         <div class="card-body">
@@ -354,7 +399,7 @@ hint: use 'git pull' before pushing again.</pre>
                 <div class="col-12">
                     <div class="card border-success shadow-sm">
                         <div class="card-header bg-success text-white fw-bold">
-                            4️⃣ Vital para Flask, Render y despliegues
+                            5️⃣ Vital para Flask, Render y despliegues
                         </div>
 
                         <div class="card-body">
@@ -390,7 +435,7 @@ hint: use 'git pull' before pushing again.</pre>
                 <div class="col-12">
                     <div class="card border-primary shadow-sm">
                         <div class="card-header bg-primary text-white fw-bold">
-                            5️⃣ Descargar solo una carpeta o archivo específico (Sparse Checkout)
+                            6️⃣ Descargar solo una carpeta o archivo específico (Sparse Checkout)
                         </div>
 
                         <div class="card-body">
@@ -472,29 +517,7 @@ hint: use 'git pull' before pushing again.</pre>
 
                 <tr>
                     <td><code>git status</code></td>
-                    <td>Nos muestra en qué estado están nuestros archivos locales (si están modificados, listos o guardados). Al mostrarlos y si todavía no se realizó la copia, serán de color verde. Si luego de realizar el git add . agrego un nuevo archivo y ejecuto el git status, este archivo aparecerá en rojo, porque no se ha agregado a la zona de preparación. Una vez realizado el git commit estos archivos dejarán de estar en la zona de preparación, ya no se listarán más porque ya se realizó la copia o backup.</td>
-                </tr>
-
-                <tr>
-                    <td><code>git reset (Quitar archivos del escenario)</code></td>
-                    <td>Si un alumno añade un archivo por error con git add, este comando lo saca de la lista de espera para el commit, sin borrar el trabajo del archivo. <br>
-                    <ul>
-                        <li><strong>Uso típico:</strong> git reset nombre_del_archivo.py</li>
-                        <li><strong>Por qué importa:</strong> Evita que suban basura al repositorio de GitHub.</li>
-                    </ul></td>
-                </tr>
-
-                <tr>
-                    <td><code>git diff (Ver cambios línea por línea)</code></td>
-                    <td>Para ver diferencias antes de hacer un Commit. <br>
-                    Muchas veces los alumnos olvidan qué cambiaron exactamente en el código desde el último commit. <br>
-                    Muestra en la consola exactamente qué líneas se borraron (en rojo) y qué líneas se agregaron (en verde) en los archivos modificados. <br>
-                    <ul><li><strong>Por qué importa:</strong> Les ayuda a revisar su propio código y hacer commits más limpios y descriptivos, en lugar del clásico mensaje "cambios" o "arreglo".</li></ul> </td>
-                </tr>
-
-                <tr>
-                    <td><code>git commit -m "mensaje"</code></td>
-                    <td>Guarda un historial con un comentario explicativo de lo que se hizo (crea una versión fija). </td>
+                    <td>Muestra el estado de tus archivos locales (cuáles fueron modificados, cuáles están listos en Staging y cuáles no están siendo seguidos por Git).</td>
                 </tr>
             </tbody>
         </table>
