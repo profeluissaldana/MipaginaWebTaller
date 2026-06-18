@@ -650,75 +650,22 @@ let totalAPagar = calcularPrecioFinal(1000, 15);
 console.log(totalAPagar); // Imprime: 850</code></pre>
 
             <h5 class="fw-bold mt-5 text-success">
-                🔍 Explicación línea por línea: Código de la Calculadora Básica
+                🔍 Proyecto Completo: Uso Avanzado de Objetos, Enfoques y Eventos
             </h5>
             
             <p>
-                A continuación, analizamos detalladamente el script utilizado al final de nuestro formulario para procesar la suma de dos números:
+                Analicemos el siguiente ejemplo completo de una calculadora que optimiza la captura de datos con un Objeto, controla dónde se sitúa el cursor del usuario de forma inteligente e implementa una función de limpieza:
             </p>
 
             <div class="bg-light p-4 rounded border shadow-sm mb-4">
-                <h6 class="fw-bold text-dark">El código analizado:</h6>
-<pre class="bg-dark text-light p-3 rounded"><code>&lt;script&gt;
-    const botonsumar = document.getElementById("btn_sumar");
-    var r = document.getElementById("resultado");
+                <h6 class="fw-bold text-dark">Código HTML + JavaScript Analizado:</h6>
+<pre class="bg-dark text-light p-3 rounded overflow-auto"><code>&lt;!-- En el HTML --&gt;
+&lt;label&gt;Número 1:&lt;/label&gt;
+&lt;input type="number" id="num1" autofocus&gt;
 
-    botonsumar.addEventListener("click", function () {
-        const n1 = Number(document.getElementById("num1").value);
-        const n2 = Number(document.getElementById("num2").value);
-        r.textContent = "Resultado: " + (n1 + n2);
-    })
-&lt;/script&gt;</code></pre>
-
-                <h6 class="fw-bold text-primary mt-4">Análisis paso a paso:</h6>
-                
-                <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <strong>1. Captura de elementos del DOM:</strong><br>
-                        <code>const botonsumar = document.getElementById("btn_sumar");</code><br>
-                        <code>var r = document.getElementById("resultado");</code><br>
-                        <span class="text-muted">Buscamos el botón y el encabezado en el HTML mediante sus atributos <code>id</code> únicos para poder controlarlos desde JavaScript.</span>
-                    </li>
-                    <li class="mb-3">
-                        <strong>2. Escuchador de Eventos:</strong><br>
-                        <code>botonsumar.addEventListener("click", function () { ... })</code><br>
-                        <span class="text-muted">Le indicamos al botón que se quede "escuchando". En el momento en que el usuario haga un clic sobre él, se dispara de forma automática la función interna.</span>
-                    </li>
-                    <li class="mb-3">
-                        <strong>3. ¿Por qué usamos <code>.value</code>?</strong><br>
-                        <code>document.getElementById("num1").value</code><br>
-                        <span class="text-muted">
-                            Cuando usamos únicamente <code>document.getElementById("num1")</code>, JavaScript obtiene <strong>toda la etiqueta HTML completa</strong>. Para acceder específicamente al texto o número que el usuario escribió dentro de esa caja de texto, necesitamos llamar a su propiedad interna <strong><code>.value</code></strong>.
-                        </span>
-                    </li>
-                    <li class="mb-3">
-                        <strong>4. Conversión con <code>Number()</code>:</strong><br>
-                        <span class="text-muted">
-                            Por defecto, todo lo que se recupera de un <code>&lt;input&gt;</code> se recibe como una cadena de texto (String). Al envolverlo en <code>Number(...)</code>, transformamos ese texto en un valor numérico real para poder operar matemáticamente.
-                        </span>
-                    </li>
-                    <li class="mb-3">
-                        <strong>5. ¿Por qué la suma va entre paréntesis <code>(n1 + n2)</code>?</strong><br>
-                        <code>r.textContent = "Resultado: " + (n1 + n2);</code><br>
-                        <span class="text-muted">
-                            En JavaScript, el signo <code>+</code> sirve tanto para sumar números como para <strong>concatenar</strong> (unir) textos. Al colocar <strong><code>(n1 + n2)</code> entre paréntesis</strong>, obligamos al intérprete a resolver primero la operación aritmética interna (la suma) y, recién después, unir el número obtenido al texto de presentación.
-                        </span>
-                    </li>
-                </ul>
-            </div>
-
-            <h5 class="fw-bold mt-5 text-success">
-                📦 Concepto Avanzado: Funciones que devuelven Objetos
-            </h5>
-            
-            <p>
-                Una forma más limpia y profesional de organizar nuestro código es hacer que una función recopile los datos y los devuelva agrupados dentro de un <strong>Objeto</strong>. Veamos este ejemplo mejorado:
-            </p>
-
-            <div class="bg-light p-4 rounded border shadow-sm mb-4">
-                <h6 class="fw-bold text-dark">Código optimizado con Objetos:</h6>
-<pre class="bg-dark text-light p-3 rounded"><code>&lt;script&gt;
-    function obtenerNumeros() {
+&lt;!-- En el Script --&gt;
+&lt;script&gt;
+    function obtenerNumeros(){
         return {
             n1: Number(document.getElementById("num1").value),
             n2: Number(document.getElementById("num2").value)
@@ -726,40 +673,62 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
     }
 
     const btnSumar = document.getElementById("btn_sumar");
+    const btnLimpiar = document.getElementById("btn_limpiar");
     const resultado = document.getElementById("resultado");
 
-    btnSumar.addEventListener("click", function () {
+    btnSumar.addEventListener("click", function(){
         const numeros = obtenerNumeros();
         resultado.textContent = "Resultado: " + (numeros.n1 + numeros.n2);
     });
+
+    btnLimpiar.addEventListener("click", function(){
+        // Vaciamos el valor de los inputs capturando las etiquetas del DOM
+        document.getElementById("num1").value = "";
+        document.getElementById("num2").value = ""; 
+        resultado.textContent = "";
+        
+        // Volvemos a poner el cursor en el primer input
+        document.getElementById("num1").focus();
+    });
 &lt;/script&gt;</code></pre>
 
-                <h6 class="fw-bold text-danger mt-4">⚠️ ¿Qué confunde a los alumnos? Claves para entenderlo:</h6>
-                
-                <div class="alert alert-warning">
-                    <h5 class="h6 fw-bold text-dark">1. ¿Por qué usamos llaves <code>{}</code> en el <code>return</code>?</h5>
-                    <p class="mb-0 text-muted">
-                        En JavaScript, las llaves <code>{}</code> se utilizan para definir un <strong>Objeto</strong>. Un objeto es como una "supervariable" o una caja compartimentada que nos permite guardar múltiples datos etiquetados en su interior. Al poner <code>return { ... };</code>, la función no está devolviendo un solo número, sino que está empaquetando y enviando la caja completa con todo lo que tiene adentro.
+                <h6 class="fw-bold text-primary mt-4">💡 Lección 1: Diferencia entre "autofocus" y ".focus()"</h6>
+                <p class="text-muted">
+                    Ambos conceptos sirven para indicarle al navegador dónde queremos ubicar el foco de atención (el cursor listo para escribir), pero actúan en momentos totalmente distintos:
+                </p>
+                <ul>
+                    <li class="mb-2">
+                        <strong>Propiedad <code>autofocus</code> (HTML):</strong> Es un atributo estático. Funciona <strong>únicamente una sola vez al cargar la página por primera vez</strong>. Al entrar al sitio, el navegador lee el HTML y posiciona automáticamente el cursor allí sin que el usuario haga clics.
+                    </li>
+                    <li class="mb-2">
+                        <strong>Método <code>.focus()</code> (JavaScript):</strong> Es una función dinámica. Nos permite mandar el cursor a cualquier elemento en <strong>cualquier momento de la ejecución</strong> tras una acción. En este ejemplo, cuando el usuario hace clic en "Limpiar", borramos los campos y usamos <code>.focus()</code> para devolverle el cursor al primer input cómodamente sin recargar la página.
+                    </li>
+                </ul>
+
+                <h6 class="fw-bold text-danger mt-4">⚠️ Lección 2: ¿Por qué NO podemos usar <code>numeros.n1 = ""</code> para limpiar?</h6>
+                <div class="alert alert-danger">
+                    <p class="fw-bold mb-1">🚨 Error común de lógica conceptual:</p>
+                    <p class="mb-0">
+                        Muchos alumnos piensan: <em>"Si <code>numeros.n1</code> tiene el valor del primer input, ¿por qué no hacemos <code>numeros.n1 = "";</code> para limpiarlo y nos ahorramos escribir <code>document.getElementById</code> otra vez?"</em>.
                     </p>
                 </div>
-
-                <div class="alert alert-warning">
-                    <h5 class="h6 fw-bold text-dark">2. ¿Por qué se usa dos puntos <code>:</code> en vez del igual <code>=</code>?</h5>
-                    <p class="text-muted">
-                        Este es un punto crítico. Cuando creamos variables sueltas en nuestro código usamos el signo igual (ej: <code>let n1 = 10;</code>). <br><br>
-                        Sin embargo, <strong>dentro de un objeto</strong> la sintaxis cambia por completo. Los objetos se componen de pares de <strong>Clave: Valor</strong> de la siguiente forma:
-                    </p>
-                    <pre class="bg-dark text-warning p-2 rounded mb-2"><code>n1: Number(...)</code></pre>
-                    <p class="mb-0 text-muted">
-                        Aquí, <code>n1</code> no es una variable independiente; es la <strong>etiqueta o propiedad</strong> del compartimento dentro del objeto, y los dos puntos <code>:</code> se encargan de asignarle su contenido. Usar un igual <code>=</code> adentro de las llaves del objeto provocaría un error de sintaxis en el navegador.
-                    </p>
-                </div>
-
-                <div class="alert alert-warning">
-                    <h5 class="h6 fw-bold text-dark">3. ¿Cómo se lee el valor con el punto (<code>numeros.n1</code>)?</h5>
-                    <p class="mb-0 text-muted">
-                        Cuando ejecutamos la línea <code>const numeros = obtenerNumeros();</code>, la variable <code>numeros</code> se convierte en dueña del objeto devuelto. Para poder abrir la caja y sacar los datos de forma individual, usamos la <strong>nomenclatura del punto (<code>.</code>)</strong>. Escribir <code>numeros.n1</code> significa textualmente: <em>"Entra a la variable 'numeros' y búscame lo que guardaste bajo la etiqueta 'n1'"</em>.
-                    </p>
+                <p class="text-muted">
+                    <strong>La respuesta es NO, no es posible</strong>, y la razón técnica es la diferencia entre <strong>copia por valor</strong> y <strong>referencia al DOM</strong>:
+                </p>
+                <ol class="text-muted">
+                    <li class="mb-2">
+                        Cuando la función <code>obtenerNumeros()</code> ejecuta <code>Number(document.getElementById("num1").value)</code>, JavaScript va al input, saca el número (por ejemplo, un <code>5</code>) y **crea una copia de ese número suelta** dentro del objeto.
+                    </li>
+                    <li class="mb-2">
+                        Por ende, el objeto devuelto es simplemente: <code>{ n1: 5, n2: 3 }</code>. Es solo un paquete con números guardados, **perdió cualquier conexión directa con las cajas de texto del HTML**.
+                    </li>
+                    <li class="mb-2">
+                        Si en la función de limpiar escribiéramos <code>numeros.n1 = "";</code>, lo único que estaríamos haciendo es cambiar el <code>5</code> por un texto vacío **adentro de la variable invisible de JavaScript**, pero la caja de texto real de la pantalla del usuario seguiría mostrando el <code>5</code> intacto.
+                    </li>
+                </ol>
+                <div class="alert alert-info mb-0">
+                    <strong>💡 Regla de oro para los alumnos:</strong> <br>
+                    Para <strong>leer</strong> lo que el usuario escribió usamos el objeto intermediario, pero para <strong>modificar o limpiar</strong> la pantalla de forma real, estamos obligados a ir directamente al elemento del DOM usando de nuevo <code>document.getElementById("num1").value = "";</code>.
                 </div>
             </div>
 
