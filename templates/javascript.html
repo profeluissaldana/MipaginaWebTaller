@@ -552,7 +552,7 @@ while(contador <= 5){
 
             <div class="bg-light p-4 rounded border shadow-sm my-3">
                 <h6 class="fw-bold text-dark">📋 Caso Práctico: Conmutador de Formatos Visuales</h6>
-<pre class="bg-dark text-light p-3 rounded overflow-auto"><code>&lt;!DOCTYPE html&gt;
+pre class="bg-dark text-light p-3 rounded overflow-auto"><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="es"&gt;
 &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
@@ -870,7 +870,7 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
             
             <ol>
                 <li class="mb-3">
-                    Añade un nuevo botón en la interfaz HTML para la operation de <strong>Multiplicar</strong>. Modifica la lógica interna de tu función <code>operar</code> agregando la multiplicación. ¡Tú decides si prefieres expandir el bloque de <code>if / else if</code> o migrar tu código al modelo estructurado de <code>switch / case</code>!
+                    Añade un nuevo botón en la interfaz HTML para la operación de <strong>Multiplicar</strong>. Modifica la lógica interna de tu función <code>operar</code> agregando la multiplicación. ¡Tú decides si prefieres expandir el bloque de <code>if / else if</code> o migrar tu código al modelo estructurado de <code>switch / case</code>!
                 </li>
                 <li>
                     <strong>Gran Reto Algorítmico:</strong> Añade la operación de <strong>Dividir</strong>. Debes implementar una validación condicional que inspeccione si el segundo número ingresado es un cero. De ser así, se le debe prohibir la operación al usuario enviándole un mensaje claro mediante un cuadro de texto emergente (usando <code>alert()</code>) y definiendo el casillero del resultado como <em>"Error"</em>.
@@ -952,7 +952,7 @@ cajaTexto.addEventListener("input", function() {
 });</code></pre>
 
             <div class="bg-light p-3 rounded border text-muted my-3">
-                <p class="mb-2">🔍 <strong>Nota importante para el desarrollador: ¿<code>innerText</code> o `textContent`?</strong></p>
+                <p class="mb-2">🔍 <strong>Nota importante para el desarrollador: ¿<code>innerText</code> o <code>textContent</code>?</strong></p>
                 <p class="small mb-1">
                     En el código anterior usamos <code>innerText</code> para modificar el contenido visual, pero existe otra propiedad muy similar llamada <code>textContent</code>. Aunque en este ejercicio hacen exactamente lo mismo, tienen una diferencia clave:
                 </p>
@@ -960,6 +960,81 @@ cajaTexto.addEventListener("input", function() {
                     <li class="mb-1"><strong><code>innerText</code>:</strong> Es "consciente" del diseño visual de la página. Si un texto está oculto mediante CSS (por ejemplo, con <code>display: none;</code>), esta propiedad <strong>no</strong> lo leerá.</li>
                     <li><strong><code>textContent</code>:</strong> Es directa y cruda. Lee o modifica el texto puro tal cual existe dentro del código HTML, ignorando por completo las reglas de estilo o si el elemento está oculto a los ojos del usuario.</li>
                 </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row my-5">
+
+        <div class="col-12">
+
+            <h4 class="fw-bold text-dark">
+                7.1 Capturar teclas específicas y controlar el Foco (focus y keydown)
+            </h4>
+
+            <p>
+                Para mejorar la experiencia del usuario, es muy útil controlar el <strong>foco (focus)</strong>; es decir, en qué cuadro de texto está parpadeando la barra de escritura del cursor.
+            </p>
+
+            <div class="alert alert-warning">
+                📌 <strong>Conceptos Clave de Experiencia de Usuario:</strong>
+                <ul class="mt-2 mb-0">
+                    <li><strong>Atributo <code>autofocus</code>:</strong> Se añade directamente en la etiqueta HTML de un input para que el cursor empiece parpadeando allí automáticamente en cuanto se carga la página.</li>
+                    <li><strong>Método <code>.focus()</code>:</strong> Es la función de JavaScript que nos permite mover el cursor hacia cualquier casilla mediante código.</li>
+                    <li><strong>Evento <code>"keydown"</code>:</strong> Se ejecuta cuando el usuario presiona una tecla del teclado físico.</li>
+                </ul>
+            </div>
+
+            <h5 class="fw-bold mt-4">
+                🎯 Caso práctico: Pasar al siguiente input presionando la tecla "Enter"
+            </h5>
+            <p>
+                Si deseamos capturar qué tecla apretó el usuario, debemos usar un <strong>parámetro de evento</strong> (comúnmente llamado <code>e</code> o <code>event</code>) en la función del escuchador. Este objeto contiene la propiedad <code>e.key</code>, que nos dice el nombre exacto de la tecla:
+            </p>
+
+<pre class="bg-dark text-light p-4 rounded border overflow-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Salto de Input con Enter&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h3&gt;Formulario Ágil&lt;/h3&gt;
+    
+    &lt;!-- Usamos 'autofocus' para arrancar con el cursor aquí --&gt;
+    &lt;label&gt;Nombre:&lt;/label&gt;
+    &lt;input type="text" id="inputNombre" autofocus&gt;
+    &lt;br&gt;&lt;br&gt;
+
+    &lt;label&gt;Apellido:&lt;/label&gt;
+    &lt;input type="text" id="inputApellido"&gt;
+
+    &lt;script&gt;
+        const inputNombre = document.getElementById("inputNombre");
+        const inputApellido = document.getElementById("inputApellido");
+
+        // Escuchamos cuando se presiona una tecla dentro del primer casillero
+        inputNombre.addEventListener("keydown", function(e) {
+            
+            // Verificamos si la tecla presionada es físicamente el 'Enter'
+            if (e.key === "Enter") {
+                
+                // Movemos el foco del cursor automáticamente al siguiente casillero
+                inputApellido.focus();
+                
+            }
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <div class="bg-light p-3 rounded border text-muted my-3">
+                <p class="small mb-0">
+                    💡 <strong>Tip didáctico:</strong> Al capturar <code>e.key</code>, los nombres de las teclas son strings muy claros como <code>"Enter"</code>, <code>"Escape"</code>, <code>"ArrowUp"</code> o simplemente letras como <code>"a"</code>. ¡Esto permite a los alumnos añadir controles de videojuegos o atajos de teclado muy divertidos!
+                </p>
             </div>
 
         </div>
@@ -1065,7 +1140,7 @@ cajaTexto.addEventListener("input", function() {
             <div class="alert alert-info mb-0">
 
                 💡 Objetivo:
-                combin HTML + CSS + JavaScript.
+                combinar HTML + CSS + JavaScript.
 
             </div>
 
