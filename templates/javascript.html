@@ -650,85 +650,125 @@ let totalAPagar = calcularPrecioFinal(1000, 15);
 console.log(totalAPagar); // Imprime: 850</code></pre>
 
             <h5 class="fw-bold mt-5 text-success">
-                🔍 Proyecto Completo: Uso Avanzado de Objetos, Enfoques y Eventos
+                🧮 Proyecto Avanzado: Funciones con Parámetros y Reutilización de Objetos
             </h5>
             
             <p>
-                Analicemos el siguiente ejemplo completo de una calculadora que optimiza la captura de datos con un Objeto, controla dónde se sitúa el cursor del usuario de forma inteligente e implementa una función de limpieza:
+                En esta sección integramos un diseño de interfaz con un casillero dedicado para el resultado y el uso de <strong>parámetros en funciones</strong> para controlar qué operación aritmética realizar a partir del mismo objeto contenedor.
             </p>
 
             <div class="bg-light p-4 rounded border shadow-sm mb-4">
-                <h6 class="fw-bold text-dark">Código HTML + JavaScript Analizado:</h6>
-<pre class="bg-dark text-light p-3 rounded overflow-auto"><code>&lt;!-- En el HTML --&gt;
-&lt;label&gt;Número 1:&lt;/label&gt;
-&lt;input type="number" id="num1" autofocus&gt;
+                <h6 class="fw-bold text-dark">Código Completo de la Aplicación:</h6>
+<pre class="bg-dark text-light p-3 rounded overflow-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Calculadora Multioperación&lt;/title&gt;
+    &lt;style&gt;
+        input {
+            width: 80px;
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        button {
+            cursor: pointer;
+            margin-right: 5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Calculadora de Operaciones&lt;/h2&gt;
 
-&lt;!-- En el Script --&gt;
-&lt;script&gt;
-    function obtenerNumeros(){
-        return {
-            n1: Number(document.getElementById("num1").value),
-            n2: Number(document.getElementById("num2").value)
-        };
-    }
+    &lt;form id="formulario"&gt;
+        &lt;label&gt;Número 1:&lt;/label&gt;
+        &lt;input type="number" id="num1" autofocus&gt;
+        &lt;br&gt;&lt;br&gt;
 
-    const btnSumar = document.getElementById("btn_sumar");
-    const btnLimpiar = document.getElementById("btn_limpiar");
-    const resultado = document.getElementById("resultado");
+        &lt;label&gt;Número 2:&lt;/label&gt;
+        &lt;input type="number" id="num2"&gt;
+        &lt;br&gt;&lt;br&gt;
 
-    btnSumar.addEventListener("click", function(){
-        const numeros = obtenerNumeros();
-        resultado.textContent = "Resultado: " + (numeros.n1 + numeros.n2);
-    });
+        &lt;button type="button" id="btn_sumar"&gt;Sumar&lt;/button&gt;
+        &lt;button type="button" id="btn_restar"&gt;Restar&lt;/button&gt;
+        &lt;button type="button" id="btn_limpiar"&gt;Limpiar&lt;/button&gt;
+        &lt;br&gt;&lt;br&gt;
 
-    btnLimpiar.addEventListener("click", function(){
-        // Vaciamos el valor de los inputs capturando las etiquetas del DOM
-        document.getElementById("num1").value = "";
-        document.getElementById("num2").value = ""; 
-        resultado.textContent = "";
-        
-        // Volvemos a poner el cursor en el primer input
-        document.getElementById("num1").focus();
-    });
-&lt;/script&gt;</code></pre>
+        &lt;label&gt;Resultado:&lt;/label&gt;
+        &lt;input type="text" id="resultado" readonly&gt;
+    &lt;/form&gt;
 
-                <h6 class="fw-bold text-primary mt-4">💡 Lección 1: Diferencia entre "autofocus" y ".focus()"</h6>
-                <p class="text-muted">
-                    Ambos conceptos sirven para indicarle al navegador dónde queremos ubicar el foco de atención (el cursor listo para escribir), pero actúan en momentos totalmente distintos:
-                </p>
-                <ul>
-                    <li class="mb-2">
-                        <strong>Propiedad <code>autofocus</code> (HTML):</strong> Es un atributo estático. Funciona <strong>únicamente una sola vez al cargar la página por primera vez</strong>. Al entrar al sitio, el navegador lee el HTML y posiciona automáticamente el cursor allí sin que el usuario haga clics.
+    &lt;script&gt;
+        function obtenerNumeros() {
+            return {
+                n1: Number(document.getElementById("num1").value),
+                n2: Number(document.getElementById("num2").value)
+            };
+        }
+
+        // Nueva función dinámica que usa parámetros
+        function operar(tipoOperacion) {
+            const numeros = obtenerNumeros();
+            const inputResultado = document.getElementById("resultado");
+
+            if (tipoOperacion === "sumar") {
+                inputResultado.value = numeros.n1 + numeros.n2;
+            } else if (tipoOperacion === "restar") {
+                inputResultado.value = numeros.n1 - numeros.n2;
+            }
+        }
+
+        // Vinculación de eventos enviando argumentos
+        document.getElementById("btn_sumar").addEventListener("click", function() {
+            operar("sumar");
+        });
+
+        document.getElementById("btn_restar").addEventListener("click", function() {
+            operar("restar");
+        });
+
+        // Evento de Limpieza
+        document.getElementById("btn_limpiar").addEventListener("click", function() {
+            document.getElementById("num1").value = "";
+            document.getElementById("num2").value = "";
+            document.getElementById("resultado").value = "";
+            document.getElementById("num1").focus();
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+                <h6 class="fw-bold text-primary mt-4">💡 ¿Qué hay de nuevo? Explicación pedagógica para la clase:</h6>
+                
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <strong>1. Casillero de Resultado (<code>readonly</code>):</strong><br>
+                        En lugar de inyectar texto en un encabezado, utilizamos una etiqueta <code>&lt;input type="text" id="resultado" readonly&gt;</code>. El atributo <code>readonly</code> hace que el cuadro se vea vacío e impide que el alumno escriba manualmente allí, delegando el control exclusivo a JavaScript mediante la propiedad <code>.value</code>.
                     </li>
-                    <li class="mb-2">
-                        <strong>Método <code>.focus()</code> (JavaScript):</strong> Es una función dinámica. Nos permite mandar el cursor a cualquier elemento en <strong>cualquier momento de la ejecución</strong> tras una acción. En este ejemplo, cuando el usuario hace clic en "Limpiar", borramos los campos y usamos <code>.focus()</code> para devolverle el cursor al primer input cómodamente sin recargar la página.
+                    <li class="mb-3">
+                        <strong>2. Una sola función con parámetros (Reutilización):</strong><br>
+                        En vez de crear una función entera para sumar y otra para restar, creamos la función centralizada <code>operar(tipoOperacion)</code>. Al hacer clic en los botones, pasamos el texto <code>"sumar"</code> o <code>"restar"</code> como un <strong>argumento</strong>. JavaScript lo evalúa internamente a través de condicionales (<code>if / else if</code>) y realiza la matemática adecuada sobre el objeto de números capturado.
                     </li>
                 </ul>
 
-                <h6 class="fw-bold text-danger mt-4">⚠️ Lección 2: ¿Por qué NO podemos usar <code>numeros.n1 = ""</code> para limpiar?</h6>
-                <div class="alert alert-danger">
-                    <p class="fw-bold mb-1">🚨 Error común de lógica conceptual:</p>
-                    <p class="mb-0">
-                        Muchos alumnos piensan: <em>"Si <code>numeros.n1</code> tiene el valor del primer input, ¿por qué no hacemos <code>numeros.n1 = "";</code> para limpiarlo y nos ahorramos escribir <code>document.getElementById</code> otra vez?"</em>.
-                    </p>
-                </div>
+                <h6 class="fw-bold text-warning mt-4">🚀 Adelanto Académico: Manejo de la división por cero</h6>
                 <p class="text-muted">
-                    <strong>La respuesta es NO, no es posible</strong>, y la razón técnica es la diferencia entre <strong>copia por valor</strong> y <strong>referencia al DOM</strong>:
+                    Cuando los alumnos implementen la división, se toparán con un problema lógico: las matemáticas no permiten dividir por 0. En informática, si no se valida, puede generar errores lógicos como mostrar el valor <code>Infinity</code> en pantalla.
                 </p>
-                <ol class="text-muted">
-                    <li class="mb-2">
-                        Cuando la función <code>obtenerNumeros()</code> ejecuta <code>Number(document.getElementById("num1").value)</code>, JavaScript va al input, saca el número (por ejemplo, un <code>5</code>) y **crea una copia de ese número suelta** dentro del objeto.
-                    </li>
-                    <li class="mb-2">
-                        Por ende, el objeto devuelto es simplemente: <code>{ n1: 5, n2: 3 }</code>. Es solo un paquete con números guardados, **perdió cualquier conexión directa con las cajas de texto del HTML**.
-                    </li>
-                    <li class="mb-2">
-                        Si en la función de limpiar escribiéramos <code>numeros.n1 = "";</code>, lo único que estaríamos haciendo es cambiar el <code>5</code> por un texto vacío **adentro de la variable invisible de JavaScript**, pero la caja de texto real de la pantalla del usuario seguiría mostrando el <code>5</code> intacto.
-                    </li>
-                </ol>
-                <div class="alert alert-info mb-0">
-                    <strong>💡 Regla de oro para los alumnos:</strong> <br>
-                    Para <strong>leer</strong> lo que el usuario escribió usamos el objeto intermediario, pero para <strong>modificar o limpiar</strong> la pantalla de forma real, estamos obligados a ir directamente al elemento del DOM usando de nuevo <code>document.getElementById("num1").value = "";</code>.
+                <div class="alert alert-warning">
+                    <p class="fw-bold mb-1">🧐 ¿Cómo controlamos y advertimos al usuario?</p>
+                    <p class="mb-2">
+                        Utilizaremos una estructura condicional anidada para inspeccionar el valor de <code>numeros.n2</code> justo antes de realizar la operación:
+                    </p>
+                    <pre class="bg-dark text-warning p-3 rounded mb-0"><code>else if (tipoOperacion === "dividir") {
+    if (numeros.n2 === 0) {
+        alert("Error: No es posible dividir un número por cero.");
+        inputResultado.value = "Error";
+    } else {
+        inputResultado.value = numeros.n1 / numeros.n2;
+    }
+}</code></pre>
                 </div>
             </div>
 
@@ -739,22 +779,23 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
     <div class="card border-primary shadow-sm mb-5">
 
         <div class="card-header bg-primary text-white fw-bold">
-            💻 Desafío de Funciones
+            💪 Desafío para los Alumnos: Expandiendo la Calculadora
         </div>
 
         <div class="card-body">
 
-            <p>
-                <strong>Consigna: El Validador de Contraseñas</strong>
+            <p class="fw-bold">
+                🎯 Consignas de la actividad:
             </p>
-            <p>
-                Crea una función llamada <code>validarClave(password)</code> que reciba un texto. 
-                Si el texto tiene <strong>8 o más caracteres</strong> (puedes usar <code>password.length</code>), la función debe retornar <code>true</code>. Si tiene menos, debe retornar <code>false</code>.
-            </p>
-
-            <div class="alert alert-warning mb-0">
-                🚀 <strong>¡Reto Informático!:</strong> Conecta esta función a un <code>&lt;input type="password"&gt;</code> de HTML y haz que el borde del input cambie a color verde si es segura, o a rojo si es insegura al presionar un botón.
-            </div>
+            
+            <ol>
+                <li class="mb-2">
+                    Añade un nuevo botón en la interfaz HTML para la operación de <strong>Multiplicar</strong> (<code>id="btn_multiplicar"</code>). Conéctalo mediante un escuchador de eventos para que llame a la función pasándole el argumento necesario, y añade la lógica correspondiente dentro de la función <code>operar</code>.
+                </li>
+                <li>
+                    <strong>Gran Reto Técnico (Próxima Clase):</strong> Añade el botón de <strong>Dividir</strong>. Implementa la lógica condicional explicada anteriormente utilizando <code>alert()</code> para impedir de forma segura que el segundo número ingresado sea un cero.
+                </li>
+            </ol>
 
         </div>
 
