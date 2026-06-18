@@ -650,20 +650,20 @@ let totalAPagar = calcularPrecioFinal(1000, 15);
 console.log(totalAPagar); // Imprime: 850</code></pre>
 
             <h5 class="fw-bold mt-5 text-success">
-                🧮 Proyecto Avanzado: Funciones con Parámetros y Reutilización de Objetos
+                🧮 Proyecto: Funciones con Parámetros y Objetos mediante `if / else`
             </h5>
             
             <p>
-                En esta sección integramos un diseño de interfaz con un casillero dedicado para el resultado y el uso de <strong>parámetros en funciones</strong> para controlar qué operación aritmética realizar a partir del mismo objeto contenedor.
+                En esta aplicación integramos un casillero dedicado para el resultado (utilizando un input con el atributo <code>readonly</code> para evitar que se pueda editar manualmente) y el uso de <strong>parámetros</strong> para controlar qué operación aritmética realizar a partir del mismo objeto contenedor.
             </p>
 
             <div class="bg-light p-4 rounded border shadow-sm mb-4">
-                <h6 class="fw-bold text-dark">Código Completo de la Aplicación:</h6>
+                <h6 class="fw-bold text-dark">Código Base del Archivo (Enfoque tradicional):</h6>
 <pre class="bg-dark text-light p-3 rounded overflow-auto"><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="es"&gt;
 &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Calculadora Multioperación&lt;/title&gt;
+    &lt;title&gt;Calculadora Básica&lt;/title&gt;
     &lt;style&gt;
         input {
             width: 80px;
@@ -707,7 +707,7 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
             };
         }
 
-        // Nueva función dinámica que usa parámetros
+        // Función dinámica tradicional utilizando condicionales 'if'
         function operar(tipoOperacion) {
             const numeros = obtenerNumeros();
             const inputResultado = document.getElementById("resultado");
@@ -719,7 +719,7 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
             }
         }
 
-        // Vinculación de eventos enviando argumentos
+        // Escuchadores de eventos
         document.getElementById("btn_sumar").addEventListener("click", function() {
             operar("sumar");
         });
@@ -738,38 +738,48 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
     &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
+            </div>
 
-                <h6 class="fw-bold text-primary mt-4">💡 ¿Qué hay de nuevo? Explicación pedagógica para la clase:</h6>
-                
-                <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <strong>1. Casillero de Resultado (<code>readonly</code>):</strong><br>
-                        En lugar de inyectar texto en un encabezado, utilizamos una etiqueta <code>&lt;input type="text" id="resultado" readonly&gt;</code>. El atributo <code>readonly</code> hace que el cuadro se vea vacío e impide que el alumno escriba manualmente allí, delegando el control exclusivo a JavaScript mediante la propiedad <code>.value</code>.
-                    </li>
-                    <li class="mb-3">
-                        <strong>2. Una sola función con parámetros (Reutilización):</strong><br>
-                        En vez de crear una función entera para sumar y otra para restar, creamos la función centralizada <code>operar(tipoOperacion)</code>. Al hacer clic en los botones, pasamos el texto <code>"sumar"</code> o <code>"restar"</code> como un <strong>argumento</strong>. JavaScript lo evalúa internamente a través de condicionales (<code>if / else if</code>) y realiza la matemática adecuada sobre el objeto de números capturado.
-                    </li>
-                </ul>
+            <h5 class="fw-bold mt-5 text-primary">
+                🔀 Una Alternativa más Limpia y Clara: La Estructura `switch / case`
+            </h5>
+            
+            <p>
+                A medida que una aplicación incorpora más opciones de cálculo, el uso excesivo de bloques <code>if / else if</code> sucesivos puede ensuciar la legibilidad de nuestro algoritmo. Para solucionar este problema informático, JavaScript ofrece la estructura <strong><code>switch / case</code></strong>.
+            </p>
 
-                <h6 class="fw-bold text-warning mt-4">🚀 Adelanto Académico: Manejo de la división por cero</h6>
-                <p class="text-muted">
-                    Cuando los alumnos implementen la división, se toparán con un problema lógico: las matemáticas no permiten dividir por 0. En informática, si no se valida, puede generar errores lógicos como mostrar el valor <code>Infinity</code> en pantalla.
-                </p>
-                <div class="alert alert-warning">
-                    <p class="fw-bold mb-1">🧐 ¿Cómo controlamos y advertimos al usuario?</p>
-                    <p class="mb-2">
-                        Utilizaremos una estructura condicional anidada para inspeccionar el valor de <code>numeros.n2</code> justo antes de realizar la operación:
-                    </p>
-                    <pre class="bg-dark text-warning p-3 rounded mb-0"><code>else if (tipoOperacion === "dividir") {
-    if (numeros.n2 === 0) {
-        alert("Error: No es posible dividir un número por cero.");
-        inputResultado.value = "Error";
-    } else {
-        inputResultado.value = numeros.n1 / numeros.n2;
+            <div class="alert alert-success">
+                💡 <strong>Ventaja clave:</strong> Evalúa una variable directamente contra múltiples opciones fijas, haciendo que el código sea mucho más scannable y fácil de expandir en el futuro.
+            </div>
+
+            <p>
+                Si reemplazáramos la lógica de la función <code>operar</code> anterior por un <code>switch</code>, el script se vería de la siguiente forma (restringido únicamente para sumar y restar):
+            </p>
+
+<pre class="bg-dark text-info p-4 rounded border overflow-auto"><code>function operar(tipoOperacion) {
+    const numeros = obtenerNumeros();
+    const inputResultado = document.getElementById("resultado");
+
+    // Evaluamos el parámetro directamente de forma más ordenada
+    switch (tipoOperacion) {
+        case "sumar":
+            inputResultado.value = numeros.n1 + numeros.n2;
+            break;
+        case "restar":
+            inputResultado.value = numeros.n1 - numeros.n2;
+            break;
+        default:
+            inputResultado.value = "";
     }
 }</code></pre>
-                </div>
+
+            <div class="bg-light p-3 rounded border text-muted my-3">
+                <p class="mb-1"><strong>Componentes obligatorios del switch:</strong></p>
+                <ul class="mb-0">
+                    <li><strong><code>case "valor":</code></strong> Define la condición exacta a verificar.</li>
+                    <li><strong><code>break;</code></strong> Es un freno crítico. Le dice a JavaScript que frene la ejecución y salga de la estructura una vez hallada la coincidencia. Si se omite, el código continuará ejecutando los casos de abajo en cascada.</li>
+                    <li><strong><code>default:</code></strong> Funciona como un "else" final de seguridad en caso de que ningún valor coincida.</li>
+                </ul>
             </div>
 
         </div>
@@ -779,21 +789,21 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
     <div class="card border-primary shadow-sm mb-5">
 
         <div class="card-header bg-primary text-white fw-bold">
-            💪 Desafío para los Alumnos: Expandiendo la Calculadora
+            💪 Desafío Práctico: Expandiendo la Calculadora (Elegir Estructura)
         </div>
 
         <div class="card-body">
 
-            <p class="fw-bold">
-                🎯 Consignas de la actividad:
+            <p class="fw-bold mb-3">
+                🎯 Consignas para la actividad en clase:
             </p>
             
             <ol>
-                <li class="mb-2">
-                    Añade un nuevo botón en la interfaz HTML para la operación de <strong>Multiplicar</strong> (<code>id="btn_multiplicar"</code>). Conéctalo mediante un escuchador de eventos para que llame a la función pasándole el argumento necesario, y añade la lógica correspondiente dentro de la función <code>operar</code>.
+                <li class="mb-3">
+                    Añade un nuevo botón en la interfaz HTML para la operación de <strong>Multiplicar</strong>. Modifica la lógica interna de tu función <code>operar</code> agregando la multiplicación. ¡Tú decides si prefieres expandir el bloque de <code>if / else if</code> o migrar tu código al modelo estructurado de <code>switch / case</code>!
                 </li>
                 <li>
-                    <strong>Gran Reto Técnico (Próxima Clase):</strong> Añade el botón de <strong>Dividir</strong>. Implementa la lógica condicional explicada anteriormente utilizando <code>alert()</code> para impedir de forma segura que el segundo número ingresado sea un cero.
+                    <strong>Gran Reto Algorítmico:</strong> Añade la operación de <strong>Dividir</strong>. Debes implementar una validación condicional que inspeccione si el segundo número ingresado es un cero. De ser así, se le debe prohibir la operación al usuario enviándole un mensaje claro mediante un cuadro de texto emergente (usando <code>alert()</code>) y definiendo el casillero del resultado como <em>"Error"</em>.
                 </li>
             </ol>
 
