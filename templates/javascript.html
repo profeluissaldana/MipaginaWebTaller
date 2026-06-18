@@ -650,7 +650,7 @@ let totalAPagar = calcularPrecioFinal(1000, 15);
 console.log(totalAPagar); // Imprime: 850</code></pre>
 
             <h5 class="fw-bold mt-5 text-success">
-                🔍 Explicación línea por línea: Código de la Calculadora
+                🔍 Explicación línea por línea: Código de la Calculadora Básica
             </h5>
             
             <p>
@@ -682,30 +682,85 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
                     <li class="mb-3">
                         <strong>2. Escuchador de Eventos:</strong><br>
                         <code>botonsumar.addEventListener("click", function () { ... })</code><br>
-                        <span class="text-muted">Le indicamos al botón que se quede "escuchando". En el momento en que el usuario haga un clic sobre él, se disparará de forma automática la función que está adentro.</span>
+                        <span class="text-muted">Le indicamos al botón que se quede "escuchando". En el momento en que el usuario haga un clic sobre él, se dispara de forma automática la función interna.</span>
                     </li>
                     <li class="mb-3">
                         <strong>3. ¿Por qué usamos <code>.value</code>?</strong><br>
                         <code>document.getElementById("num1").value</code><br>
                         <span class="text-muted">
-                            Cuando usamos únicamente <code>document.getElementById("num1")</code>, JavaScript obtiene <strong>toda la etiqueta HTML completa</strong> (ej: <code>&lt;input id="num1"&gt;</code>). Para acceder específicamente al texto o número que el usuario escribió dentro de esa caja de texto, necesitamos acceder a su propiedad interna llamada <strong><code>.value</code></strong>.
+                            Cuando usamos únicamente <code>document.getElementById("num1")</code>, JavaScript obtiene <strong>toda la etiqueta HTML completa</strong>. Para acceder específicamente al texto o número que el usuario escribió dentro de esa caja de texto, necesitamos llamar a su propiedad interna <strong><code>.value</code></strong>.
                         </span>
                     </li>
                     <li class="mb-3">
                         <strong>4. Conversión con <code>Number()</code>:</strong><br>
                         <span class="text-muted">
-                            Por defecto, todo lo que se recupera de un <code>&lt;input&gt;</code> se recibe como una cadena de texto (String). Si el usuario escribe un <code>5</code> y un <code>3</code>, JavaScript interpretaría <code>"5" + "3" = "53"</code> (los pega). Al envolverlo en <code>Number(...)</code>, transformamos ese texto en un valor numérico real para poder operar matemáticamente.
+                            Por defecto, todo lo que se recupera de un <code>&lt;input&gt;</code> se recibe como una cadena de texto (String). Al envolverlo en <code>Number(...)</code>, transformamos ese texto en un valor numérico real para poder operar matemáticamente.
                         </span>
                     </li>
                     <li class="mb-3">
                         <strong>5. ¿Por qué la suma va entre paréntesis <code>(n1 + n2)</code>?</strong><br>
                         <code>r.textContent = "Resultado: " + (n1 + n2);</code><br>
                         <span class="text-muted">
-                            En JavaScript, el signo <code>+</code> sirve tanto para sumar números como para <strong>concatenar</strong> (unir) textos. Si escribiéramos <code>"Resultado: " + n1 + n2</code>, JavaScript vería primero un texto, por lo que trataría todo lo que sigue como texto, dando como resultado <code>"Resultado: 53"</code>.<br>
-                            Al colocar <strong><code>(n1 + n2)</code> entre paréntesis</strong>, le alteramos la prioridad matemática: obligamos al intérprete a resolver primero la operación aritmética interna (<code>5 + 3 = 8</code>) y, recién después, unir el número final obtenido al texto de presentación.
+                            En JavaScript, el signo <code>+</code> sirve tanto para sumar números como para <strong>concatenar</strong> (unir) textos. Al colocar <strong><code>(n1 + n2)</code> entre paréntesis</strong>, obligamos al intérprete a resolver primero la operación aritmética interna (la suma) y, recién después, unir el número obtenido al texto de presentación.
                         </span>
                     </li>
                 </ul>
+            </div>
+
+            <h5 class="fw-bold mt-5 text-success">
+                📦 Concepto Avanzado: Funciones que devuelven Objetos
+            </h5>
+            
+            <p>
+                Una forma más limpia y profesional de organizar nuestro código es hacer que una función recopile los datos y los devuelva agrupados dentro de un <strong>Objeto</strong>. Veamos este ejemplo mejorado:
+            </p>
+
+            <div class="bg-light p-4 rounded border shadow-sm mb-4">
+                <h6 class="fw-bold text-dark">Código optimizado con Objetos:</h6>
+<pre class="bg-dark text-light p-3 rounded"><code>&lt;script&gt;
+    function obtenerNumeros() {
+        return {
+            n1: Number(document.getElementById("num1").value),
+            n2: Number(document.getElementById("num2").value)
+        };
+    }
+
+    const btnSumar = document.getElementById("btn_sumar");
+    const resultado = document.getElementById("resultado");
+
+    btnSumar.addEventListener("click", function () {
+        const numeros = obtenerNumeros();
+        resultado.textContent = "Resultado: " + (numeros.n1 + numeros.n2);
+    });
+&lt;/script&gt;</code></pre>
+
+                <h6 class="fw-bold text-danger mt-4">⚠️ ¿Qué confunde a los alumnos? Claves para entenderlo:</h6>
+                
+                <div class="alert alert-warning">
+                    <h5 class="h6 fw-bold text-dark">1. ¿Por qué usamos llaves <code>{}</code> en el <code>return</code>?</h5>
+                    <p class="mb-0 text-muted">
+                        En JavaScript, las llaves <code>{}</code> se utilizan para definir un <strong>Objeto</strong>. Un objeto es como una "supervariable" o una caja compartimentada que nos permite guardar múltiples datos etiquetados en su interior. Al poner <code>return { ... };</code>, la función no está devolviendo un solo número, sino que está empaquetando y enviando la caja completa con todo lo que tiene adentro.
+                    </p>
+                </div>
+
+                <div class="alert alert-warning">
+                    <h5 class="h6 fw-bold text-dark">2. ¿Por qué se usa dos puntos <code>:</code> en vez del igual <code>=</code>?</h5>
+                    <p class="text-muted">
+                        Este es un punto crítico. Cuando creamos variables sueltas en nuestro código usamos el signo igual (ej: <code>let n1 = 10;</code>). <br><br>
+                        Sin embargo, <strong>dentro de un objeto</strong> la sintaxis cambia por completo. Los objetos se componen de pares de <strong>Clave: Valor</strong> de la siguiente forma:
+                    </p>
+                    <pre class="bg-dark text-warning p-2 rounded mb-2"><code>n1: Number(...)</code></pre>
+                    <p class="mb-0 text-muted">
+                        Aquí, <code>n1</code> no es una variable independiente; es la <strong>etiqueta o propiedad</strong> del compartimento dentro del objeto, y los dos puntos <code>:</code> se encargan de asignarle su contenido. Usar un igual <code>=</code> adentro de las llaves del objeto provocaría un error de sintaxis en el navegador.
+                    </p>
+                </div>
+
+                <div class="alert alert-warning">
+                    <h5 class="h6 fw-bold text-dark">3. ¿Cómo se lee el valor con el punto (<code>numeros.n1</code>)?</h5>
+                    <p class="mb-0 text-muted">
+                        Cuando ejecutamos la línea <code>const numeros = obtenerNumeros();</code>, la variable <code>numeros</code> se convierte en dueña del objeto devuelto. Para poder abrir la caja y sacar los datos de forma individual, usamos la <strong>nomenclatura del punto (<code>.</code>)</strong>. Escribir <code>numeros.n1</code> significa textualmente: <em>"Entra a la variable 'numeros' y búscame lo que guardaste bajo la etiqueta 'n1'"</em>.
+                    </p>
+                </div>
             </div>
 
         </div>
