@@ -576,7 +576,7 @@ while(contador <= 5){
 &lt;/head&gt;
 &lt;body&gt;
 
-    &lt;h1 id="titulo1"&gt;Texto de Prueba del Taller&lt;/h1>
+    &lt;h1 id="titulo1"&gt;Texto de Prueba del Taller&lt;/h1&gt;
 
     &lt;button type="button" id="botonformato"&gt;Aplicar Formato&lt;/button&gt;
     &lt;button type="button" id="botonquitarformato"&gt;Quitar Formato&lt;/button&gt;
@@ -870,7 +870,7 @@ console.log(totalAPagar); // Imprime: 850</code></pre>
             
             <ol>
                 <li class="mb-3">
-                    Añade un nuevo botón en la interfaz HTML para la operación de <strong>Multiplicar</strong>. Modifica la lógica interna de tu función <code>operar</code> agregando la multiplicación. ¡Tú decides si prefieres expandir el bloque de <code>if / else if</code> o migrar tu código al modelo estructurado de <code>switch / case</code>!
+                    Añade un nuevo botón en la interfaz HTML para la operation de <strong>Multiplicar</strong>. Modifica la lógica interna de tu función <code>operar</code> agregando la multiplicación. ¡Tú decides si prefieres expandir el bloque de <code>if / else if</code> o migrar tu código al modelo estructurado de <code>switch / case</code>!
                 </li>
                 <li>
                     <strong>Gran Reto Algorítmico:</strong> Añade la operación de <strong>Dividir</strong>. Debes implementar una validación condicional que inspeccione si el segundo número ingresado es un cero. De ser así, se le debe prohibir la operación al usuario enviándole un mensaje claro mediante un cuadro de texto emergente (usando <code>alert()</code>) y definiendo el casillero del resultado como <em>"Error"</em>.
@@ -950,6 +950,17 @@ const elTitulo = document.getElementById("resultadoEnVivo");
 cajaTexto.addEventListener("input", function() {
     elTitulo.innerText = cajaTexto.value; 
 });</code></pre>
+
+            <div class="bg-light p-3 rounded border text-muted my-3">
+                <p class="mb-2">🔍 <strong>Nota importante para el desarrollador: ¿<code>innerText</code> o `textContent`?</strong></p>
+                <p class="small mb-1">
+                    En el código anterior usamos <code>innerText</code> para modificar el contenido visual, pero existe otra propiedad muy similar llamada <code>textContent</code>. Aunque en este ejercicio hacen exactamente lo mismo, tienen una diferencia clave:
+                </p>
+                <ul class="small mb-0">
+                    <li class="mb-1"><strong><code>innerText</code>:</strong> Es "consciente" del diseño visual de la página. Si un texto está oculto mediante CSS (por ejemplo, con <code>display: none;</code>), esta propiedad <strong>no</strong> lo leerá.</li>
+                    <li><strong><code>textContent</code>:</strong> Es directa y cruda. Lee o modifica el texto puro tal cual existe dentro del código HTML, ignorando por completo las reglas de estilo o si el elemento está oculto a los ojos del usuario.</li>
+                </ul>
+            </div>
 
         </div>
 
