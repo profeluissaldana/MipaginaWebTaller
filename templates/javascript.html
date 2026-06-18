@@ -151,7 +151,7 @@ console.log(saludo);</code></pre>
                     ❌ Bootstrap
                 </li>
 
-            </ul>
+                </ul>
 
         </div>
 
@@ -174,7 +174,7 @@ console.log(saludo);</code></pre>
             <div class="alert alert-warning">
 
                 ⚠️ Una variable funciona como una caja
-                dongrade guardamos datos.
+                donde guardamos datos.
 
             </div>
 
@@ -648,6 +648,65 @@ function calcularPrecioFinal(precioOriginal, descuento) {
 // Guardamos lo que devuelve la función en una variable
 let totalAPagar = calcularPrecioFinal(1000, 15); 
 console.log(totalAPagar); // Imprime: 850</code></pre>
+
+            <h5 class="fw-bold mt-5 text-success">
+                🔍 Explicación línea por línea: Código de la Calculadora
+            </h5>
+            
+            <p>
+                A continuación, analizamos detalladamente el script utilizado al final de nuestro formulario para procesar la suma de dos números:
+            </p>
+
+            <div class="bg-light p-4 rounded border shadow-sm mb-4">
+                <h6 class="fw-bold text-dark">El código analizado:</h6>
+<pre class="bg-dark text-light p-3 rounded"><code>&lt;script&gt;
+    const botonsumar = document.getElementById("btn_sumar");
+    var r = document.getElementById("resultado");
+
+    botonsumar.addEventListener("click", function () {
+        const n1 = Number(document.getElementById("num1").value);
+        const n2 = Number(document.getElementById("num2").value);
+        r.textContent = "Resultado: " + (n1 + n2);
+    })
+&lt;/script&gt;</code></pre>
+
+                <h6 class="fw-bold text-primary mt-4">Análisis paso a paso:</h6>
+                
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <strong>1. Captura de elementos del DOM:</strong><br>
+                        <code>const botonsumar = document.getElementById("btn_sumar");</code><br>
+                        <code>var r = document.getElementById("resultado");</code><br>
+                        <span class="text-muted">Buscamos el botón y el encabezado en el HTML mediante sus atributos <code>id</code> únicos para poder controlarlos desde JavaScript.</span>
+                    </li>
+                    <li class="mb-3">
+                        <strong>2. Escuchador de Eventos:</strong><br>
+                        <code>botonsumar.addEventListener("click", function () { ... })</code><br>
+                        <span class="text-muted">Le indicamos al botón que se quede "escuchando". En el momento en que el usuario haga un clic sobre él, se disparará de forma automática la función que está adentro.</span>
+                    </li>
+                    <li class="mb-3">
+                        <strong>3. ¿Por qué usamos <code>.value</code>?</strong><br>
+                        <code>document.getElementById("num1").value</code><br>
+                        <span class="text-muted">
+                            Cuando usamos únicamente <code>document.getElementById("num1")</code>, JavaScript obtiene <strong>toda la etiqueta HTML completa</strong> (ej: <code>&lt;input id="num1"&gt;</code>). Para acceder específicamente al texto o número que el usuario escribió dentro de esa caja de texto, necesitamos acceder a su propiedad interna llamada <strong><code>.value</code></strong>.
+                        </span>
+                    </li>
+                    <li class="mb-3">
+                        <strong>4. Conversión con <code>Number()</code>:</strong><br>
+                        <span class="text-muted">
+                            Por defecto, todo lo que se recupera de un <code>&lt;input&gt;</code> se recibe como una cadena de texto (String). Si el usuario escribe un <code>5</code> y un <code>3</code>, JavaScript interpretaría <code>"5" + "3" = "53"</code> (los pega). Al envolverlo en <code>Number(...)</code>, transformamos ese texto en un valor numérico real para poder operar matemáticamente.
+                        </span>
+                    </li>
+                    <li class="mb-3">
+                        <strong>5. ¿Por qué la suma va entre paréntesis <code>(n1 + n2)</code>?</strong><br>
+                        <code>r.textContent = "Resultado: " + (n1 + n2);</code><br>
+                        <span class="text-muted">
+                            En JavaScript, el signo <code>+</code> sirve tanto para sumar números como para <strong>concatenar</strong> (unir) textos. Si escribiéramos <code>"Resultado: " + n1 + n2</code>, JavaScript vería primero un texto, por lo que trataría todo lo que sigue como texto, dando como resultado <code>"Resultado: 53"</code>.<br>
+                            Al colocar <strong><code>(n1 + n2)</code> entre paréntesis</strong>, le alteramos la prioridad matemática: obligamos al intérprete a resolver primero la operación aritmética interna (<code>5 + 3 = 8</code>) y, recién después, unir el número final obtenido al texto de presentación.
+                        </span>
+                    </li>
+                </ul>
+            </div>
 
         </div>
 
